@@ -13,14 +13,20 @@ namespace Tienda_Ropa
 
             try
             {
-                datos.setConsulta("SELECT Id, Nombre FROM Marcas");
+                datos.setConsulta(
+                    "SELECT IdMarca, Nombre FROM Marcas ORDER BY IdMarca");
+
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
                     Marca aux = new Marca();
-                    aux.Id = (int)datos.Lector["Id"];
-                    aux.Nombre = (string)datos.Lector["Nombre"];
+
+                    aux.Id =
+                        (int)datos.Lector["IdMarca"];
+
+                    aux.Nombre =
+                        datos.Lector["Nombre"].ToString();
 
                     lista.Add(aux);
                 }
