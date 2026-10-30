@@ -1,0 +1,19 @@
+# Visual Studio
+.vs/
+.vscode/
+
+# Compilación
+bin/
+obj/
+
+# Archivos de usuario
+*.user
+*.suo
+
+# Caché
+*.cache
+*.dbmdl
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user
