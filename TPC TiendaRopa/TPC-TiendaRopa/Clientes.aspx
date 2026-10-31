@@ -1,81 +1,48 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Title="Clientes"
+    Language="C#"
+    MasterPageFile="~/Site.Master"
+    AutoEventWireup="true"
     CodeBehind="Clientes.aspx.cs"
     Inherits="TPC_TiendaRopa.Clientes" %>
 
-<!DOCTYPE html>
+<asp:Content
+    ID="Content1"
+    ContentPlaceHolderID="MainContent"
+    runat="server">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Clientes</title>
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
-</head>
-<body>
+    <h2>Clientes</h2>
 
-    <form id="form1" runat="server">
+    <asp:GridView
+        ID="gvClientes"
+        runat="server"
+        CssClass="table table-striped table-bordered"
+        AutoGenerateColumns="false">
 
-        <div class="container">
+        <Columns>
 
-            <h2>Clientes</h2>
+            <asp:BoundField DataField="Id" HeaderText="ID" />
+            <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
+            <asp:BoundField DataField="Apellido" HeaderText="Apellido" />
+            <asp:BoundField DataField="Dni" HeaderText="DNI" />
+            <asp:BoundField DataField="Telefono" HeaderText="Teléfono" />
+            <asp:BoundField DataField="Email" HeaderText="Email" />
 
-            <asp:GridView
-                ID="gvClientes"
-                runat="server"
-                CssClass="table table-striped table-bordered"
-                AutoGenerateColumns="false">
+        </Columns>
 
-                <Columns>
+    </asp:GridView>
 
-                    <asp:BoundField
-                        DataField="Id"
-                        HeaderText="ID" />
+    <br />
 
-                    <asp:BoundField
-                        DataField="Nombre"
-                        HeaderText="Nombre" />
+    <asp:Button ID="btnNuevo" runat="server"
+        Text="Nuevo"
+        CssClass="btn btn-primary" />
 
-                    <asp:BoundField
-                        DataField="Apellido"
-                        HeaderText="Apellido" />
+    <asp:Button ID="btnEditar" runat="server"
+        Text="Editar"
+        CssClass="btn btn-warning" />
 
-                    <asp:BoundField
-                        DataField="Dni"
-                        HeaderText="DNI" />
+    <asp:Button ID="btnEliminar" runat="server"
+        Text="Eliminar"
+        CssClass="btn btn-danger" />
 
-                    <asp:BoundField
-                        DataField="Telefono"
-                        HeaderText="Teléfono" />
-
-                    <asp:BoundField
-                        DataField="Email"
-                        HeaderText="Email" />
-
-                </Columns>
-
-            </asp:GridView>
-
-            <br />
-
-            <asp:Button
-                ID="btnNuevo"
-                runat="server"
-                Text="Nuevo"
-                CssClass="btn btn-primary" />
-
-            <asp:Button
-                ID="btnEditar"
-                runat="server"
-                Text="Editar"
-                CssClass="btn btn-warning" />
-
-            <asp:Button
-                ID="btnEliminar"
-                runat="server"
-                Text="Eliminar"
-                CssClass="btn btn-danger" />
-
-        </div>
-
-    </form>
-
-</body>
-</html>
+</asp:Content>

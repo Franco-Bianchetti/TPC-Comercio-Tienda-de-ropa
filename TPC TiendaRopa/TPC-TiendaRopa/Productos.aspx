@@ -1,86 +1,61 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Title="Productos"
+    Language="C#"
+    MasterPageFile="~/Site.Master"
+    AutoEventWireup="true"
     CodeBehind="Productos.aspx.cs"
     Inherits="TPC_TiendaRopa.Productos" %>
 
-<!DOCTYPE html>
+<asp:Content
+    ID="Content1"
+    ContentPlaceHolderID="MainContent"
+    runat="server">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Productos</title>
+    <h2>Productos</h2>
 
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
-</head>
-<body>
+    <asp:GridView
+        ID="gvProductos"
+        runat="server"
+        CssClass="table table-striped table-bordered"
+        AutoGenerateColumns="false">
 
-    <form id="form1" runat="server">
+        <Columns>
 
-        <div class="container mt-4">
+            <asp:BoundField DataField="Id" HeaderText="ID" />
 
-            <h2>Productos</h2>
+            <asp:BoundField DataField="Nombre"
+                HeaderText="Nombre" />
 
-            <asp:GridView
-                ID="gvProductos"
-                runat="server"
-                CssClass="table table-striped table-hover table-bordered"
-                AutoGenerateColumns="false">
+            <asp:BoundField DataField="Talle"
+                HeaderText="Talle" />
 
-                <Columns>
+            <asp:BoundField DataField="Color"
+                HeaderText="Color" />
 
-                    <asp:BoundField
-                        DataField="Id"
-                        HeaderText="ID" />
+            <asp:BoundField DataField="StockActual"
+                HeaderText="Stock" />
 
-                    <asp:BoundField
-                        DataField="Nombre"
-                        HeaderText="Nombre" />
+            <asp:BoundField DataField="StockMinimo"
+                HeaderText="Stock Mínimo" />
 
-                    <asp:BoundField
-                        DataField="Talle"
-                        HeaderText="Talle" />
+            <asp:BoundField DataField="PorcentajeGanancia"
+                HeaderText="% Ganancia" />
 
-                    <asp:BoundField
-                        DataField="Color"
-                        HeaderText="Color" />
+        </Columns>
 
-                    <asp:BoundField
-                        DataField="StockActual"
-                        HeaderText="Stock" />
+    </asp:GridView>
 
-                    <asp:BoundField
-                        DataField="StockMinimo"
-                        HeaderText="Stock Mín." />
+    <br />
 
-                    <asp:BoundField
-                        DataField="PorcentajeGanancia"
-                        HeaderText="% Ganancia" />
+    <asp:Button ID="btnNuevo" runat="server"
+        Text="Nuevo"
+        CssClass="btn btn-primary" />
 
-                </Columns>
+    <asp:Button ID="btnEditar" runat="server"
+        Text="Editar"
+        CssClass="btn btn-warning" />
 
-            </asp:GridView>
+    <asp:Button ID="btnEliminar" runat="server"
+        Text="Eliminar"
+        CssClass="btn btn-danger" />
 
-            <br />
-
-            <asp:Button
-                ID="btnNuevo"
-                runat="server"
-                Text="Nuevo"
-                CssClass="btn btn-primary me-2" />
-
-            <asp:Button
-                ID="btnEditar"
-                runat="server"
-                Text="Editar"
-                CssClass="btn btn-warning me-2" />
-
-            <asp:Button
-                ID="btnEliminar"
-                runat="server"
-                Text="Eliminar"
-                CssClass="btn btn-danger" />
-
-        </div>
-
-    </form>
-
-</body>
-</html>
+</asp:Content>

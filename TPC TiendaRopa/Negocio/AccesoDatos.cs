@@ -17,7 +17,7 @@ namespace Negocio
         public AccesoDatos()
         {
             conexion = new SqlConnection(
-                "server=.;database=TIENDA_ROPA_DB;integrated security=true");
+                "server=.\\SQLEXPRESS;database=TIENDA_ROPA_DB;integrated security=true");
 
             comando = new SqlCommand();
         }

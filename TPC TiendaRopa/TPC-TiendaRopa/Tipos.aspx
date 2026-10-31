@@ -1,66 +1,47 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Title="Tipos"
+    Language="C#"
+    MasterPageFile="~/Site.Master"
+    AutoEventWireup="true"
     CodeBehind="Tipos.aspx.cs"
     Inherits="TPC_TiendaRopa.Tipos" %>
 
-<!DOCTYPE html>
+<asp:Content
+    ID="Content1"
+    ContentPlaceHolderID="MainContent"
+    runat="server">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Tipos</title>
+    <h2>Tipos</h2>
 
-    <link href="Content/bootstrap.min.css"
-          rel="stylesheet" />
-</head>
-<body>
+    <asp:GridView
+        ID="gvTipos"
+        runat="server"
+        CssClass="table table-striped table-bordered"
+        AutoGenerateColumns="false">
 
-    <form id="form1" runat="server">
+        <Columns>
 
-        <div class="container">
+            <asp:BoundField DataField="Id"
+                HeaderText="ID" />
 
-            <h2>Tipos</h2>
+            <asp:BoundField DataField="Nombre"
+                HeaderText="Nombre" />
 
-            <asp:GridView
-                ID="gvTipos"
-                runat="server"
-                CssClass="table table-striped table-bordered"
-                AutoGenerateColumns="false">
+        </Columns>
 
-                <Columns>
+    </asp:GridView>
 
-                    <asp:BoundField
-                        DataField="Id"
-                        HeaderText="ID" />
+    <br />
 
-                    <asp:BoundField
-                         DataField="Nombre"
-                         HeaderText="Nombre" />
-                </Columns>
+    <asp:Button ID="btnNuevo" runat="server"
+        Text="Nuevo"
+        CssClass="btn btn-primary" />
 
-            </asp:GridView>
+    <asp:Button ID="btnEditar" runat="server"
+        Text="Editar"
+        CssClass="btn btn-warning" />
 
-            <br />
+    <asp:Button ID="btnEliminar" runat="server"
+        Text="Eliminar"
+        CssClass="btn btn-danger" />
 
-            <asp:Button
-                ID="btnNuevo"
-                runat="server"
-                Text="Nuevo"
-                CssClass="btn btn-primary" />
-
-            <asp:Button
-                ID="btnEditar"
-                runat="server"
-                Text="Editar"
-                CssClass="btn btn-warning" />
-
-            <asp:Button
-                ID="btnEliminar"
-                runat="server"
-                Text="Eliminar"
-                CssClass="btn btn-danger" />
-
-        </div>
-
-    </form>
-
-</body>
-</html>
+</asp:Content>
