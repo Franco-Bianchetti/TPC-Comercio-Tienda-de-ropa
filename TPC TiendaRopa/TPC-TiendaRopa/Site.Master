@@ -45,6 +45,8 @@
             <li class="nav-item"><a class="nav-link" runat="server" href="~/Productos">Productos</a></li>
             <li class="nav-item"><a class="nav-link" runat="server" href="~/Proveedores">Proveedores</a></li>
             <li class="nav-item"><a class="nav-link" runat="server" href="~/Tipos">Tipos</a></li>
+            <li class="nav-item"><a class="nav-link" runat="server" href="~/Login">Ingresar</a></li>
+            <li class="nav-item"><a class="nav-link" runat="server" href="~/Compras">Compras</a></li>
         </ul>
 
     </div>
