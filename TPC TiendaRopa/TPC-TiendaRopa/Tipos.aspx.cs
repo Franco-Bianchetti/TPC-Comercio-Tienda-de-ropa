@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.UI.WebControls;
 using Negocio;
 
 namespace TPC_TiendaRopa
@@ -9,10 +10,34 @@ namespace TPC_TiendaRopa
         {
             if (!IsPostBack)
             {
+                cargarGrilla();
+            }
+        }
+
+        private void cargarGrilla()
+        {
+            TipoNegocio negocio = new TipoNegocio();
+
+            gvTipos.DataSource = negocio.listar();
+            gvTipos.DataBind();
+        }
+
+        protected void btnNuevo_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("FormularioTipo.aspx", false);
+        }
+
+        protected void gvTipos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Eliminar")
+            {
+                int id = int.Parse(e.CommandArgument.ToString());
+
                 TipoNegocio negocio = new TipoNegocio();
 
-                gvTipos.DataSource = negocio.listar();
-                gvTipos.DataBind();
+                negocio.eliminar(id);
+
+                cargarGrilla();
             }
         }
     }
