@@ -14,7 +14,12 @@ namespace Negocio
             try
             {
                 datos.setConsulta(
-                    "SELECT IdTipo, Nombre FROM Tipos WHERE Activo = 1 ORDER BY IdTipo");
+                    @"SELECT
+                        IdTipo,
+                        Nombre
+                      FROM Tipos
+                      WHERE Activo = 1
+                      ORDER BY IdTipo");
 
                 datos.ejecutarLectura();
 
@@ -30,10 +35,6 @@ namespace Negocio
 
                 return lista;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
             finally
             {
                 datos.cerrarConexion();
@@ -47,7 +48,12 @@ namespace Negocio
             try
             {
                 datos.setConsulta(
-                    "SELECT IdTipo, Nombre FROM Tipos WHERE IdTipo = @Id AND Activo = 1");
+                    @"SELECT
+                        IdTipo,
+                        Nombre
+                      FROM Tipos
+                      WHERE IdTipo = @Id
+                      AND Activo = 1");
 
                 datos.setParametro("@Id", id);
 
@@ -65,10 +71,6 @@ namespace Negocio
 
                 return null;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
             finally
             {
                 datos.cerrarConexion();
@@ -81,8 +83,13 @@ namespace Negocio
 
             try
             {
-                datos.setConsulta(
-                    "SELECT IdTipo FROM Tipos WHERE Nombre = @Nombre AND IdTipo <> @Id");
+                datos.setConsulta(@"
+                    SELECT IdTipo
+                    FROM Tipos
+                    WHERE UPPER(LTRIM(RTRIM(Nombre))) =
+                          UPPER(LTRIM(RTRIM(@Nombre)))
+                    AND Activo = 1
+                    AND IdTipo <> @Id");
 
                 datos.setParametro("@Nombre", nombre);
                 datos.setParametro("@Id", idActual);
@@ -91,9 +98,30 @@ namespace Negocio
 
                 return datos.Lector.Read();
             }
-            catch (Exception ex)
+            finally
             {
-                throw ex;
+                datos.cerrarConexion();
+            }
+        }
+
+        public bool existeInactivo(string nombre)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(@"
+                    SELECT IdTipo
+                    FROM Tipos
+                    WHERE UPPER(LTRIM(RTRIM(Nombre))) =
+                          UPPER(LTRIM(RTRIM(@Nombre)))
+                    AND Activo = 0");
+
+                datos.setParametro("@Nombre", nombre);
+
+                datos.ejecutarLectura();
+
+                return datos.Lector.Read();
             }
             finally
             {
@@ -107,16 +135,23 @@ namespace Negocio
 
             try
             {
-                datos.setConsulta(
-                    "INSERT INTO Tipos (Nombre) VALUES (@Nombre)");
+                datos.setConsulta(@"
+                    INSERT INTO Tipos
+                    (
+                        Nombre,
+                        Activo
+                    )
+                    VALUES
+                    (
+                        @Nombre,
+                        1
+                    )");
 
-                datos.setParametro("@Nombre", nuevo.Nombre);
+                datos.setParametro(
+                    "@Nombre",
+                    nuevo.Nombre);
 
                 datos.ejecutarAccion();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
             finally
             {
@@ -130,17 +165,20 @@ namespace Negocio
 
             try
             {
-                datos.setConsulta(
-                    "UPDATE Tipos SET Nombre = @Nombre WHERE IdTipo = @Id");
+                datos.setConsulta(@"
+                    UPDATE Tipos
+                    SET Nombre = @Nombre
+                    WHERE IdTipo = @Id");
 
-                datos.setParametro("@Nombre", tipo.Nombre);
-                datos.setParametro("@Id", tipo.Id);
+                datos.setParametro(
+                    "@Nombre",
+                    tipo.Nombre);
+
+                datos.setParametro(
+                    "@Id",
+                    tipo.Id);
 
                 datos.ejecutarAccion();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
             finally
             {
@@ -154,16 +192,16 @@ namespace Negocio
 
             try
             {
-                datos.setConsulta(
-                    "UPDATE Tipos SET Activo = 0 WHERE IdTipo = @Id");
+                datos.setConsulta(@"
+                    UPDATE Tipos
+                    SET Activo = 0
+                    WHERE IdTipo = @Id");
 
-                datos.setParametro("@Id", id);
+                datos.setParametro(
+                    "@Id",
+                    id);
 
                 datos.ejecutarAccion();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
             finally
             {

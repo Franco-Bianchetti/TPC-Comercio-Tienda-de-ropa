@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Dominio;
 using Negocio;
 
@@ -11,12 +12,16 @@ namespace TPC_TiendaRopa
             int id = 0;
 
             if (Request.QueryString["id"] != null)
-                int.TryParse(Request.QueryString["id"], out id);
+                int.TryParse(
+                    Request.QueryString["id"],
+                    out id);
 
             return id;
         }
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(
+            object sender,
+            EventArgs e)
         {
             if (!IsPostBack)
             {
@@ -24,40 +29,83 @@ namespace TPC_TiendaRopa
 
                 if (id != 0)
                 {
-                    TipoNegocio negocio = new TipoNegocio();
-                    Tipo tipo = negocio.buscar(id);
+                    TipoNegocio negocio =
+                        new TipoNegocio();
+
+                    Tipo tipo =
+                        negocio.buscar(id);
 
                     if (tipo != null)
                     {
-                        lblTitulo.Text = "Modificar tipo";
-                        txtNombre.Text = tipo.Nombre;
+                        lblTitulo.Text =
+                            "Modificar tipo";
+
+                        txtNombre.Text =
+                            tipo.Nombre;
                     }
                 }
             }
         }
 
-        protected void btnGuardar_Click(object sender, EventArgs e)
+        protected void btnGuardar_Click(
+            object sender,
+            EventArgs e)
         {
-            string nombre = txtNombre.Text.Trim();
-            int id = obtenerId();
+            string nombre =
+                txtNombre.Text.Trim().ToUpper();
+
+            int id =
+                obtenerId();
+
+            lblError.Visible = false;
 
             if (nombre == "")
             {
-                lblError.Text = "Ingresá un nombre para el tipo.";
-                lblError.Visible = true;
+                mostrarError(
+                    "Debe ingresar un nombre para el tipo.");
                 return;
             }
 
-            TipoNegocio negocio = new TipoNegocio();
+            if (nombre.Length < 2)
+            {
+                mostrarError(
+                    "El nombre debe tener al menos 2 caracteres.");
+                return;
+            }
+
+            if (nombre.Length > 50)
+            {
+                mostrarError(
+                    "El nombre no puede superar los 50 caracteres.");
+                return;
+            }
+
+            if (!esTipoValido(nombre))
+            {
+                mostrarError(
+                    "El nombre contiene caracteres no permitidos.");
+                return;
+            }
+
+            TipoNegocio negocio =
+                new TipoNegocio();
 
             if (negocio.existe(nombre, id))
             {
-                lblError.Text = "Ya existe un tipo con ese nombre.";
-                lblError.Visible = true;
+                mostrarError(
+                    "Ya existe un tipo con ese nombre.");
                 return;
             }
 
-            Tipo tipo = new Tipo();
+            if (negocio.existeInactivo(nombre))
+            {
+                mostrarError(
+                    "El tipo ya existe y se encuentra inactivo.");
+                return;
+            }
+
+            Tipo tipo =
+                new Tipo();
 
             tipo.Id = id;
             tipo.Nombre = nombre;
@@ -67,7 +115,24 @@ namespace TPC_TiendaRopa
             else
                 negocio.modificar(tipo);
 
-            Response.Redirect("Tipos.aspx", false);
+            Response.Redirect(
+                "Tipos.aspx",
+                false);
+        }
+
+        private bool esTipoValido(
+            string nombre)
+        {
+            return Regex.IsMatch(
+                nombre,
+                @"^[A-ZÁÉÍÓÚÑ'&\-\.\s]{2,50}$");
+        }
+
+        private void mostrarError(
+            string mensaje)
+        {
+            lblError.Text = mensaje;
+            lblError.Visible = true;
         }
     }
 }

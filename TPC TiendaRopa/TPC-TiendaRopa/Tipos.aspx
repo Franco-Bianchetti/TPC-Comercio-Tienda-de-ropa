@@ -17,10 +17,12 @@
 
         <Columns>
 
-            <asp:BoundField DataField="Id"
+            <asp:BoundField
+                DataField="Id"
                 HeaderText="ID" />
 
-            <asp:BoundField DataField="Nombre"
+            <asp:BoundField
+                DataField="Nombre"
                 HeaderText="Nombre" />
 
             <asp:TemplateField HeaderText="Acciones">
@@ -51,7 +53,8 @@
 
     <br />
 
-    <asp:Button ID="btnNuevo"
+    <asp:Button
+        ID="btnNuevo"
         runat="server"
         Text="Nuevo"
         CssClass="btn btn-primary"

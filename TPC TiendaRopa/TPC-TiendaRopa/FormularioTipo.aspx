@@ -8,32 +8,37 @@
     runat="server">
 
     <h2>
-        <asp:Label ID="lblTitulo"
+        <asp:Label
+            ID="lblTitulo"
             runat="server"
             Text="Nuevo tipo" />
     </h2>
 
     <div class="mb-3" style="max-width:400px;">
 
-        <asp:Label ID="lblNombre"
+        <asp:Label
+            ID="lblNombre"
             runat="server"
             Text="Nombre"
             CssClass="form-label"
             AssociatedControlID="txtNombre" />
 
-        <asp:TextBox ID="txtNombre"
+        <asp:TextBox
+            ID="txtNombre"
             runat="server"
             CssClass="form-control"
-            MaxLength="100" />
+            MaxLength="50" />
 
-        <asp:Label ID="lblError"
+        <asp:Label
+            ID="lblError"
             runat="server"
             CssClass="text-danger"
             Visible="false" />
 
     </div>
 
-    <asp:Button ID="btnGuardar"
+    <asp:Button
+        ID="btnGuardar"
         runat="server"
         Text="Guardar"
         CssClass="btn btn-primary"

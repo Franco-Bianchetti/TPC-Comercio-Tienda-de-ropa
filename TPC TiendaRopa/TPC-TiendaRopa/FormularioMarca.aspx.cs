@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Dominio;
 using Negocio;
 
@@ -9,12 +10,18 @@ namespace TPC_TiendaRopa
         private int obtenerId()
         {
             int id = 0;
+
             if (Request.QueryString["id"] != null)
-                int.TryParse(Request.QueryString["id"], out id);
+                int.TryParse(
+                    Request.QueryString["id"],
+                    out id);
+
             return id;
         }
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(
+            object sender,
+            EventArgs e)
         {
             if (!IsPostBack)
             {
@@ -22,40 +29,84 @@ namespace TPC_TiendaRopa
 
                 if (id != 0)
                 {
-                    MarcaNegocio negocio = new MarcaNegocio();
-                    Marca marca = negocio.buscar(id);
+                    MarcaNegocio negocio =
+                        new MarcaNegocio();
+
+                    Marca marca =
+                        negocio.buscar(id);
 
                     if (marca != null)
                     {
-                        lblTitulo.Text = "Modificar marca";
-                        txtNombre.Text = marca.Nombre;
+                        lblTitulo.Text =
+                            "Modificar marca";
+
+                        txtNombre.Text =
+                            marca.Nombre;
                     }
                 }
             }
         }
 
-        protected void btnGuardar_Click(object sender, EventArgs e)
+        protected void btnGuardar_Click(
+            object sender,
+            EventArgs e)
         {
-            string nombre = txtNombre.Text.Trim();
-            int id = obtenerId();
+            string nombre =
+                txtNombre.Text.Trim().ToUpper();
+
+            int id =
+                obtenerId();
+
+            lblError.Visible = false;
 
             if (nombre == "")
             {
-                lblError.Text = "Ingresá un nombre para la marca.";
-                lblError.Visible = true;
+                mostrarError(
+                    "Debe ingresar un nombre para la marca.");
                 return;
             }
 
-            MarcaNegocio negocio = new MarcaNegocio();
-
-            if (negocio.existe(nombre, id))
+            if (nombre.Length < 2)
             {
-                lblError.Text = "Ya existe una marca con ese nombre.";
-                lblError.Visible = true;
+                mostrarError(
+                    "El nombre debe tener al menos 2 caracteres.");
                 return;
             }
 
-            Marca marca = new Marca();
+            if (nombre.Length > 50)
+            {
+                mostrarError(
+                    "El nombre no puede superar los 50 caracteres.");
+                return;
+            }
+
+            if (!esMarcaValida(nombre))
+            {
+                mostrarError(
+                    "El nombre contiene caracteres no permitidos.");
+                return;
+            }
+
+            MarcaNegocio negocio =
+                new MarcaNegocio();
+
+            if (negocio.existeActiva(nombre, id))
+            {
+                mostrarError(
+                    "Ya existe una marca con ese nombre.");
+                return;
+            }
+
+            if (negocio.existeInactiva(nombre))
+            {
+                mostrarError(
+                    "La marca ya existe y se encuentra inactiva.");
+                return;
+            }
+
+            Marca marca =
+                new Marca();
+
             marca.Id = id;
             marca.Nombre = nombre;
 
@@ -64,7 +115,24 @@ namespace TPC_TiendaRopa
             else
                 negocio.modificar(marca);
 
-            Response.Redirect("Marcas.aspx", false);
+            Response.Redirect(
+                "Marcas.aspx",
+                false);
+        }
+
+        private bool esMarcaValida(
+            string nombre)
+        {
+            return Regex.IsMatch(
+                nombre,
+                @"^[A-ZÁÉÍÓÚÑ'&\-\.\s]{2,50}$");
+        }
+
+        private void mostrarError(
+            string mensaje)
+        {
+            lblError.Text = mensaje;
+            lblError.Visible = true;
         }
     }
 }
