@@ -29,11 +29,9 @@ namespace TPC_TiendaRopa
 
                 if (id != 0)
                 {
-                    TipoNegocio negocio =
-                        new TipoNegocio();
-
-                    Tipo tipo =
-                        negocio.buscar(id);
+                    TipoNegocio negocio = new TipoNegocio();
+                    Tipo tipo = negocio.buscar(id);
+                    negocio.buscar(id);
 
                     if (tipo != null)
                     {
@@ -80,7 +78,7 @@ namespace TPC_TiendaRopa
                 return;
             }
 
-            if (!esTipoValido(nombre))
+            if (!esTipoValida(nombre))
             {
                 mostrarError(
                     "El nombre contiene caracteres no permitidos.");
@@ -104,23 +102,23 @@ namespace TPC_TiendaRopa
                 return;
             }
 
-            Tipo tipo =
+            Tipo Tipo =
                 new Tipo();
 
-            tipo.Id = id;
-            tipo.Nombre = nombre;
+            Tipo.Id = id;
+            Tipo.Nombre = nombre;
 
             if (id == 0)
-                negocio.agregar(tipo);
+                negocio.agregar(Tipo);
             else
-                negocio.modificar(tipo);
+                negocio.modificar(Tipo);
 
             Response.Redirect(
                 "Tipos.aspx",
                 false);
         }
 
-        private bool esTipoValido(
+        private bool esTipoValida (
             string nombre)
         {
             return Regex.IsMatch(
