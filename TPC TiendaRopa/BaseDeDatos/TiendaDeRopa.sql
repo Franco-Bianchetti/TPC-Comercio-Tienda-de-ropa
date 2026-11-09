@@ -80,7 +80,8 @@ CREATE TABLE Clientes
     Dni VARCHAR(20) NOT NULL UNIQUE,
 
     Telefono VARCHAR(30),
-    Email VARCHAR(100)
+    Email VARCHAR(100),
+    Activo BIT NOT NULL DEFAULT 1
 );
 GO
 
@@ -97,7 +98,8 @@ CREATE TABLE Proveedores
     Cuit VARCHAR(20) UNIQUE,
 
     Telefono VARCHAR(30),
-    Email VARCHAR(100)
+    Email VARCHAR(100),
+    Activo BIT NOT NULL DEFAULT 1
 );
 GO
 
@@ -447,3 +449,17 @@ VALUES
 
 SELECT 'TIENDA_ROPA_DB creada correctamente' AS Resultado;
 GO
+
+/*======================================================
+    Usarlo para que no tire error
+======================================================*/
+
+/*
+
+USE TIENDA_ROPA_DB;
+GO
+ALTER TABLE Clientes ADD Activo BIT NOT NULL CONSTRAINT DF_Clientes_Activo DEFAULT 1;
+ALTER TABLE Proveedores ADD Activo BIT NOT NULL CONSTRAINT DF_Proveedores_Activo DEFAULT 1;
+GO
+
+*/

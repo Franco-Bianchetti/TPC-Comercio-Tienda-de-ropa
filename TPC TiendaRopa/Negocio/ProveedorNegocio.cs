@@ -22,6 +22,7 @@ namespace Negocio
                         Telefono,
                         Email
                     FROM Proveedores
+                    WHERE Activo = 1
                     ORDER BY IdProveedor");
 
                 datos.ejecutarLectura();

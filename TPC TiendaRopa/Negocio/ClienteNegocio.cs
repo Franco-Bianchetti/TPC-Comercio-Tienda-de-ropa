@@ -23,6 +23,7 @@ namespace Negocio
                         Telefono,
                         Email
                     FROM Clientes
+                    WHERE Activo = 1
                     ORDER BY IdCliente");
 
                 datos.ejecutarLectura();
@@ -75,7 +76,7 @@ namespace Negocio
                         Telefono,
                         Email
                     FROM Clientes
-                    WHERE IdCliente = @Id");
+                    WHERE IdCliente = @Id AND Activo = 1");
 
                 datos.setParametro("@Id", id);
 
@@ -281,7 +282,7 @@ namespace Negocio
             try
             {
                 datos.setConsulta(
-                    "DELETE FROM Clientes WHERE IdCliente = @Id");
+                    "UPDATE Clientes SET Activo = 0 WHERE IdCliente = @Id");
 
                 datos.setParametro(
                     "@Id",
