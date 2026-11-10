@@ -124,6 +124,7 @@
     <Content Include="Factura.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="FormularioCliente.aspx" />
+    <Content Include="FormularioProducto.aspx" />
     <Content Include="FormularioTipo.aspx" />
     <Content Include="FormularioMarca.aspx" />
     <Content Include="Global.asax" />
@@ -245,6 +246,13 @@
     </Compile>
     <Compile Include="FormularioCliente.aspx.designer.cs">
       <DependentUpon>FormularioCliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioProducto.aspx.cs">
+      <DependentUpon>FormularioProducto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormularioProducto.aspx.designer.cs">
+      <DependentUpon>FormularioProducto.aspx</DependentUpon>
     </Compile>
     <Compile Include="FormularioTipo.aspx.cs">
       <DependentUpon>FormularioTipo.aspx</DependentUpon>
