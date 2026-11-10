@@ -1,5 +1,6 @@
-﻿using System;
-using Negocio;
+﻿using Negocio;
+using System;
+using System.Web.UI.WebControls;
 
 namespace TPC_TiendaRopa
 {
@@ -9,6 +10,12 @@ namespace TPC_TiendaRopa
         {
             if (!IsPostBack)
             {
+                cargarGrilla();
+            }
+        }
+
+        private void cargarGrilla()
+        {
                 ProveedorNegocio negocio =
                     new ProveedorNegocio();
 
@@ -16,7 +23,22 @@ namespace TPC_TiendaRopa
                     negocio.listar();
 
                 gvProveedores.DataBind();
+        }
+        protected void btnNuevo_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("FormularioProveedor.aspx", false);
+        }
+
+        protected void gvProveedores_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Eliminar")
+            {
+                int id = int.Parse(e.CommandArgument.ToString());
+                ProveedorNegocio negocio = new ProveedorNegocio();
+                negocio.eliminar(id);
+                cargarGrilla();
             }
         }
     }
 }
+
