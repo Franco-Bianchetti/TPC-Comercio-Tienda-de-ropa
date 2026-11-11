@@ -8,7 +8,8 @@
 <head runat="server">
 
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
 
     <title><%: Page.Title %> - Tienda de Ropa</title>
 
@@ -16,7 +17,9 @@
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
-    <webopt:BundleReference runat="server" Path="~/Content/css" />
+    <webopt:BundleReference
+        runat="server"
+        Path="~/Content/css" />
 
 </head>
 
@@ -32,28 +35,107 @@
             </Scripts>
         </asp:ScriptManager>
 
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 
-    <div class="container">
+            <div class="container">
 
-        <a class="navbar-brand" runat="server" href="~/">Tienda de Ropa</a>
+                <a class="navbar-brand"
+                   runat="server"
+                   href="~/">
+                    Tienda de Ropa
+                </a>
 
-        <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" runat="server" href="~/">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" runat="server" href="~/Clientes">Clientes</a></li>
-            <li class="nav-item"><a class="nav-link" runat="server" href="~/Marcas">Marcas</a></li>
-            <li class="nav-item"><a class="nav-link" runat="server" href="~/Productos">Productos</a></li>
-            <li class="nav-item"><a class="nav-link" runat="server" href="~/Proveedores">Proveedores</a></li>
-            <li class="nav-item"><a class="nav-link" runat="server" href="~/Tipos">Tipos</a></li>
-            <li class="nav-item"><a class="nav-link" runat="server" href="~/Compras">Compras</a></li>
-            <li class="nav-item"><a class="nav-link" runat="server" href="~/Ventas">Ventas</a></li>
-            <li class="nav-item"><a class="nav-link" runat="server" href="~/Factura">Factura</a></li>
-            <li class="nav-item"><a class="nav-link" runat="server" href="~/Login">Ingresar</a></li>
-        </ul>
+                <ul class="navbar-nav">
 
-    </div>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           runat="server"
+                           href="~/Clientes">
+                            Clientes
+                        </a>
+                    </li>
 
-</nav>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           runat="server"
+                           href="~/Marcas">
+                            Marcas
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           runat="server"
+                           href="~/Productos">
+                            Productos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           runat="server"
+                           href="~/Proveedores">
+                            Proveedores
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           runat="server"
+                           href="~/Tipos">
+                            Tipos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           runat="server"
+                           href="~/Compras">
+                            Compras
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           runat="server"
+                           href="~/Ventas">
+                            Ventas
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           runat="server"
+                           href="~/Factura">
+                            Factura
+                        </a>
+                    </li>
+
+                </ul>
+
+                <div class="ms-auto">
+
+                    <asp:Label
+                        ID="lblUsuario"
+                        runat="server"
+                        CssClass="text-light me-3"
+                        Visible="false">
+                    </asp:Label>
+
+                    <asp:Button
+                        ID="btnCerrarSesion"
+                        runat="server"
+                        Text="Cerrar sesión"
+                        CssClass="btn btn-outline-light btn-sm"
+                        Visible="false"
+                        OnClick="btnCerrarSesion_Click" />
+
+                </div>
+
+            </div>
+
+        </nav>
+
         <div class="container mt-4">
 
             <asp:ContentPlaceHolder
@@ -65,7 +147,8 @@
 
             <footer>
                 <p>
-                    &copy; <%: DateTime.Now.Year %> - Tienda de Ropa
+                    &copy; <%: DateTime.Now.Year %>
+                    - Tienda de Ropa
                 </p>
             </footer>
 
