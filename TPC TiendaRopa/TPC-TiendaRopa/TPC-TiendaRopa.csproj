@@ -125,6 +125,7 @@
     <Content Include="favicon.ico" />
     <Content Include="FormularioCliente.aspx" />
     <Content Include="FormularioProducto.aspx" />
+    <Content Include="FormularioProveedor.aspx" />
     <Content Include="FormularioTipo.aspx" />
     <Content Include="FormularioMarca.aspx" />
     <Content Include="Global.asax" />
@@ -253,6 +254,13 @@
     </Compile>
     <Compile Include="FormularioProducto.aspx.designer.cs">
       <DependentUpon>FormularioProducto.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioProveedor.aspx.cs">
+      <DependentUpon>FormularioProveedor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormularioProveedor.aspx.designer.cs">
+      <DependentUpon>FormularioProveedor.aspx</DependentUpon>
     </Compile>
     <Compile Include="FormularioTipo.aspx.cs">
       <DependentUpon>FormularioTipo.aspx</DependentUpon>
