@@ -1,6 +1,6 @@
-﻿using System;
-using Dominio;
+﻿using Dominio;
 using Negocio;
+using System;
 
 namespace TPC_TiendaRopa {
     public partial class FormularioUsuario : System.Web.UI.Page {
