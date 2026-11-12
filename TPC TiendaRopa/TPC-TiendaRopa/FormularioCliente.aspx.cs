@@ -184,10 +184,15 @@ namespace TPC_TiendaRopa
                 return;
             }
 
-            if (negocio.existeDni(dni, id))
-            {
+            if (negocio.existeDniActivo(dni, id)) {
                 mostrarError(
                     "Ya existe un cliente con ese DNI.");
+                return;
+            }
+
+            if (negocio.existeDniInactivo(dni)) {
+                mostrarError(
+                    "El cliente ya existe y se encuentra inactivo.");
                 return;
             }
 

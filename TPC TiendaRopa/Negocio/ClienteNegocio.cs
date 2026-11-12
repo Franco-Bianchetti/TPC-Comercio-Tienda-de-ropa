@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using Dominio;
 
-namespace Negocio
-{
-    public class ClienteNegocio
-    {
-        public List<Cliente> listar()
-        {
+namespace Negocio {
+    public class ClienteNegocio {
+        public List<Cliente> listar() {
             List<Cliente> lista = new List<Cliente>();
-
             AccesoDatos datos = new AccesoDatos();
 
-            try
-            {
+            try {
                 datos.setConsulta(@"
                     SELECT
                         IdCliente,
@@ -28,45 +23,30 @@ namespace Negocio
 
                 datos.ejecutarLectura();
 
-                while (datos.Lector.Read())
-                {
+                while (datos.Lector.Read()) {
                     Cliente aux = new Cliente();
 
-                    aux.Id =
-                        (int)datos.Lector["IdCliente"];
-
-                    aux.Nombre =
-                        datos.Lector["Nombre"].ToString();
-
-                    aux.Apellido =
-                        datos.Lector["Apellido"].ToString();
-
-                    aux.Dni =
-                        datos.Lector["Dni"].ToString();
-
-                    aux.Telefono =
-                        datos.Lector["Telefono"].ToString();
-
-                    aux.Email =
-                        datos.Lector["Email"].ToString();
+                    aux.Id = (int)datos.Lector["IdCliente"];
+                    aux.Nombre = datos.Lector["Nombre"].ToString();
+                    aux.Apellido = datos.Lector["Apellido"].ToString();
+                    aux.Dni = datos.Lector["Dni"].ToString();
+                    aux.Telefono = datos.Lector["Telefono"].ToString();
+                    aux.Email = datos.Lector["Email"].ToString();
 
                     lista.Add(aux);
                 }
 
                 return lista;
             }
-            finally
-            {
+            finally {
                 datos.cerrarConexion();
             }
         }
 
-        public Cliente buscar(int id)
-        {
+        public Cliente buscar(int id) {
             AccesoDatos datos = new AccesoDatos();
 
-            try
-            {
+            try {
                 datos.setConsulta(@"
                     SELECT
                         IdCliente,
@@ -76,57 +56,42 @@ namespace Negocio
                         Telefono,
                         Email
                     FROM Clientes
-                    WHERE IdCliente = @Id AND Activo = 1");
+                    WHERE IdCliente = @Id
+                    AND Activo = 1");
 
                 datos.setParametro("@Id", id);
 
                 datos.ejecutarLectura();
 
-                if (datos.Lector.Read())
-                {
+                if (datos.Lector.Read()) {
                     Cliente aux = new Cliente();
 
-                    aux.Id =
-                        (int)datos.Lector["IdCliente"];
-
-                    aux.Nombre =
-                        datos.Lector["Nombre"].ToString();
-
-                    aux.Apellido =
-                        datos.Lector["Apellido"].ToString();
-
-                    aux.Dni =
-                        datos.Lector["Dni"].ToString();
-
-                    aux.Telefono =
-                        datos.Lector["Telefono"].ToString();
-
-                    aux.Email =
-                        datos.Lector["Email"].ToString();
+                    aux.Id = (int)datos.Lector["IdCliente"];
+                    aux.Nombre = datos.Lector["Nombre"].ToString();
+                    aux.Apellido = datos.Lector["Apellido"].ToString();
+                    aux.Dni = datos.Lector["Dni"].ToString();
+                    aux.Telefono = datos.Lector["Telefono"].ToString();
+                    aux.Email = datos.Lector["Email"].ToString();
 
                     return aux;
                 }
 
                 return null;
             }
-            finally
-            {
+            finally {
                 datos.cerrarConexion();
             }
         }
 
-        public bool existeDni(
-            string dni,
-            int idActual)
-        {
+        public bool existeDniActivo(string dni, int idActual) {
             AccesoDatos datos = new AccesoDatos();
 
-            try
-            {
+            try {
                 datos.setConsulta(@"
                     SELECT IdCliente
                     FROM Clientes
                     WHERE Dni = @Dni
+                    AND Activo = 1
                     AND IdCliente <> @Id");
 
                 datos.setParametro("@Dni", dni);
@@ -136,20 +101,36 @@ namespace Negocio
 
                 return datos.Lector.Read();
             }
-            finally
-            {
+            finally {
                 datos.cerrarConexion();
             }
         }
 
-        public bool existeEmail(
-            string email,
-            int idActual)
-        {
+        public bool existeDniInactivo(string dni) {
             AccesoDatos datos = new AccesoDatos();
 
-            try
-            {
+            try {
+                datos.setConsulta(@"
+                    SELECT IdCliente
+                    FROM Clientes
+                    WHERE Dni = @Dni
+                    AND Activo = 0");
+
+                datos.setParametro("@Dni", dni);
+
+                datos.ejecutarLectura();
+
+                return datos.Lector.Read();
+            }
+            finally {
+                datos.cerrarConexion();
+            }
+        }
+
+        public bool existeEmail(string email, int idActual) {
+            AccesoDatos datos = new AccesoDatos();
+
+            try {
                 datos.setConsulta(@"
                     SELECT IdCliente
                     FROM Clientes
@@ -163,20 +144,15 @@ namespace Negocio
 
                 return datos.Lector.Read();
             }
-            finally
-            {
+            finally {
                 datos.cerrarConexion();
             }
         }
 
-        public void agregar(
-            Cliente nuevo)
-        {
-            AccesoDatos datos =
-                new AccesoDatos();
+        public void agregar(Cliente nuevo) {
+            AccesoDatos datos = new AccesoDatos();
 
-            try
-            {
+            try {
                 datos.setConsulta(@"
                     INSERT INTO Clientes
                     (
@@ -184,7 +160,8 @@ namespace Negocio
                         Apellido,
                         Dni,
                         Telefono,
-                        Email
+                        Email,
+                        Activo
                     )
                     VALUES
                     (
@@ -192,45 +169,27 @@ namespace Negocio
                         @Apellido,
                         @Dni,
                         @Telefono,
-                        @Email
+                        @Email,
+                        1
                     )");
 
-                datos.setParametro(
-                    "@Nombre",
-                    nuevo.Nombre);
-
-                datos.setParametro(
-                    "@Apellido",
-                    nuevo.Apellido);
-
-                datos.setParametro(
-                    "@Dni",
-                    nuevo.Dni);
-
-                datos.setParametro(
-                    "@Telefono",
-                    nuevo.Telefono);
-
-                datos.setParametro(
-                    "@Email",
-                    nuevo.Email);
+                datos.setParametro("@Nombre", nuevo.Nombre);
+                datos.setParametro("@Apellido", nuevo.Apellido);
+                datos.setParametro("@Dni", nuevo.Dni);
+                datos.setParametro("@Telefono", nuevo.Telefono);
+                datos.setParametro("@Email", nuevo.Email);
 
                 datos.ejecutarAccion();
             }
-            finally
-            {
+            finally {
                 datos.cerrarConexion();
             }
         }
 
-        public void modificar(
-            Cliente cliente)
-        {
-            AccesoDatos datos =
-                new AccesoDatos();
+        public void modificar(Cliente cliente) {
+            AccesoDatos datos = new AccesoDatos();
 
-            try
-            {
+            try {
                 datos.setConsulta(@"
                     UPDATE Clientes
                     SET
@@ -241,57 +200,34 @@ namespace Negocio
                         Email = @Email
                     WHERE IdCliente = @Id");
 
-                datos.setParametro(
-                    "@Nombre",
-                    cliente.Nombre);
-
-                datos.setParametro(
-                    "@Apellido",
-                    cliente.Apellido);
-
-                datos.setParametro(
-                    "@Dni",
-                    cliente.Dni);
-
-                datos.setParametro(
-                    "@Telefono",
-                    cliente.Telefono);
-
-                datos.setParametro(
-                    "@Email",
-                    cliente.Email);
-
-                datos.setParametro(
-                    "@Id",
-                    cliente.Id);
+                datos.setParametro("@Nombre", cliente.Nombre);
+                datos.setParametro("@Apellido", cliente.Apellido);
+                datos.setParametro("@Dni", cliente.Dni);
+                datos.setParametro("@Telefono", cliente.Telefono);
+                datos.setParametro("@Email", cliente.Email);
+                datos.setParametro("@Id", cliente.Id);
 
                 datos.ejecutarAccion();
             }
-            finally
-            {
+            finally {
                 datos.cerrarConexion();
             }
         }
 
-        public void eliminar(
-            int id)
-        {
-            AccesoDatos datos =
-                new AccesoDatos();
+        public void eliminar(int id) {
+            AccesoDatos datos = new AccesoDatos();
 
-            try
-            {
+            try {
                 datos.setConsulta(
-                    "UPDATE Clientes SET Activo = 0 WHERE IdCliente = @Id");
+                    @"UPDATE Clientes
+                      SET Activo = 0
+                      WHERE IdCliente = @Id");
 
-                datos.setParametro(
-                    "@Id",
-                    id);
+                datos.setParametro("@Id", id);
 
                 datos.ejecutarAccion();
             }
-            finally
-            {
+            finally {
                 datos.cerrarConexion();
             }
         }

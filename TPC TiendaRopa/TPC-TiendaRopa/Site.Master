@@ -25,32 +25,36 @@
 
 <body>
 
-    <form runat="server">
+<form runat="server">
 
-        <asp:ScriptManager runat="server">
-            <Scripts>
-                <asp:ScriptReference Name="MsAjaxBundle" />
-                <asp:ScriptReference Name="jquery" />
-                <asp:ScriptReference Name="WebFormsBundle" />
-            </Scripts>
-        </asp:ScriptManager>
+    <asp:ScriptManager runat="server">
+        <Scripts>
+            <asp:ScriptReference Name="MsAjaxBundle" />
+            <asp:ScriptReference Name="jquery" />
+            <asp:ScriptReference Name="WebFormsBundle" />
+        </Scripts>
+    </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 
-            <div class="container">
+        <div class="container">
 
-                <a class="navbar-brand"
-                   runat="server"
-                   href="~/">
-                    Tienda de Ropa
-                </a>
+            <a class="navbar-brand"
+               runat="server"
+               href="~/Marcas.aspx">
+                Tienda de Ropa
+            </a>
+
+            <asp:Panel
+                ID="menuPrincipal"
+                runat="server">
 
                 <ul class="navbar-nav">
 
                     <li class="nav-item">
                         <a class="nav-link"
                            runat="server"
-                           href="~/Clientes">
+                           href="~/Clientes.aspx">
                             Clientes
                         </a>
                     </li>
@@ -58,7 +62,7 @@
                     <li class="nav-item">
                         <a class="nav-link"
                            runat="server"
-                           href="~/Marcas">
+                           href="~/Marcas.aspx">
                             Marcas
                         </a>
                     </li>
@@ -66,7 +70,7 @@
                     <li class="nav-item">
                         <a class="nav-link"
                            runat="server"
-                           href="~/Productos">
+                           href="~/Productos.aspx">
                             Productos
                         </a>
                     </li>
@@ -74,7 +78,7 @@
                     <li class="nav-item">
                         <a class="nav-link"
                            runat="server"
-                           href="~/Proveedores">
+                           href="~/Proveedores.aspx">
                             Proveedores
                         </a>
                     </li>
@@ -82,7 +86,7 @@
                     <li class="nav-item">
                         <a class="nav-link"
                            runat="server"
-                           href="~/Tipos">
+                           href="~/Tipos.aspx">
                             Tipos
                         </a>
                     </li>
@@ -90,7 +94,7 @@
                     <li class="nav-item">
                         <a class="nav-link"
                            runat="server"
-                           href="~/Compras">
+                           href="~/Compras.aspx">
                             Compras
                         </a>
                     </li>
@@ -98,7 +102,7 @@
                     <li class="nav-item">
                         <a class="nav-link"
                            runat="server"
-                           href="~/Ventas">
+                           href="~/Ventas.aspx">
                             Ventas
                         </a>
                     </li>
@@ -106,55 +110,57 @@
                     <li class="nav-item">
                         <a class="nav-link"
                            runat="server"
-                           href="~/Factura">
+                           href="~/Factura.aspx">
                             Factura
                         </a>
                     </li>
 
                 </ul>
 
-                <div class="ms-auto">
+            </asp:Panel>
 
-                    <asp:Label
-                        ID="lblUsuario"
-                        runat="server"
-                        CssClass="text-light me-3"
-                        Visible="false">
-                    </asp:Label>
-
-                    <asp:Button
-                        ID="btnCerrarSesion"
-                        runat="server"
-                        Text="Cerrar sesión"
-                        CssClass="btn btn-outline-light btn-sm"
-                        Visible="false"
-                        OnClick="btnCerrarSesion_Click" />
-
-                </div>
-
-            </div>
-
-        </nav>
-
-        <div class="container mt-4">
-
-            <asp:ContentPlaceHolder
-                ID="MainContent"
+            <asp:Panel
+                ID="panelUsuario"
                 runat="server">
-            </asp:ContentPlaceHolder>
 
-            <hr />
+                <asp:Label
+                    ID="lblUsuario"
+                    runat="server"
+                    CssClass="text-light me-3">
+                </asp:Label>
 
-            <footer>
-                <p>
-                    &copy; <%: DateTime.Now.Year %>
-                    - Tienda de Ropa
-                </p>
-            </footer>
+                <asp:Button
+                    ID="btnCerrarSesion"
+                    runat="server"
+                    Text="Cerrar sesión"
+                    CssClass="btn btn-outline-light btn-sm"
+                    OnClick="btnCerrarSesion_Click" />
+
+            </asp:Panel>
 
         </div>
 
-    </form>
+    </nav>
+
+    <div class="container mt-4">
+
+        <asp:ContentPlaceHolder
+            ID="MainContent"
+            runat="server">
+        </asp:ContentPlaceHolder>
+
+        <hr />
+
+        <footer>
+            <p>
+                &copy; <%: DateTime.Now.Year %>
+                - Tienda de Ropa
+            </p>
+        </footer>
+
+    </div>
+
+</form>
 
 </body>
 </html>

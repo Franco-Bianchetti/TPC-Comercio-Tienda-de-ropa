@@ -7,12 +7,10 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace TPC_TiendaRopa
-{
+namespace TPC_TiendaRopa {
 
 
-    public partial class FormularioMarca
-    {
+    public partial class FormularioMarca {
 
         /// <summary>
         /// Control lblTitulo.
@@ -22,6 +20,15 @@ namespace TPC_TiendaRopa
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTitulo;
+
+        /// <summary>
+        /// Control pnlFormulario.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlFormulario;
 
         /// <summary>
         /// Control lblNombre.
@@ -58,5 +65,14 @@ namespace TPC_TiendaRopa
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnGuardar;
+
+        /// <summary>
+        /// Control hlCancelar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlCancelar;
     }
 }

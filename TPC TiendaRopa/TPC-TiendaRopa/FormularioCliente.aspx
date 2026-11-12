@@ -1,4 +1,6 @@
-﻿<%@ Page Title="Cliente" Language="C#" MasterPageFile="~/Site.Master"
+﻿<%@ Page Title="Cliente"
+    Language="C#"
+    MasterPageFile="~/Site.Master"
     AutoEventWireup="true"
     CodeBehind="FormularioCliente.aspx.cs"
     Inherits="TPC_TiendaRopa.FormularioCliente" %>
@@ -13,16 +15,6 @@
             runat="server"
             Text="Nuevo cliente" />
     </h2>
-
-    <div class="mb-3">
-
-        <asp:Label
-            ID="lblError"
-            runat="server"
-            CssClass="text-danger"
-            Visible="false" />
-
-    </div>
 
     <div class="row">
 
@@ -71,6 +63,16 @@
                     ID="txtEmail"
                     runat="server"
                     CssClass="form-control" />
+            </div>
+
+            <div class="mb-3">
+
+                <asp:Label
+                    ID="lblError"
+                    runat="server"
+                    CssClass="text-danger"
+                    Visible="false" />
+
             </div>
 
             <asp:Button

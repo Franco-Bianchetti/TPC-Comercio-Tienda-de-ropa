@@ -26,8 +26,7 @@ namespace TPC_TiendaRopa {
             Session.Abandon();
 
             Response.Redirect(
-                "Login.aspx",
-                false);
+                "Login.aspx");
         }
     }
 }

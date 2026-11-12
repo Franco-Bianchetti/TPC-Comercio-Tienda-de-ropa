@@ -1,4 +1,6 @@
-﻿<%@ Page Title="Marcas" Language="C#" MasterPageFile="~/Site.Master"
+﻿<%@ Page Title="Marcas"
+    Language="C#"
+    MasterPageFile="~/Site.Master"
     AutoEventWireup="true"
     CodeBehind="Marcas.aspx.cs"
     Inherits="TPC_TiendaRopa.Marcas" %>
@@ -53,7 +55,8 @@
 
     <br />
 
-    <asp:Button ID="btnNuevo"
+    <asp:Button
+        ID="btnNuevo"
         runat="server"
         Text="Nuevo"
         CssClass="btn btn-primary"
