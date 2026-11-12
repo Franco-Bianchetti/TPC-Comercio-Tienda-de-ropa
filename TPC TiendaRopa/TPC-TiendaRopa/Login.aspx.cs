@@ -7,7 +7,9 @@ namespace TPC_TiendaRopa {
         protected void Page_Load(
             object sender,
             EventArgs e) {
-
+            if (!IsPostBack) {
+                Session.Clear();
+            }
         }
 
         protected void btnIngresar_Click(
@@ -25,7 +27,6 @@ namespace TPC_TiendaRopa {
                     "Debe completar usuario y contraseña.";
 
                 lblError.Visible = true;
-
                 return;
             }
 
@@ -42,7 +43,6 @@ namespace TPC_TiendaRopa {
                     "Usuario o contraseña incorrectos.";
 
                 lblError.Visible = true;
-
                 return;
             }
 

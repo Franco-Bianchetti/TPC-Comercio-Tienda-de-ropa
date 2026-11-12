@@ -52,6 +52,12 @@ CREATE TABLE Usuarios
 (
     IdUsuario INT IDENTITY(1,1) PRIMARY KEY,
 
+    Nombre VARCHAR(100) NOT NULL,
+
+    Apellido VARCHAR(100) NOT NULL,
+
+    Dni VARCHAR(20) NOT NULL UNIQUE,
+
     Usuario VARCHAR(50) NOT NULL UNIQUE,
 
     PasswordHash VARCHAR(255) NOT NULL,
@@ -289,21 +295,39 @@ VALUES
 
 INSERT INTO Usuarios
 (
+    Nombre,
+    Apellido,
+    Dni,
     Usuario,
     PasswordHash,
     IdRol
 )
 VALUES
 (
-    'admin',
-    'admin123',
+    'JUAN',
+    'PEREZ',
+    '30000001',
+    'jperez',
+    'jperez123',
     1
 ),
 (
-    'vendedor',
-    'vendedor123',
+    'ANA',
+    'GOMEZ',
+    '30000002',
+    'agomez',
+    'agomez123',
+    2
+),
+(
+    'LUCAS',
+    'RUIZ',
+    '30000003',
+    'lruiz',
+    'lruiz123',
     2
 );
+GO
 
 INSERT INTO Marcas (Nombre)
 VALUES

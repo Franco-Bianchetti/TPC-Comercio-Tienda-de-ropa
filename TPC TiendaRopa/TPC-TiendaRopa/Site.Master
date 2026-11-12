@@ -41,7 +41,7 @@
 
             <a class="navbar-brand"
                runat="server"
-               href="~/Marcas.aspx">
+               href="~/Clientes.aspx">
                 Tienda de Ropa
             </a>
 
@@ -88,6 +88,14 @@
                            runat="server"
                            href="~/Tipos.aspx">
                             Tipos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           runat="server"
+                           href="~/Usuarios.aspx">
+                            Usuarios
                         </a>
                     </li>
 

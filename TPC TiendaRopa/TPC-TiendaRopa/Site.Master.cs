@@ -6,16 +6,25 @@ namespace TPC_TiendaRopa {
         protected void Page_Load(
             object sender,
             EventArgs e) {
+            string paginaActual =
+                Request.AppRelativeCurrentExecutionFilePath;
+
+            if (paginaActual.Contains("Login")) {
+                menuPrincipal.Visible = false;
+                panelUsuario.Visible = false;
+                return;
+            }
+
+            menuPrincipal.Visible = true;
+
             if (Session["Usuario"] != null) {
+                panelUsuario.Visible = true;
+
                 lblUsuario.Text =
                     "Bienvenido: " +
                     Session["Usuario"].ToString();
-
-                lblUsuario.Visible = true;
-                btnCerrarSesion.Visible = true;
             } else {
-                lblUsuario.Visible = false;
-                btnCerrarSesion.Visible = false;
+                panelUsuario.Visible = false;
             }
         }
 
@@ -26,7 +35,8 @@ namespace TPC_TiendaRopa {
             Session.Abandon();
 
             Response.Redirect(
-                "Login.aspx");
+                "Login.aspx",
+                false);
         }
     }
 }
