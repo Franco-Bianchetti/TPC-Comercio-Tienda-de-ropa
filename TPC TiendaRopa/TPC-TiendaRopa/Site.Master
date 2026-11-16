@@ -41,7 +41,7 @@
 
             <a class="navbar-brand"
                runat="server"
-               href="~/Clientes.aspx">
+               href="~/Default.aspx">
                 Tienda de Ropa
             </a>
 

@@ -3,6 +3,21 @@
 namespace TPC_TiendaRopa {
     public partial class SiteMaster :
         System.Web.UI.MasterPage {
+        protected void Page_Init(
+        object sender,
+        EventArgs e)
+            {
+              string paginaActual =
+                 Request.AppRelativeCurrentExecutionFilePath;
+
+            if (!paginaActual.Contains("Login") &&
+                Session["Usuario"] == null)
+            {
+                Response.Redirect(
+                    "~/Login.aspx",
+                    true);
+            }
+        }
         protected void Page_Load(
             object sender,
             EventArgs e) {

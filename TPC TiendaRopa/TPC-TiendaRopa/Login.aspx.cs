@@ -53,7 +53,7 @@ namespace TPC_TiendaRopa {
                 usuarioLogueado.Perfil;
 
             Response.Redirect(
-                "Clientes.aspx",
+                "Default.aspx",
                 false);
         }
     }
