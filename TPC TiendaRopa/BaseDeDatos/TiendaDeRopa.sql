@@ -81,12 +81,15 @@ CREATE TABLE Clientes
     IdCliente INT IDENTITY(1,1) PRIMARY KEY,
 
     Nombre VARCHAR(100) NOT NULL,
+
     Apellido VARCHAR(100) NOT NULL,
 
     Dni VARCHAR(20) NOT NULL UNIQUE,
 
     Telefono VARCHAR(30),
-    Email VARCHAR(100),
+
+    Email VARCHAR(100) UNIQUE,
+
     Activo BIT NOT NULL DEFAULT 1
 );
 GO
@@ -104,7 +107,9 @@ CREATE TABLE Proveedores
     Cuit VARCHAR(20) UNIQUE,
 
     Telefono VARCHAR(30),
-    Email VARCHAR(100),
+
+    Email VARCHAR(100) UNIQUE,
+
     Activo BIT NOT NULL DEFAULT 1
 );
 GO
@@ -137,6 +142,15 @@ CREATE TABLE Productos
 
     Activo BIT NOT NULL DEFAULT 1,
 
+    CONSTRAINT CK_Productos_StockActual
+        CHECK (StockActual >= 0),
+
+    CONSTRAINT CK_Productos_StockMinimo
+        CHECK (StockMinimo >= 0),
+
+    CONSTRAINT CK_Productos_Ganancia
+        CHECK (PorcentajeGanancia > 0),
+
     CONSTRAINT FK_Productos_Marcas
         FOREIGN KEY(IdMarca)
         REFERENCES Marcas(IdMarca),
@@ -148,7 +162,7 @@ CREATE TABLE Productos
 GO
 
 /*======================================================
-    PRODUCTO - PROVEEDOR
+    PRODUCTO PROVEEDOR
 ======================================================*/
 
 CREATE TABLE ProductoProveedor
@@ -169,7 +183,7 @@ CREATE TABLE ProductoProveedor
 GO
 
 /*======================================================
-    INGRESOS DE STOCK
+    INGRESOS STOCK
 ======================================================*/
 
 CREATE TABLE IngresosStock
@@ -200,9 +214,15 @@ CREATE TABLE Compras
 
     FechaCompra DATETIME NOT NULL DEFAULT GETDATE(),
 
+    IdUsuario INT NOT NULL,
+
     IdProveedor INT NOT NULL,
 
     Total DECIMAL(18,2) NOT NULL DEFAULT 0,
+
+    CONSTRAINT FK_Compras_Usuarios
+        FOREIGN KEY(IdUsuario)
+        REFERENCES Usuarios(IdUsuario),
 
     CONSTRAINT FK_Compras_Proveedor
         FOREIGN KEY(IdProveedor)
@@ -215,11 +235,12 @@ CREATE TABLE DetalleCompras
     IdDetalleCompra INT IDENTITY(1,1) PRIMARY KEY,
 
     IdCompra INT NOT NULL,
+
     IdProducto INT NOT NULL,
 
-    Cantidad INT NOT NULL,
+    Cantidad INT NOT NULL CHECK(Cantidad > 0),
 
-    PrecioCompra DECIMAL(18,2) NOT NULL,
+    PrecioCompra DECIMAL(18,2) NOT NULL CHECK(PrecioCompra > 0),
 
     Subtotal DECIMAL(18,2) NOT NULL,
 
@@ -266,11 +287,12 @@ CREATE TABLE DetalleVentas
     IdDetalleVenta INT IDENTITY(1,1) PRIMARY KEY,
 
     IdVenta INT NOT NULL,
+
     IdProducto INT NOT NULL,
 
-    Cantidad INT NOT NULL,
+    Cantidad INT NOT NULL CHECK(Cantidad > 0),
 
-    PrecioUnitario DECIMAL(18,2) NOT NULL,
+    PrecioUnitario DECIMAL(18,2) NOT NULL CHECK(PrecioUnitario > 0),
 
     Subtotal DECIMAL(18,2) NOT NULL,
 
@@ -292,6 +314,7 @@ INSERT INTO Roles (Nombre)
 VALUES
 ('Administrador'),
 ('Vendedor');
+GO
 
 INSERT INTO Usuarios
 (
@@ -331,19 +354,21 @@ GO
 
 INSERT INTO Marcas (Nombre)
 VALUES
-('Nike'),
-('Adidas'),
-('Puma'),
-('Levis'),
-('Topper');
+('NIKE'),
+('ADIDAS'),
+('PUMA'),
+('LEVIS'),
+('TOPPER');
+GO
 
 INSERT INTO Tipos (Nombre)
 VALUES
-('Remeras'),
-('Pantalones'),
-('Buzos'),
-('Camperas'),
-('Shorts');
+('REMERAS'),
+('PANTALONES'),
+('BUZOS'),
+('CAMPERAS'),
+('SHORTS');
+GO
 
 INSERT INTO Clientes
 (
@@ -355,19 +380,20 @@ INSERT INTO Clientes
 )
 VALUES
 (
-    'Juan',
-    'Perez',
+    'JUAN',
+    'PEREZ',
     '30111222',
     '1144441111',
     'juan@gmail.com'
 ),
 (
-    'Maria',
-    'Gonzalez',
+    'MARIA',
+    'GONZALEZ',
     '32999888',
     '1144442222',
     'maria@gmail.com'
 );
+GO
 
 INSERT INTO Proveedores
 (
@@ -378,17 +404,18 @@ INSERT INTO Proveedores
 )
 VALUES
 (
-    'Textil Argentina SRL',
+    'TEXTIL ARGENTINA SRL',
     '30123456789',
     '1145551111',
     'ventas@textilargentina.com'
 ),
 (
-    'Indumentaria Centro SA',
+    'INDUMENTARIA CENTRO SA',
     '30987654321',
     '1145552222',
     'contacto@indumentariacentro.com'
 );
+GO
 
 INSERT INTO Productos
 (
@@ -405,9 +432,9 @@ INSERT INTO Productos
 VALUES
 (
     'REM001',
-    'Remera Deportiva Nike',
+    'REMERA DEPORTIVA NIKE',
     'L',
-    'Negro',
+    'NEGRO',
     1,
     1,
     20,
@@ -416,9 +443,9 @@ VALUES
 ),
 (
     'PAN001',
-    'Pantalon Adidas',
+    'PANTALON ADIDAS',
     '42',
-    'Gris',
+    'GRIS',
     2,
     2,
     15,
@@ -427,9 +454,9 @@ VALUES
 ),
 (
     'BUZ001',
-    'Buzo Puma',
+    'BUZO PUMA',
     'M',
-    'Azul',
+    'AZUL',
     3,
     3,
     10,
@@ -438,26 +465,24 @@ VALUES
 ),
 (
     'CAM001',
-    'Campera Levis',
+    'CAMPERA LEVIS',
     'XL',
-    'Negro',
+    'NEGRO',
     4,
     4,
     7,
     2,
     85
 );
+GO
 
 INSERT INTO ProductoProveedor
-(
-    IdProducto,
-    IdProveedor
-)
 VALUES
 (1,1),
 (2,1),
 (3,2),
 (4,2);
+GO
 
 INSERT INTO IngresosStock
 (
@@ -470,20 +495,8 @@ VALUES
 (2,15,18000),
 (3,10,22000),
 (4,7,35000);
-
-SELECT 'TIENDA_ROPA_DB creada correctamente' AS Resultado;
 GO
 
-/*======================================================
-    Usarlo para que no tire error
-======================================================*/
-
-/*
-
-USE TIENDA_ROPA_DB;
+SELECT 'TIENDA_ROPA_DB creada correctamente'
+AS Resultado;
 GO
-ALTER TABLE Clientes ADD Activo BIT NOT NULL CONSTRAINT DF_Clientes_Activo DEFAULT 1;
-ALTER TABLE Proveedores ADD Activo BIT NOT NULL CONSTRAINT DF_Proveedores_Activo DEFAULT 1;
-GO
-
-*/
