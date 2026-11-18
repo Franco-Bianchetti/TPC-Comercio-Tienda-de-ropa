@@ -1,6 +1,8 @@
 ﻿using Negocio;
 using System;
 using System.Web.UI.WebControls;
+using System.Collections.Generic;
+using Dominio;
 
 namespace TPC_TiendaRopa
 {
@@ -16,13 +18,53 @@ namespace TPC_TiendaRopa
 
         private void cargarGrilla()
         {
-                ProveedorNegocio negocio =
-                    new ProveedorNegocio();
+            ProveedorNegocio negocio = new ProveedorNegocio();
+            List<Proveedor> lista = negocio.listar();
 
-                gvProveedores.DataSource =
-                    negocio.listar();
+            string texto = txtBuscar.Text.Trim();
 
-                gvProveedores.DataBind();
+            lblResultado.Visible = false;
+
+            if (texto != "")
+            {
+                lista = lista.FindAll(x => contiene(x.RazonSocial, texto));
+
+                lblResultado.Visible = true;
+
+                if (lista.Count == 0)
+                {
+                    lblResultado.CssClass = "d-block mb-3 text-danger";
+                    lblResultado.Text = "No se encontraron resultados para \"" +
+                        Server.HtmlEncode(texto) + "\".";
+                }
+                else
+                {
+                    lblResultado.CssClass = "d-block mb-3 text-success";
+                    lblResultado.Text = (lista.Count == 1)
+                        ? "Se encontró 1 resultado."
+                        : "Se encontraron " + lista.Count + " resultados.";
+                }
+            }
+
+            gvProveedores.DataSource = lista;
+            gvProveedores.DataBind();
+        }
+
+        private bool contiene(string campo, string texto)
+        {
+            return campo != null &&
+                   campo.IndexOf(texto, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        protected void btnBuscar_Click(object sender, EventArgs e)
+        {
+            cargarGrilla();
+        }
+
+        protected void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            txtBuscar.Text = "";
+            cargarGrilla();
         }
         protected void btnNuevo_Click(object sender, EventArgs e)
         {

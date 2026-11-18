@@ -11,6 +11,18 @@
 
     <h2>Marcas</h2>
 
+        <asp:Panel runat="server" DefaultButton="btnBuscar">
+        <div class="row g-2 mb-3" style="max-width: 600px;">
+            <div class="col">
+                <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Buscar..." />
+            </div>
+            <div class="col-auto">
+                <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-secondary" OnClick="btnBuscar_Click" />
+                <asp:Button ID="btnLimpiar" runat="server" Text="Limpiar" CssClass="btn btn-outline-secondary" OnClick="btnLimpiar_Click" />
+            </div>
+        </div>
+    </asp:Panel>
+    
     <asp:GridView ID="gvMarcas"
         runat="server"
         CssClass="table table-striped table-bordered"
@@ -52,6 +64,8 @@
         </Columns>
 
     </asp:GridView>
+
+        <asp:Label ID="lblResultado" runat="server" CssClass="d-block mb-3" Visible="false" />
 
     <br />
 
