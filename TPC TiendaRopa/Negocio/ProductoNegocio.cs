@@ -7,7 +7,7 @@ namespace Negocio
     public class ProductoNegocio
     {
         private const string SELECT_PRODUCTO = @"
-    SELECT
+           SELECT
         P.IdProducto,
         P.Codigo,
         P.Nombre,
@@ -25,18 +25,30 @@ namespace Negocio
         T.Nombre AS Tipo,
 
         PR.IdProveedor,
-        PR.RazonSocial AS Proveedor
+        PR.RazonSocial AS Proveedor,
 
-    FROM Productos P
+        ISNULL(UI.PrecioCompra, 0) AS PrecioCompra
 
-    INNER JOIN Marcas M
-        ON P.IdMarca = M.IdMarca
+            FROM Productos P
 
-    INNER JOIN Tipos T
-        ON P.IdTipo = T.IdTipo
+            INNER JOIN Marcas M
+                ON P.IdMarca = M.IdMarca
 
-    INNER JOIN Proveedores PR
-        ON P.IdProveedor = PR.IdProveedor ";
+            INNER JOIN Tipos T
+                ON P.IdTipo = T.IdTipo
+
+            INNER JOIN Proveedores PR
+                ON P.IdProveedor = PR.IdProveedor
+
+            OUTER APPLY
+            (
+                SELECT TOP 1
+                    PrecioCompra
+                FROM IngresosStock
+                WHERE IdProducto = P.IdProducto
+                ORDER BY Fecha DESC, IdIngreso DESC
+                       ) UI
+                ";
 
         private Producto leerProducto(AccesoDatos datos)
         {
@@ -60,13 +72,26 @@ namespace Negocio
             aux.Tipo.Id = (int)datos.Lector["IdTipo"];
             aux.Tipo.Nombre = datos.Lector["Tipo"].ToString();
 
-            aux.Proveedores.Add(   new Proveedor
-    {        Id = (int)datos.Lector["IdProveedor"],
-        RazonSocial = datos.Lector["Proveedor"].ToString()
-    });
+            aux.Proveedores.Add(   new Proveedor{   
+                Id = (int)datos.Lector["IdProveedor"],
+                RazonSocial = datos.Lector["Proveedor"].ToString()
+                 });
+            decimal precioCompra =   (decimal)datos.Lector["PrecioCompra"];
 
+            if (precioCompra > 0)
+            {
+                aux.IngresosStock.Add(new IngresoStock
+                    {
+                        Fecha = DateTime.Now,
+                        Cantidad = 0,
+                        PrecioCompra = precioCompra
+                    });
+            }
             return aux;
         }
+
+
+      
 
         public List<Producto> listar(bool incluirInactivos = false)
         {
@@ -87,7 +112,12 @@ namespace Negocio
 
                 while (datos.Lector.Read())
                 {
-                    lista.Add(leerProducto(datos));
+                    Producto producto =
+                        leerProducto(datos);
+
+                    
+
+                    lista.Add(producto);
                 }
 
                 return lista;
@@ -115,6 +145,7 @@ namespace Negocio
                 {
                     aux = leerProducto(datos);
                 }
+
             }
             finally
             {
@@ -151,6 +182,39 @@ namespace Negocio
                     aux.Id = (int)datos.Lector["IdProveedor"];
                     aux.RazonSocial = datos.Lector["RazonSocial"].ToString();
                     lista.Add(aux);
+                }
+
+                return lista;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        public List<Producto> listarPorProveedor( int idProveedor)
+        {
+            List<Producto> lista = new List<Producto>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(
+                    SELECT_PRODUCTO +
+                    "WHERE P.Activo = 1 " +
+                    "AND P.IdProveedor = @IdProveedor " +
+                    " ORDER BY P.Nombre");
+
+                datos.setParametro(
+                    "@IdProveedor",
+                    idProveedor);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Producto producto = leerProducto(datos);
+
+                    lista.Add(producto);
                 }
 
                 return lista;

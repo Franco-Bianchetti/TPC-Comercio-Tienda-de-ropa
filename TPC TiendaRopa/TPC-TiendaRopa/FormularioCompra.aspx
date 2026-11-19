@@ -38,7 +38,9 @@
                 <asp:DropDownList
                     ID="ddlProveedor"
                     runat="server"
-                    CssClass="form-select">
+                    CssClass="form-select"
+                    AutoPostBack="true"
+                    OnSelectedIndexChanged="ddlProveedor_SelectedIndexChanged">
                 </asp:DropDownList>
 
             </div>

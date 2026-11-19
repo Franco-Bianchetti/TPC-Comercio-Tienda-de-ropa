@@ -17,7 +17,7 @@ namespace TPC_TiendaRopa
             if (!IsPostBack)
             {
                 cargarProveedores();
-                cargarProductos();
+                
 
                 Session["DetalleCompra"] =
                     new List<DetalleCompra>();
@@ -52,16 +52,17 @@ namespace TPC_TiendaRopa
                     "0"));
         }
 
-        private void cargarProductos()
+        private void cargarProductos( int idProveedor)
         {
             ProductoNegocio negocio =
                 new ProductoNegocio();
 
             ddlProducto.DataSource =
-                negocio.listar();
+                negocio.listarPorProveedor(
+                    idProveedor);
 
             ddlProducto.DataTextField =
-                "Nombre";
+                "DescripcionCompra";
 
             ddlProducto.DataValueField =
                 "Id";
@@ -374,6 +375,18 @@ namespace TPC_TiendaRopa
 
             mostrarError(
                 "Compra registrada correctamente.");
+        }
+        protected void ddlProveedor_SelectedIndexChanged(object sender,
+                 EventArgs e)
+        {
+            ddlProducto.Items.Clear();
+
+            if (ddlProveedor.SelectedValue == "0")
+                return;
+
+            cargarProductos(
+                int.Parse(
+                    ddlProveedor.SelectedValue));
         }
 
         private void limpiarFormulario()

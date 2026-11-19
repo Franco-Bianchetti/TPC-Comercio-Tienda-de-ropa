@@ -34,18 +34,34 @@ namespace Dominio
         public List<IngresoStock> IngresosStock { get; set; }
             = new List<IngresoStock>();
 
+   
+
         public bool TieneStockBajo()
         {
-            return StockActual <= StockMinimo;
+            return StockActual > 0 && StockActual < StockMinimo;
+        }
+
+        public bool SinStock
+        {
+            get { return StockActual <= 0; }
+        }
+
+        public bool StockBajo
+        {
+            get { return StockActual > 0 && StockActual < StockMinimo; }
         }
 
         public string EstadoStock
         {
             get
             {
-                return TieneStockBajo()
-                    ? "⚠ Stock bajo, realizar compra"
-                    : "✅ Disponible";
+                if (SinStock)
+                    return "🔴 Sin stock";
+
+                if (StockBajo)
+                    return "🟡 Stock bajo";
+
+                return "🟢 Disponible";
             }
         }
 
@@ -101,5 +117,17 @@ namespace Dominio
                     : "-";
             }
         }
+
+        public string DescripcionCompra
+        {
+            get
+            {
+                return Codigo + " | " +
+                       Nombre + " | " +
+                       Talle + " | " +
+                       Color;
+            }
+        }
+
     }
 }

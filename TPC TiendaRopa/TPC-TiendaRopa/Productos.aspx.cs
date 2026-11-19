@@ -136,13 +136,7 @@ namespace TPC_TiendaRopa
 
                 return;
             }
-
-            if (producto.StockActual <=
-                producto.StockMinimo)
-            {
-                e.Row.CssClass =
-                    "table-danger";
-            }
+            
         }
 
         protected void gvProductos_RowCommand(
