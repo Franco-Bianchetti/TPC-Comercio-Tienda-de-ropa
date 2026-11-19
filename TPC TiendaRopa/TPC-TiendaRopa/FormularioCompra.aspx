@@ -176,16 +176,28 @@
 
     </div>
 
-    <asp:Button
-        ID="btnConfirmar"
-        runat="server"
-        Text="Confirmar compra"
-        CssClass="btn btn-primary"
-        OnClick="btnConfirmar_Click" />
+    <div class="mt-3">
 
-    <a href="Compras.aspx"
-       class="btn btn-secondary">
-        Volver
-    </a>
+        <asp:Button
+            ID="btnConfirmar"
+            runat="server"
+            Text="Confirmar compra"
+            CssClass="btn btn-primary"
+            OnClick="btnConfirmar_Click" />
 
-</asp:Content><%--  --%>
+        <asp:Button
+            ID="btnVaciarCompra"
+            runat="server"
+            Text="Vaciar compra"
+            CssClass="btn btn-danger"
+            OnClick="btnVaciarCompra_Click"
+            OnClientClick="return confirm('¿Desea eliminar todos los productos cargados?');" />
+
+        <a href="Compras.aspx"
+           class="btn btn-secondary">
+            Volver
+        </a>
+
+    </div>
+
+</asp:Content>

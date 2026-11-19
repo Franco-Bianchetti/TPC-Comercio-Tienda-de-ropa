@@ -7,10 +7,12 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace TPC_TiendaRopa {
+namespace TPC_TiendaRopa
+{
 
 
-    public partial class FormularioCompra {
+    public partial class FormularioCompra
+    {
 
         /// <summary>
         /// Control lblTitulo.
@@ -119,5 +121,14 @@ namespace TPC_TiendaRopa {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnConfirmar;
+
+        /// <summary>
+        /// Control btnVaciarCompra.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnVaciarCompra;
     }
 }

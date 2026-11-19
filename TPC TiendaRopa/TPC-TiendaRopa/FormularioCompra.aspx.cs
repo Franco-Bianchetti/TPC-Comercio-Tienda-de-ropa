@@ -6,12 +6,16 @@ using System.Web.UI.WebControls;
 using Dominio;
 using Negocio;
 
-namespace TPC_TiendaRopa {
-    public partial class FormularioCompra : System.Web.UI.Page {
+namespace TPC_TiendaRopa
+{
+    public partial class FormularioCompra : System.Web.UI.Page
+    {
         protected void Page_Load(
             object sender,
-            EventArgs e) {
-            if (!IsPostBack) {
+            EventArgs e)
+        {
+            if (!IsPostBack)
+            {
                 cargarProveedores();
                 cargarProductos();
 
@@ -25,7 +29,8 @@ namespace TPC_TiendaRopa {
             }
         }
 
-        private void cargarProveedores() {
+        private void cargarProveedores()
+        {
             ProveedorNegocio negocio =
                 new ProveedorNegocio();
 
@@ -47,7 +52,8 @@ namespace TPC_TiendaRopa {
                     "0"));
         }
 
-        private void cargarProductos() {
+        private void cargarProductos()
+        {
             ProductoNegocio negocio =
                 new ProductoNegocio();
 
@@ -71,16 +77,19 @@ namespace TPC_TiendaRopa {
 
         protected void btnAgregar_Click(
             object sender,
-            EventArgs e) {
+            EventArgs e)
+        {
             lblError.Visible = false;
 
-            if (ddlProveedor.SelectedValue == "0") {
+            if (ddlProveedor.SelectedValue == "0")
+            {
                 mostrarError(
                     "Debe seleccionar un proveedor.");
                 return;
             }
 
-            if (ddlProducto.SelectedValue == "0") {
+            if (ddlProducto.SelectedValue == "0")
+            {
                 mostrarError(
                     "Debe seleccionar un producto.");
                 return;
@@ -90,19 +99,22 @@ namespace TPC_TiendaRopa {
 
             if (!int.TryParse(
                     txtCantidad.Text.Trim(),
-                    out cantidad)) {
+                    out cantidad))
+            {
                 mostrarError(
                     "La cantidad debe ser numérica.");
                 return;
             }
 
-            if (cantidad <= 0) {
+            if (cantidad <= 0)
+            {
                 mostrarError(
                     "La cantidad debe ser mayor a cero.");
                 return;
             }
 
-            if (cantidad > 10000) {
+            if (cantidad > 10000)
+            {
                 mostrarError(
                     "La cantidad ingresada es demasiado grande.");
                 return;
@@ -119,13 +131,15 @@ namespace TPC_TiendaRopa {
                     textoPrecio,
                     NumberStyles.Number,
                     CultureInfo.InvariantCulture,
-                    out precio)) {
+                    out precio))
+            {
                 mostrarError(
                     "El precio debe ser válido.");
                 return;
             }
 
-            if (precio <= 0) {
+            if (precio <= 0)
+            {
                 mostrarError(
                     "El precio debe ser mayor a cero.");
                 return;
@@ -142,10 +156,12 @@ namespace TPC_TiendaRopa {
             object indiceEdicion =
                 Session["IndiceEdicion"];
 
-            if (indiceEdicion == null) {
+            if (indiceEdicion == null)
+            {
                 if (lista.Any(
                     x => x.Producto.Id ==
-                         idProducto)) {
+                         idProducto))
+                {
                     mostrarError(
                         "El producto ya se encuentra agregado a la compra.");
 
@@ -171,7 +187,8 @@ namespace TPC_TiendaRopa {
             detalle.PrecioCompra =
                 precio;
 
-            if (indiceEdicion != null) {
+            if (indiceEdicion != null)
+            {
                 lista[(int)indiceEdicion] =
                     detalle;
 
@@ -180,12 +197,17 @@ namespace TPC_TiendaRopa {
 
                 btnCancelarEdicion.Visible =
                     false;
-            } else {
+            }
+            else
+            {
                 lista.Add(detalle);
             }
 
             Session["DetalleCompra"] =
                 lista;
+
+            ddlProveedor.Enabled =
+                false;
 
             limpiarFormulario();
 
@@ -194,7 +216,8 @@ namespace TPC_TiendaRopa {
 
         protected void gvDetalle_RowCommand(
             object sender,
-            GridViewCommandEventArgs e) {
+            GridViewCommandEventArgs e)
+        {
             List<DetalleCompra> lista =
                 (List<DetalleCompra>)
                 Session["DetalleCompra"];
@@ -207,18 +230,26 @@ namespace TPC_TiendaRopa {
                 indice >= lista.Count)
                 return;
 
-            if (e.CommandName == "Eliminar") {
+            if (e.CommandName == "Eliminar")
+            {
                 lista.RemoveAt(indice);
 
                 Session["DetalleCompra"] =
                     lista;
+
+                if (lista.Count == 0)
+                {
+                    ddlProveedor.Enabled =
+                        true;
+                }
 
                 actualizarGrilla();
 
                 return;
             }
 
-            if (e.CommandName == "Editar") {
+            if (e.CommandName == "Editar")
+            {
                 DetalleCompra detalle =
                     lista[indice];
 
@@ -242,7 +273,8 @@ namespace TPC_TiendaRopa {
 
         protected void btnCancelarEdicion_Click(
             object sender,
-            EventArgs e) {
+            EventArgs e)
+        {
             Session["IndiceEdicion"] =
                 null;
 
@@ -252,14 +284,37 @@ namespace TPC_TiendaRopa {
             limpiarFormulario();
         }
 
+        protected void btnVaciarCompra_Click(
+            object sender,
+            EventArgs e)
+        {
+            Session["DetalleCompra"] =
+                new List<DetalleCompra>();
+
+            Session["IndiceEdicion"] =
+                null;
+
+            ddlProveedor.Enabled =
+                true;
+
+            btnCancelarEdicion.Visible =
+                false;
+
+            limpiarFormulario();
+
+            actualizarGrilla();
+        }
+
         protected void btnConfirmar_Click(
             object sender,
-            EventArgs e) {
+            EventArgs e)
+        {
             List<DetalleCompra> lista =
                 (List<DetalleCompra>)
                 Session["DetalleCompra"];
 
-            if (lista.Count == 0) {
+            if (lista.Count == 0)
+            {
                 mostrarError(
                     "Debe agregar al menos un producto.");
                 return;
@@ -283,24 +338,35 @@ namespace TPC_TiendaRopa {
                 int.Parse(
                     ddlProveedor.SelectedValue);
 
-            foreach (
-                DetalleCompra detalle  in lista) {
-                compra.Detalles.Add(detalle);
+            foreach (DetalleCompra detalle in lista)
+            {
+                compra.Detalles.Add(
+                    detalle);
             }
 
-            compra.Total = compra.CalcularTotal();
+            compra.Total =
+                compra.CalcularTotal();
 
-            CompraNegocio negocio = new CompraNegocio();
+            CompraNegocio negocio =
+                new CompraNegocio();
 
-            negocio.guardar(compra);
+            negocio.guardar(
+                compra);
 
-            Session["DetalleCompra"] =   new List<DetalleCompra>();
+            Session["DetalleCompra"] =
+                new List<DetalleCompra>();
 
-            Session["IndiceEdicion"] =  null;
+            Session["IndiceEdicion"] =
+                null;
 
-            btnCancelarEdicion.Visible =   false;
+            btnCancelarEdicion.Visible =
+                false;
 
-            ddlProveedor.SelectedIndex = 0;
+            ddlProveedor.Enabled =
+                true;
+
+            ddlProveedor.SelectedIndex =
+                0;
 
             limpiarFormulario();
 
@@ -310,7 +376,8 @@ namespace TPC_TiendaRopa {
                 "Compra registrada correctamente.");
         }
 
-        private void limpiarFormulario() {
+        private void limpiarFormulario()
+        {
             ddlProducto.SelectedIndex = 0;
 
             txtCantidad.Text = "";
@@ -318,7 +385,8 @@ namespace TPC_TiendaRopa {
             txtPrecioCompra.Text = "";
         }
 
-        private void actualizarGrilla() {
+        private void actualizarGrilla()
+        {
             List<DetalleCompra> lista =
                 (List<DetalleCompra>)
                 Session["DetalleCompra"];
@@ -336,11 +404,13 @@ namespace TPC_TiendaRopa {
         }
 
         private void mostrarError(
-            string mensaje) {
+            string mensaje)
+        {
             lblError.Text =
                 mensaje;
 
-            lblError.Visible = true;
+            lblError.Visible =
+                true;
         }
     }
 }
