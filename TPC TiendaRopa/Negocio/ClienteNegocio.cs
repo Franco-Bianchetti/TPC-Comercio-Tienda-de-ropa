@@ -4,24 +4,32 @@ using Dominio;
 
 namespace Negocio {
     public class ClienteNegocio {
-        public List<Cliente> listar() {
+        public List<Cliente> listar(bool incluirInactivas = false) 
+        {
             List<Cliente> lista = new List<Cliente>();
             AccesoDatos datos = new AccesoDatos();
 
             try {
-                datos.setConsulta(@"
+                string consulta = @"
                     SELECT
                         IdCliente,
                         Nombre,
                         Apellido,
                         Dni,
                         Telefono,
-                        Email
-                    FROM Clientes
-                    WHERE Activo = 1
-                    ORDER BY IdCliente");
+                        Email,
+                        Activo
+                    FROM Clientes ";
+
+                if (!incluirInactivas)
+                    consulta += " WHERE Activo = 1 ";
+
+                consulta += "ORDER BY IdCliente";
+
+                datos.setConsulta(consulta);
 
                 datos.ejecutarLectura();
+
 
                 while (datos.Lector.Read()) {
                     Cliente aux = new Cliente();
@@ -32,6 +40,7 @@ namespace Negocio {
                     aux.Dni = datos.Lector["Dni"].ToString();
                     aux.Telefono = datos.Lector["Telefono"].ToString();
                     aux.Email = datos.Lector["Email"].ToString();
+                    aux.Activo = (bool)datos.Lector["Activo"]; 
 
                     lista.Add(aux);
                 }
@@ -228,6 +237,27 @@ namespace Negocio {
                 datos.ejecutarAccion();
             }
             finally {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void reactivar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(@"
+                    UPDATE Clientes
+                    SET Activo = 1
+                    WHERE IdCliente= @Id");
+                
+                datos.setParametro("@Id", id);
+
+                datos.ejecutarAccion();
+            }
+            finally
+            {
                 datos.cerrarConexion();
             }
         }

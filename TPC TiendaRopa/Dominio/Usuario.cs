@@ -13,5 +13,7 @@
         public string Clave { get; set; }
 
         public TipoPerfil Perfil { get; set; }
+
+        public bool Activo { get; set; }
     }
 }

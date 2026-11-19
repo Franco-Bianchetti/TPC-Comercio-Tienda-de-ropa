@@ -21,7 +21,7 @@ namespace TPC_TiendaRopa
         private void cargarGrilla()
         {
             MarcaNegocio negocio = new MarcaNegocio();
-            List<Marca> lista = negocio.listar();
+            List<Marca> lista = negocio.listar(Seguridad.EsAdmin());
 
             string texto = txtBuscar.Text.Trim();
 
@@ -77,7 +77,22 @@ namespace TPC_TiendaRopa
                 "FormularioMarca.aspx",
                 false);
         }
+        protected void gvMarcas_RowDataBound(
+            object sender,
+            GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType != DataControlRowType.DataRow)
+                return;
 
+            Marca marca = (Marca)e.Row.DataItem;
+
+            if (!marca.Activo)
+            {
+                e.Row.CssClass = "table-secondary text-muted";
+                e.Row.FindControl("pnlActiva").Visible = false;
+                e.Row.FindControl("pnlInactiva").Visible = true;
+            }
+        }
         protected void gvMarcas_RowCommand(
             object sender,
             GridViewCommandEventArgs e)
@@ -92,6 +107,18 @@ namespace TPC_TiendaRopa
                     new MarcaNegocio();
 
                 negocio.eliminar(id);
+
+                cargarGrilla();
+            }
+            if (e.CommandName == "Reactivar")
+            {
+                if (!Seguridad.EsAdmin())
+                    return;
+
+                int id = int.Parse(e.CommandArgument.ToString());
+
+                MarcaNegocio negocio = new MarcaNegocio();
+                negocio.reactivar(id);
 
                 cargarGrilla();
             }

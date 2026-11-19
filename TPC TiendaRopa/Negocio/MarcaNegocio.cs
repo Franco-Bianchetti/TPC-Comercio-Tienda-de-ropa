@@ -6,20 +6,26 @@ namespace Negocio
 {
     public class MarcaNegocio
     {
-        public List<Marca> listar()
+        public List<Marca> listar(bool incluirInactivas = false)
         {
             List<Marca> lista = new List<Marca>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                datos.setConsulta(@"
+                string consulta = @"
                     SELECT
                         IdMarca,
-                        Nombre
-                    FROM Marcas
-                    WHERE Activo = 1
-                    ORDER BY IdMarca");
+                        Nombre,
+                        Activo
+                    FROM Marcas ";
+
+                if (!incluirInactivas)
+                    consulta += " WHERE Activo = 1 ";
+
+                consulta += "ORDER BY IdMarca";
+
+                datos.setConsulta(consulta);
 
                 datos.ejecutarLectura();
 
@@ -29,6 +35,7 @@ namespace Negocio
 
                     aux.Id = (int)datos.Lector["IdMarca"];
                     aux.Nombre = datos.Lector["Nombre"].ToString();
+                    aux.Activo = (bool)datos.Lector["Activo"];
 
                     lista.Add(aux);
                 }
@@ -189,6 +196,27 @@ namespace Negocio
                 datos.setConsulta(@"
                     UPDATE Marcas
                     SET Activo = 0
+                    WHERE IdMarca = @Id");
+
+                datos.setParametro("@Id", id);
+
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void reactivar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(@"
+                    UPDATE Marcas
+                    SET Activo = 1
                     WHERE IdMarca = @Id");
 
                 datos.setParametro("@Id", id);

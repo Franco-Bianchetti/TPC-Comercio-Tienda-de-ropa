@@ -40,10 +40,10 @@ namespace TPC_TiendaRopa {
             ddlTipo.DataValueField = "Id";
             ddlTipo.DataBind();
 
-            cblProveedores.DataSource = new ProveedorNegocio().listar();
-            cblProveedores.DataTextField = "RazonSocial";
-            cblProveedores.DataValueField = "Id";
-            cblProveedores.DataBind();
+            ddlProveedor.DataSource = new ProveedorNegocio().listar();
+            ddlProveedor.DataTextField = "RazonSocial";
+            ddlProveedor.DataValueField = "Id";
+            ddlProveedor.DataBind();
         }
 
         private void cargarProducto(int id) {
@@ -76,11 +76,11 @@ namespace TPC_TiendaRopa {
                 ddlTipo,
                 producto.Tipo.Id);
 
-            foreach (ListItem item in cblProveedores.Items) {
-                foreach (Proveedor proveedor in producto.Proveedores) {
-                    if (proveedor.Id.ToString() == item.Value)
-                        item.Selected = true;
-                }
+            if (producto.Proveedores.Count > 0)
+            {
+                seleccionar(
+                    ddlProveedor,
+                    producto.Proveedores[0].Id);
             }
         }
 
@@ -211,24 +211,24 @@ namespace TPC_TiendaRopa {
                 int.Parse(
                     ddlTipo.SelectedValue);
 
-            foreach (ListItem item in cblProveedores.Items) {
-                if (item.Selected) {
-                    Proveedor proveedor =
-                        new Proveedor();
-
-                    proveedor.Id =
-                        int.Parse(item.Value);
-
-                    producto.Proveedores.Add(
-                        proveedor);
-                }
-            }
-
-            if (producto.Proveedores.Count == 0) {
+            if (ddlProveedor.SelectedValue == "0")
+            {
                 mostrarError(
-                    "Debe seleccionar al menos un proveedor.");
+                    "Debe seleccionar un proveedor.");
+
                 return;
             }
+
+            Proveedor proveedor =
+                new Proveedor();
+
+            proveedor.Id =
+                int.Parse(
+                    ddlProveedor.SelectedValue);
+
+            producto.Proveedores.Add(
+                proveedor);
+
 
             ProductoNegocio negocio =
                 new ProductoNegocio();

@@ -4,9 +4,7 @@ using Dominio;
 
 namespace Negocio {
     public class UsuarioNegocio {
-        public Usuario login(
-            string usuario,
-            string clave) {
+        public Usuario login(string usuario, string clave) {
             AccesoDatos datos = new AccesoDatos();
 
             try {
@@ -64,15 +62,13 @@ namespace Negocio {
             }
         }
 
-        public List<Usuario> listar() {
-            List<Usuario> lista =
-                new List<Usuario>();
-
-            AccesoDatos datos =
-                new AccesoDatos();
+        public List<Usuario> listar(bool incluirInactivas = false) 
+        {
+            List<Usuario> lista = new List<Usuario>();
+            AccesoDatos datos = new AccesoDatos();
 
             try {
-                datos.setConsulta(@"
+                 string consulta = @"
                     SELECT
                         IdUsuario,
                         Nombre,
@@ -80,39 +76,32 @@ namespace Negocio {
                         Dni,
                         Usuario,
                         PasswordHash,
-                        IdRol
-                    FROM Usuarios
-                    WHERE Activo = 1
-                    ORDER BY IdUsuario");
+                        IdRol,
+                        Activo
+                    FROM Usuarios ";
+
+                if (!incluirInactivas)
+                    consulta += "WHERE Activo = 1 ";
+
+                consulta += "ORDER BY IdUsuario";
+
+                datos.setConsulta(consulta);
 
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read()) {
-                    Usuario aux =
-                        new Usuario();
+                    Usuario aux = new Usuario();
 
-                    aux.Id =
-                        (int)datos.Lector["IdUsuario"];
-
-                    aux.Nombre =
-                        datos.Lector["Nombre"].ToString();
-
-                    aux.Apellido =
-                        datos.Lector["Apellido"].ToString();
-
-                    aux.Dni =
-                        datos.Lector["Dni"].ToString();
-
-                    aux.NombreUsuario =
-                        datos.Lector["Usuario"].ToString();
-
-                    aux.Clave =
-                        datos.Lector["PasswordHash"].ToString();
-
-                    aux.Perfil =
-                        ((int)datos.Lector["IdRol"] == 1)
+                    aux.Id = (int)datos.Lector["IdUsuario"];
+                    aux.Nombre = datos.Lector["Nombre"].ToString();
+                    aux.Apellido = datos.Lector["Apellido"].ToString();
+                    aux.Dni = datos.Lector["Dni"].ToString();
+                    aux.NombreUsuario = datos.Lector["Usuario"].ToString();
+                    aux.Clave = datos.Lector["PasswordHash"].ToString();
+                    aux.Perfil = ((int)datos.Lector["IdRol"] == 1)
                         ? TipoPerfil.Administrador
                         : TipoPerfil.Vendedor;
+                    aux.Activo = (bool)datos.Lector["Activo"];
 
                     lista.Add(aux);
                 }
@@ -337,6 +326,27 @@ namespace Negocio {
                 datos.ejecutarAccion();
             }
             finally {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void reactivar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(@"
+                    UPDATE Usuarios
+                    SET Activo = 1
+                    WHERE IdUsuario= @Id");
+
+                datos.setParametro("@Id", id);
+
+                datos.ejecutarAccion();
+            }
+            finally
+            {
                 datos.cerrarConexion();
             }
         }

@@ -25,7 +25,8 @@
         runat="server"
         CssClass="table table-striped table-bordered"
         AutoGenerateColumns="false"
-        OnRowCommand="gvTipos_RowCommand">
+        OnRowCommand="gvTipos_RowCommand"
+        OnRowDataBound="gvTipos_RowDataBound">
 
         <Columns>
 
@@ -41,19 +42,36 @@
 
                 <ItemTemplate>
 
-                    <a href="FormularioTipo.aspx?id=<%# Eval("Id") %>"
-                       class="btn btn-warning btn-sm">
-                        Editar
-                    </a>
+                      <asp:Panel ID="pnlActiva" runat="server" CssClass="d-inline">
 
-                    <asp:Button
-                        ID="btnEliminarFila"
-                        runat="server"
-                        Text="Eliminar"
-                        CssClass="btn btn-danger btn-sm"
-                        CommandName="Eliminar"
-                        CommandArgument='<%# Eval("Id") %>'
-                        OnClientClick="return confirm('¿Seguro que querés eliminar este tipo?');" />
+                        <a href="FormularioTipo.aspx?id=<%# Eval("Id") %>"
+                           class="btn btn-warning btn-sm">
+                            Editar
+                        </a>
+
+                        <asp:Button
+                            ID="btnEliminarFila"
+                            runat="server"
+                            Text="Eliminar"
+                            CssClass="btn btn-danger btn-sm"
+                            CommandName="Eliminar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            OnClientClick="return confirm('¿Seguro que querés eliminar este tipo?');" />
+
+                    </asp:Panel>
+
+                    <asp:Panel ID="pnlInactiva" runat="server" CssClass="d-inline" Visible="false">
+
+                        <asp:Button
+                            ID="btnReactivarFila"
+                            runat="server"
+                            Text="Reactivar"
+                            CssClass="btn btn-success btn-sm"
+                            CommandName="Reactivar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            OnClientClick="return confirm('¿Reactivar este tipo?');" />
+
+                    </asp:Panel>
 
                 </ItemTemplate>
 

@@ -17,7 +17,7 @@ namespace TPC_TiendaRopa {
         private void cargarGrilla()
         {
             UsuarioNegocio negocio = new UsuarioNegocio();
-            List<Usuario> lista = negocio.listar();
+            List<Usuario> lista = negocio.listar(Seguridad.EsAdmin());
 
             string texto = txtBuscar.Text.Trim();
 
@@ -73,6 +73,30 @@ namespace TPC_TiendaRopa {
                 false);
         }
 
+        protected void gvUsuarios_RowDataBound(
+            object sender,
+            GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType != DataControlRowType.DataRow)
+                return;
+
+            Usuario usuario = (Usuario)e.Row.DataItem;
+
+            if (!usuario.Activo)
+            {
+                e.Row.CssClass = "table-secondary text-muted";
+
+                var pnlActiva = e.Row.FindControl("pnlActiva");
+                var pnlInactiva = e.Row.FindControl("pnlInactiva");
+
+                if (pnlActiva != null)
+                    pnlActiva.Visible = false;
+
+                if (pnlInactiva != null)
+                    pnlInactiva.Visible = true;
+            }
+        }
+
         protected void gvUsuarios_RowCommand(
             object sender,
             GridViewCommandEventArgs e) {
@@ -85,6 +109,18 @@ namespace TPC_TiendaRopa {
                     new UsuarioNegocio();
 
                 negocio.eliminar(id);
+
+                cargarGrilla();
+            }
+            if (e.CommandName == "Reactivar")
+            {
+                if (!Seguridad.EsAdmin())
+                    return;
+
+                int id = int.Parse(e.CommandArgument.ToString());
+
+                UsuarioNegocio negocio = new UsuarioNegocio();
+                negocio.reactivar(id);
 
                 cargarGrilla();
             }

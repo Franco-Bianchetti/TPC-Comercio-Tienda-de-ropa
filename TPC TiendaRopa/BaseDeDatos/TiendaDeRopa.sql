@@ -134,6 +134,8 @@ CREATE TABLE Productos
 
     IdTipo INT NOT NULL,
 
+    IdProveedor INT NOT NULL,
+
     StockActual INT NOT NULL DEFAULT 0,
 
     StockMinimo INT NOT NULL DEFAULT 0,
@@ -157,7 +159,11 @@ CREATE TABLE Productos
 
     CONSTRAINT FK_Productos_Tipos
         FOREIGN KEY(IdTipo)
-        REFERENCES Tipos(IdTipo)
+        REFERENCES Tipos(IdTipo),
+
+    CONSTRAINT FK_Productos_Proveedor
+        FOREIGN KEY(IdProveedor)
+        REFERENCES Proveedores(IdProveedor)
 );
 GO
 
@@ -425,6 +431,7 @@ INSERT INTO Productos
     Color,
     IdMarca,
     IdTipo,
+    IdProveedor,
     StockActual,
     StockMinimo,
     PorcentajeGanancia
@@ -435,6 +442,7 @@ VALUES
     'REMERA DEPORTIVA NIKE',
     'L',
     'NEGRO',
+    1,
     1,
     1,
     20,
@@ -448,6 +456,7 @@ VALUES
     'GRIS',
     2,
     2,
+    1,
     15,
     5,
     70
@@ -459,6 +468,7 @@ VALUES
     'AZUL',
     3,
     3,
+    2,
     10,
     3,
     75
@@ -470,11 +480,13 @@ VALUES
     'NEGRO',
     4,
     4,
+    2,
     7,
     2,
     85
 );
 GO
+
 
 INSERT INTO ProductoProveedor
 VALUES

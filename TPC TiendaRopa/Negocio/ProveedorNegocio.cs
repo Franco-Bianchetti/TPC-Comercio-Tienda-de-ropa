@@ -6,7 +6,7 @@ namespace Negocio
 {
     public class ProveedorNegocio
     {
-        public List<Proveedor> listar()
+        public List<Proveedor> listar(bool incluirInactivas = false)
         {
             List<Proveedor> lista = new List<Proveedor>();
 
@@ -14,16 +14,22 @@ namespace Negocio
 
             try
             {
-                datos.setConsulta(@"
+                string consulta = @"
                     SELECT
                         IdProveedor,
                         RazonSocial,
                         Cuit,
                         Telefono,
-                        Email
-                    FROM Proveedores
-                    WHERE Activo = 1
-                    ORDER BY IdProveedor");
+                        Email,
+                        Activo
+                    FROM Proveedores ";
+
+                if (!incluirInactivas)
+                    consulta += " WHERE Activo = 1 ";
+
+                consulta += "ORDER BY IdProveedor";
+
+                datos.setConsulta(consulta);
 
                 datos.ejecutarLectura();
 
@@ -36,6 +42,7 @@ namespace Negocio
                     aux.Cuit = datos.Lector["Cuit"].ToString();
                     aux.Telefono = datos.Lector["Telefono"].ToString();
                     aux.Email = datos.Lector["Email"].ToString();
+                    aux.Activo = (bool)datos.Lector["Activo"];
 
                     lista.Add(aux);
                 }
@@ -187,6 +194,27 @@ namespace Negocio
                 datos.setConsulta(@"
                     UPDATE Proveedores
                     SET Activo = 0
+                    WHERE IdProveedor = @Id");
+
+                datos.setParametro("@Id", id);
+
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void reactivar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(@"
+                    UPDATE Proveedores
+                    SET Activo = 1
                     WHERE IdProveedor = @Id");
 
                 datos.setParametro("@Id", id);

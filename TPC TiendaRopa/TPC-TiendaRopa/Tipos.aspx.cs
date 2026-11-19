@@ -21,7 +21,7 @@ namespace TPC_TiendaRopa
         private void cargarGrilla()
         {
             TipoNegocio negocio = new TipoNegocio();
-            List<Tipo> lista = negocio.listar();
+            List<Tipo> lista = negocio.listar(Seguridad.EsAdmin());
 
             string texto = txtBuscar.Text.Trim();
 
@@ -78,6 +78,23 @@ namespace TPC_TiendaRopa
                 false);
         }
 
+        protected void gvTipos_RowDataBound(
+            object sender,
+            GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType != DataControlRowType.DataRow)
+                return;
+
+            Tipo tipo = (Tipo)e.Row.DataItem;
+
+            if (!tipo.Activo)
+            {
+                e.Row.CssClass = "table-secondary text-muted";
+                e.Row.FindControl("pnlActiva").Visible = false;
+                e.Row.FindControl("pnlInactiva").Visible = true;
+            }
+        }
+
         protected void gvTipos_RowCommand(
             object sender,
             GridViewCommandEventArgs e)
@@ -88,10 +105,21 @@ namespace TPC_TiendaRopa
                     int.Parse(
                         e.CommandArgument.ToString());
 
-                TipoNegocio negocio =
-                    new TipoNegocio();
+                TipoNegocio negocio = new TipoNegocio();
 
                 negocio.eliminar(id);
+
+                cargarGrilla();
+            }
+            if (e.CommandName == "Reactivar")
+            {
+                if (!Seguridad.EsAdmin())
+                    return;
+
+                int id = int.Parse(e.CommandArgument.ToString());
+
+                TipoNegocio negocio = new TipoNegocio();
+                negocio.reactivar(id);
 
                 cargarGrilla();
             }

@@ -27,7 +27,8 @@
         runat="server"
         CssClass="table table-striped table-bordered"
         AutoGenerateColumns="false"
-        OnRowCommand="gvMarcas_RowCommand">
+        OnRowCommand="gvMarcas_RowCommand"
+        OnRowDataBound="gvMarcas_RowDataBound">
 
         <Columns>
 
@@ -43,19 +44,36 @@
 
                 <ItemTemplate>
 
-                    <a href="FormularioMarca.aspx?id=<%# Eval("Id") %>"
-                       class="btn btn-warning btn-sm">
-                        Editar
-                    </a>
+                                        <asp:Panel ID="pnlActiva" runat="server" CssClass="d-inline">
 
-                    <asp:Button
-                        ID="btnEliminarFila"
-                        runat="server"
-                        Text="Eliminar"
-                        CssClass="btn btn-danger btn-sm"
-                        CommandName="Eliminar"
-                        CommandArgument='<%# Eval("Id") %>'
-                        OnClientClick="return confirm('¿Seguro que querés eliminar esta marca?');" />
+                        <a href="FormularioMarca.aspx?id=<%# Eval("Id") %>"
+                           class="btn btn-warning btn-sm">
+                            Editar
+                        </a>
+
+                        <asp:Button
+                            ID="btnEliminarFila"
+                            runat="server"
+                            Text="Eliminar"
+                            CssClass="btn btn-danger btn-sm"
+                            CommandName="Eliminar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            OnClientClick="return confirm('¿Seguro que querés eliminar esta marca?');" />
+
+                    </asp:Panel>
+
+                    <asp:Panel ID="pnlInactiva" runat="server" CssClass="d-inline" Visible="false">
+
+                        <asp:Button
+                            ID="btnReactivarFila"
+                            runat="server"
+                            Text="Reactivar"
+                            CssClass="btn btn-success btn-sm"
+                            CommandName="Reactivar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            OnClientClick="return confirm('¿Reactivar esta marca?');" />
+
+                    </asp:Panel>
 
                 </ItemTemplate>
 

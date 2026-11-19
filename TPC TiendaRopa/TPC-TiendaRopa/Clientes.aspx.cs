@@ -19,7 +19,7 @@ namespace TPC_TiendaRopa
         private void cargarGrilla()
         {
             ClienteNegocio negocio = new ClienteNegocio();
-            List<Cliente> lista = negocio.listar();
+            List<Cliente> lista = negocio.listar(Seguridad.EsAdmin());
 
             string texto = txtBuscar.Text.Trim();
 
@@ -76,6 +76,23 @@ namespace TPC_TiendaRopa
                 "FormularioCliente.aspx",
                 false);
         }
+        
+        protected void gvClientes_RowDataBound(
+            object sender,
+            GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType != DataControlRowType.DataRow)
+                return;
+
+            Cliente cliente = (Cliente)e.Row.DataItem;
+
+            if (!cliente.Activo)
+            {
+                e.Row.CssClass = "table-secondary text-muted";
+                e.Row.FindControl("pnlActiva").Visible = false;
+                e.Row.FindControl("pnlInactiva").Visible = true;
+            }
+        }
 
         protected void gvClientes_RowCommand(
             object sender,
@@ -87,10 +104,21 @@ namespace TPC_TiendaRopa
                     int.Parse(
                         e.CommandArgument.ToString());
 
-                ClienteNegocio negocio =
-                    new ClienteNegocio();
+                ClienteNegocio negocio = new ClienteNegocio();
 
                 negocio.eliminar(id);
+
+                cargarGrilla();
+            }
+            if (e.CommandName == "Reactivar")
+            {
+                if (!Seguridad.EsAdmin())
+                    return;
+
+                int id = int.Parse(e.CommandArgument.ToString());
+
+                ClienteNegocio negocio = new ClienteNegocio();
+                negocio.reactivar(id);
 
                 cargarGrilla();
             }

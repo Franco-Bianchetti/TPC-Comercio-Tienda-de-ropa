@@ -19,7 +19,7 @@ namespace TPC_TiendaRopa
         private void cargarGrilla()
         {
             ProveedorNegocio negocio = new ProveedorNegocio();
-            List<Proveedor> lista = negocio.listar();
+            List<Proveedor> lista = negocio.listar(Seguridad.EsAdmin());
 
             string texto = txtBuscar.Text.Trim();
 
@@ -71,6 +71,21 @@ namespace TPC_TiendaRopa
             Response.Redirect("FormularioProveedor.aspx", false);
         }
 
+        protected void gvProveedores_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType != DataControlRowType.DataRow)
+                return;
+
+            Proveedor proveedor = (Proveedor)e.Row.DataItem;
+
+            if (!proveedor.Activo)
+            {
+                e.Row.CssClass = "table-secondary text-muted";
+                e.Row.FindControl("pnlActiva").Visible = false;
+                e.Row.FindControl("pnlInactiva").Visible = true;
+            }
+        }
+
         protected void gvProveedores_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Eliminar")
@@ -80,7 +95,20 @@ namespace TPC_TiendaRopa
                 negocio.eliminar(id);
                 cargarGrilla();
             }
+            if (e.CommandName == "Reactivar")
+            {
+                if (!Seguridad.EsAdmin())
+                    return;
+
+                int id = int.Parse(e.CommandArgument.ToString());
+
+                ProveedorNegocio negocio = new ProveedorNegocio();
+                negocio.reactivar(id);
+
+                cargarGrilla();
+            }
         }
     }
 }
+
 

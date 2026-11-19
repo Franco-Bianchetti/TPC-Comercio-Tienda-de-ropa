@@ -26,7 +26,8 @@
         runat="server"
         CssClass="table table-striped table-bordered"
         AutoGenerateColumns="false"
-        OnRowCommand="gvProveedores_RowCommand">
+        OnRowCommand="gvProveedores_RowCommand"
+        OnRowDataBound="gvProveedores_RowDataBound">
 
         <Columns>
             <asp:BoundField DataField="Id" HeaderText="ID" />
@@ -36,22 +37,43 @@
             <asp:BoundField DataField="Email" HeaderText="Email" />
 
             <asp:TemplateField HeaderText="Acciones">
-                <ItemTemplate>
-                    <a href="FormularioProveedor.aspx?id=<%# Eval("Id") %>"
-                       class="btn btn-warning btn-sm">
-                        Editar
-                    </a>
+                 <ItemTemplate>
 
-                    <asp:Button
-                        ID="btnEliminarFila"
-                        runat="server"
-                        Text="Eliminar"
-                        CssClass="btn btn-danger btn-sm"
-                        CommandName="Eliminar"
-                        CommandArgument='<%# Eval("Id") %>'
-                        OnClientClick="return confirm('¿Seguro que querés eliminar este proveedor?');" />
-                </ItemTemplate>
-            </asp:TemplateField>
+                   <asp:Panel ID="pnlActiva" runat="server" CssClass="d-inline">
+
+                     <a href="FormularioProveedor.aspx?id=<%# Eval("Id") %>"
+                        class="btn btn-warning btn-sm">
+                         Editar
+                     </a>
+
+                     <asp:Button
+                         ID="btnEliminarFila"
+                         runat="server"
+                         Text="Eliminar"
+                         CssClass="btn btn-danger btn-sm"
+                         CommandName="Eliminar"
+                         CommandArgument='<%# Eval("Id") %>'
+                         OnClientClick="return confirm('¿Seguro que querés eliminar este proveedor?');" />
+
+                 </asp:Panel>
+
+                 <asp:Panel ID="pnlInactiva" runat="server" CssClass="d-inline" Visible="false">
+
+                     <asp:Button
+                         ID="btnReactivarFila"
+                         runat="server"
+                         Text="Reactivar"
+                         CssClass="btn btn-success btn-sm"
+                         CommandName="Reactivar"
+                         CommandArgument='<%# Eval("Id") %>'
+                         OnClientClick="return confirm('¿Reactivar este proveedor?');" />
+
+                 </asp:Panel>
+
+             </ItemTemplate>
+
+           </asp:TemplateField>
+
         </Columns>
 
     </asp:GridView>
