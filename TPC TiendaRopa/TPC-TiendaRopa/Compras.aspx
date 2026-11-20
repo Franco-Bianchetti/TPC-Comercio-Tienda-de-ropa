@@ -11,6 +11,43 @@
 
     <h2>Compras</h2>
 
+    
+<div class="row mb-3">
+
+    <div class="col-md-4">
+
+        <asp:DropDownList
+            ID="ddlProveedor"
+            runat="server"
+            CssClass="form-select">
+        </asp:DropDownList>
+
+    </div>
+
+    <div class="col-md-2">
+
+        <asp:Button
+            ID="btnBuscar"
+            runat="server"
+            Text="Buscar"
+            CssClass="btn btn-secondary"
+            OnClick="btnBuscar_Click" />
+
+    </div>
+
+    <div class="col-md-2">
+
+        <asp:Button
+            ID="btnLimpiar"
+            runat="server"
+            Text="Limpiar"
+            CssClass="btn btn-outline-secondary"
+            OnClick="btnLimpiar_Click" />
+
+    </div>
+
+</div>
+
     <asp:GridView
         ID="gvCompras"
         runat="server"

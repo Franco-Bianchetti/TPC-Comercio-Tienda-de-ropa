@@ -4,15 +4,16 @@ using Dominio;
 
 namespace Negocio {
     public class CompraNegocio {
-        public List<Compra> listar() {
-            List<Compra> lista =
-                new List<Compra>();
 
-            AccesoDatos datos =
-                new AccesoDatos();
+        public List<Compra> listar(int idProveedor = 0)
+        {
+            List<Compra> lista = new List<Compra>();
 
-            try {
-                datos.setConsulta(@"
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                string consulta = @"
             SELECT
                 C.IdCompra,
                 C.FechaCompra,
@@ -32,29 +33,37 @@ namespace Negocio {
 
             INNER JOIN Proveedores P
                 ON C.IdProveedor = P.IdProveedor
+        ";
 
-            ORDER BY C.FechaCompra DESC");
+                if (idProveedor > 0)
+                {
+                    consulta += " WHERE C.IdProveedor = @IdProveedor ";
+                }
+
+                consulta += " ORDER BY C.FechaCompra DESC ";
+
+                datos.setConsulta(consulta);
+
+                if (idProveedor > 0)
+                {
+                    datos.setParametro("@IdProveedor", idProveedor);
+                }
 
                 datos.ejecutarLectura();
 
-                while (datos.Lector.Read()) {
-                    Compra compra =
-                        new Compra();
+                while (datos.Lector.Read())
+                {
+                    Compra compra = new Compra();
 
-                    compra.Id =
-                        (int)datos.Lector["IdCompra"];
+                    compra.Id = (int)datos.Lector["IdCompra"];
 
-                    compra.Fecha =
-                        (DateTime)datos.Lector["FechaCompra"];
+                    compra.Fecha = (DateTime)datos.Lector["FechaCompra"];
 
-                    compra.Total =
-                        (decimal)datos.Lector["Total"];
+                    compra.Total = (decimal)datos.Lector["Total"];
 
-                    compra.Usuario =
-                        new Usuario();
+                    compra.Usuario = new Usuario();
 
-                    compra.Usuario.Id =
-                        (int)datos.Lector["IdUsuario"];
+                    compra.Usuario.Id = (int)datos.Lector["IdUsuario"];
 
                     compra.Usuario.Nombre =
                         datos.Lector["Nombre"].ToString();
@@ -62,8 +71,7 @@ namespace Negocio {
                     compra.Usuario.Apellido =
                         datos.Lector["Apellido"].ToString();
 
-                    compra.Proveedor =
-                        new Proveedor();
+                    compra.Proveedor = new Proveedor();
 
                     compra.Proveedor.Id =
                         (int)datos.Lector["IdProveedor"];
@@ -76,10 +84,12 @@ namespace Negocio {
 
                 return lista;
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }
+
 
         public void guardar(
             Compra compra) {
