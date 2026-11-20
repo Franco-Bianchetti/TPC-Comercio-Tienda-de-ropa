@@ -52,6 +52,9 @@ namespace TPC_TiendaRopa {
             Session["Perfil"] =
                 usuarioLogueado.Perfil;
 
+            Session["IdUsuario"] =
+                usuarioLogueado.Id;
+
             Response.Redirect(
                 "Default.aspx",
                 false);
