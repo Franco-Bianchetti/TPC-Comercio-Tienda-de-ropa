@@ -330,7 +330,7 @@ namespace TPC_TiendaRopa
             compra.Usuario =
                 new Usuario();
 
-            compra.Usuario.Id = 1;
+            compra.Usuario.Id = (int)Session["IdUsuario"];
 
             compra.Proveedor =
                 new Proveedor();
@@ -373,7 +373,7 @@ namespace TPC_TiendaRopa
 
             actualizarGrilla();
 
-            mostrarError(
+            mostrarExito(
                 "Compra registrada correctamente.");
         }
         protected void ddlProveedor_SelectedIndexChanged(object sender,
@@ -417,8 +417,24 @@ namespace TPC_TiendaRopa
         }
 
         private void mostrarError(
+    string mensaje)
+        {
+            lblError.CssClass =
+                "text-danger";
+
+            lblError.Text =
+                mensaje;
+
+            lblError.Visible =
+                true;
+        }
+
+        private void mostrarExito(
             string mensaje)
         {
+            lblError.CssClass =
+                "text-success";
+
             lblError.Text =
                 mensaje;
 
