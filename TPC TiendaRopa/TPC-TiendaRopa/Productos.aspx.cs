@@ -8,75 +8,87 @@ namespace TPC_TiendaRopa
 {
     public partial class Productos : System.Web.UI.Page
     {
-        protected void Page_Load(
-            object sender,
-            EventArgs e)
+
+        protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                cargarFiltros();
                 cargarGrilla();
             }
         }
 
+
+
         private void cargarGrilla()
         {
-            ProductoNegocio negocio =
-                new ProductoNegocio();
+            ProductoNegocio negocio = new ProductoNegocio();
 
-            List<Producto> lista =
-                negocio.listar(
-                    Seguridad.EsAdmin());
+            int idMarca = 0;
+            int idTipo = 0;
 
-            string texto =
-                txtBuscar.Text.Trim();
+            int.TryParse(ddlMarca.SelectedValue, out idMarca);
+            int.TryParse(ddlTipo.SelectedValue, out idTipo);
 
-            lblResultado.Visible =
-                false;
+            List<Producto> lista = negocio.listarFiltrado(
+                txtBuscar.Text.Trim(),
+                idMarca,
+                idTipo,
+                txtTalle.Text.Trim(),
+                txtColor.Text.Trim(),
+                chkStockBajo.Checked,
+                Seguridad.EsAdmin()
+            );
 
-            if (texto != "")
-            {
-                lista = lista.FindAll(x =>
-                    contiene(x.Codigo, texto) ||
-                    contiene(x.Nombre, texto) ||
-                    contiene(x.Color, texto) ||
-                    contiene(x.Talle, texto) ||
-                    (x.Marca != null &&
-                     contiene(x.Marca.Nombre, texto)) ||
-                    (x.Tipo != null &&
-                     contiene(x.Tipo.Nombre, texto)));
-
-                lblResultado.Visible =
-                    true;
-
-                if (lista.Count == 0)
-                {
-                    lblResultado.CssClass =
-                        "d-block mb-3 text-danger";
-
-                    lblResultado.Text =
-                        "No se encontraron resultados para \"" +
-                        Server.HtmlEncode(texto) +
-                        "\".";
-                }
-                else
-                {
-                    lblResultado.CssClass =
-                        "d-block mb-3 text-success";
-
-                    lblResultado.Text =
-                        lista.Count == 1
-                        ? "Se encontró 1 resultado."
-                        : "Se encontraron " +
-                          lista.Count +
-                          " resultados.";
-                }
-            }
-
-            gvProductos.DataSource =
-                lista;
-
+            gvProductos.DataSource = lista;
             gvProductos.DataBind();
+
+            lblResultado.Visible = true;
+
+            if (lista.Count == 0)
+            {
+                lblResultado.CssClass = "d-block mb-3 text-danger";
+                lblResultado.Text = "No se encontraron productos.";
+            }
+            else
+            {
+                lblResultado.CssClass = "d-block mb-3 text-success";
+
+                lblResultado.Text = "Se encontraron " +
+                    lista.Count + " productos.";
+            }
         }
+
+
+
+        private void cargarFiltros()
+        {
+            MarcaNegocio marcaNegocio = new MarcaNegocio();
+
+            ddlMarca.DataSource = marcaNegocio.listar();
+            ddlMarca.DataTextField = "Nombre";
+            ddlMarca.DataValueField = "Id";
+            ddlMarca.DataBind();
+
+            ddlMarca.Items.Insert(
+                0,
+                new ListItem("Todas las marcas", "0")
+            );
+
+
+            TipoNegocio tipoNegocio = new TipoNegocio();
+
+            ddlTipo.DataSource = tipoNegocio.listar();
+            ddlTipo.DataTextField = "Nombre";
+            ddlTipo.DataValueField = "Id";
+            ddlTipo.DataBind();
+
+            ddlTipo.Items.Insert(
+                0,
+                new ListItem("Todos los tipos", "0")
+            );
+        }
+
 
         private bool contiene(
             string campo,
@@ -95,13 +107,19 @@ namespace TPC_TiendaRopa
             cargarGrilla();
         }
 
-        protected void btnLimpiar_Click(
-            object sender,
-            EventArgs e)
+
+        protected void btnLimpiar_Click(object sender, EventArgs e)
         {
             txtBuscar.Text = "";
+            ddlMarca.SelectedIndex = 0;
+            ddlTipo.SelectedIndex = 0;
+            txtTalle.Text = "";
+            txtColor.Text = "";
+            chkStockBajo.Checked = false;
+
             cargarGrilla();
         }
+
 
         protected void btnNuevo_Click(
             object sender,

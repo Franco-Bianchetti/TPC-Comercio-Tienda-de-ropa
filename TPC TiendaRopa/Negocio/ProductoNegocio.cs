@@ -128,6 +128,85 @@ namespace Negocio
             }
         }
 
+
+        public List<Producto> listarFiltrado(
+            string texto,
+            int idMarca,
+            int idTipo,
+            string talle,
+            string color,
+            bool stockBajo,
+            bool incluirInactivos = false)
+        {
+            List<Producto> lista = new List<Producto>();
+
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                string consulta = SELECT_PRODUCTO + " WHERE 1=1 ";
+
+                if (!incluirInactivos)
+                    consulta += " AND P.Activo = 1 ";
+
+                if (!string.IsNullOrWhiteSpace(texto))
+                    consulta += @" AND (
+                P.Codigo LIKE @Texto
+                OR P.Nombre LIKE @Texto
+            ) ";
+
+                if (idMarca > 0)
+                    consulta += " AND P.IdMarca = @IdMarca ";
+
+                if (idTipo > 0)
+                    consulta += " AND P.IdTipo = @IdTipo ";
+
+                if (!string.IsNullOrWhiteSpace(talle))
+                    consulta += " AND P.Talle LIKE @Talle ";
+
+                if (!string.IsNullOrWhiteSpace(color))
+                    consulta += " AND P.Color LIKE @Color ";
+
+                if (stockBajo)
+                    consulta += @" AND P.StockActual > 0
+                           AND P.StockActual < P.StockMinimo ";
+
+                consulta += " ORDER BY P.Nombre ";
+
+                datos.setConsulta(consulta);
+
+                if (!string.IsNullOrWhiteSpace(texto))
+                    datos.setParametro("@Texto", "%" + texto + "%");
+
+                if (idMarca > 0)
+                    datos.setParametro("@IdMarca", idMarca);
+
+                if (idTipo > 0)
+                    datos.setParametro("@IdTipo", idTipo);
+
+                if (!string.IsNullOrWhiteSpace(talle))
+                    datos.setParametro("@Talle", "%" + talle + "%");
+
+                if (!string.IsNullOrWhiteSpace(color))
+                    datos.setParametro("@Color", "%" + color + "%");
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Producto producto = leerProducto(datos);
+                    lista.Add(producto);
+                }
+
+                return lista;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
         public Producto buscar(int id)
         {
             Producto aux = null;
