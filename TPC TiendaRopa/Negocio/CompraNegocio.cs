@@ -2,68 +2,198 @@
 using System.Collections.Generic;
 using Dominio;
 
-namespace Negocio {
-    public class CompraNegocio {
+namespace Negocio
+{
+    public class CompraNegocio
+    {
+        public List<Compra> listar(
+        int idProveedor = 0,
+        string numeroComprobante = "",
+        DateTime? fechaDesde = null,
+        DateTime? fechaHasta = null)
+            {
+                List<Compra> lista = new List<Compra>();
 
-        public List<Compra> listar(int idProveedor = 0)
+                AccesoDatos datos = new AccesoDatos();
+
+                try
+                {
+                    string consulta = @"
+                SELECT
+                    C.IdCompra,
+                    C.FechaCompra,
+                    C.TipoComprobante,
+                    C.NumeroComprobante,
+                    C.Total,
+
+                    U.IdUsuario,
+                    U.Nombre,
+                    U.Apellido,
+
+                    P.IdProveedor,
+                    P.RazonSocial
+
+                FROM Compras C
+
+                INNER JOIN Usuarios U
+                    ON C.IdUsuario = U.IdUsuario
+
+                INNER JOIN Proveedores P
+                    ON C.IdProveedor = P.IdProveedor
+
+                WHERE 1 = 1 ";
+
+                    if (idProveedor > 0)
+                        consulta += " AND C.IdProveedor = @IdProveedor ";
+
+                    if (!string.IsNullOrWhiteSpace(numeroComprobante))
+                        consulta += " AND C.NumeroComprobante LIKE @Comprobante ";
+
+                    if (fechaDesde.HasValue)
+                        consulta += " AND CAST(C.FechaCompra AS DATE) >= @FechaDesde ";
+
+                    if (fechaHasta.HasValue)
+                        consulta += " AND CAST(C.FechaCompra AS DATE) <= @FechaHasta ";
+
+                    consulta += " ORDER BY C.FechaCompra DESC ";
+
+                    datos.setConsulta(consulta);
+
+                    if (idProveedor > 0)
+                        datos.setParametro(
+                            "@IdProveedor",
+                            idProveedor);
+
+                    if (!string.IsNullOrWhiteSpace(numeroComprobante))
+                        datos.setParametro(
+                            "@Comprobante",
+                            "%" + numeroComprobante + "%");
+
+                    if (fechaDesde.HasValue)
+                        datos.setParametro(
+                            "@FechaDesde",
+                            fechaDesde.Value.Date);
+
+                    if (fechaHasta.HasValue)
+                        datos.setParametro(
+                            "@FechaHasta",
+                            fechaHasta.Value.Date);
+
+                    datos.ejecutarLectura();
+
+                    while (datos.Lector.Read())
+                    {
+                        Compra compra = new Compra();
+
+                        compra.Id =
+                            (int)datos.Lector["IdCompra"];
+
+                        compra.Fecha =
+                            (DateTime)datos.Lector["FechaCompra"];
+
+                        compra.TipoComprobante =
+                            datos.Lector["TipoComprobante"].ToString();
+
+                        compra.NumeroComprobante =
+                            datos.Lector["NumeroComprobante"].ToString();
+
+                        compra.Total =
+                            (decimal)datos.Lector["Total"];
+
+                        compra.Usuario =
+                            new Usuario();
+
+                        compra.Usuario.Id =
+                            (int)datos.Lector["IdUsuario"];
+
+                        compra.Usuario.Nombre =
+                            datos.Lector["Nombre"].ToString();
+
+                        compra.Usuario.Apellido =
+                            datos.Lector["Apellido"].ToString();
+
+                        compra.Proveedor =
+                            new Proveedor();
+
+                        compra.Proveedor.Id =
+                            (int)datos.Lector["IdProveedor"];
+
+                        compra.Proveedor.RazonSocial =
+                            datos.Lector["RazonSocial"].ToString();
+
+                        lista.Add(compra);
+                    }
+
+                    return lista;
+                }
+                finally
+                {
+                    datos.cerrarConexion();
+                }
+            }
+
+
+        public Compra obtenerCompra(int idCompra)
         {
-            List<Compra> lista = new List<Compra>();
+            Compra compra = null;
 
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                string consulta = @"
-            SELECT
-                C.IdCompra,
-                C.FechaCompra,
-                C.Total,
+                datos.setConsulta(@"
+                    SELECT
+                        C.IdCompra,
+                        C.FechaCompra,
+                        C.TipoComprobante,
+                        C.NumeroComprobante,
+                        C.Total,
 
-                U.IdUsuario,
-                U.Nombre,
-                U.Apellido,
+                        U.IdUsuario,
+                        U.Nombre,
+                        U.Apellido,
 
-                P.IdProveedor,
-                P.RazonSocial
+                        P.IdProveedor,
+                        P.RazonSocial
 
-            FROM Compras C
+                    FROM Compras C
 
-            INNER JOIN Usuarios U
-                ON C.IdUsuario = U.IdUsuario
+                    INNER JOIN Usuarios U
+                        ON C.IdUsuario = U.IdUsuario
 
-            INNER JOIN Proveedores P
-                ON C.IdProveedor = P.IdProveedor
-        ";
+                    INNER JOIN Proveedores P
+                        ON C.IdProveedor = P.IdProveedor
 
-                if (idProveedor > 0)
-                {
-                    consulta += " WHERE C.IdProveedor = @IdProveedor ";
-                }
+                    WHERE C.IdCompra = @Id");
 
-                consulta += " ORDER BY C.FechaCompra DESC ";
-
-                datos.setConsulta(consulta);
-
-                if (idProveedor > 0)
-                {
-                    datos.setParametro("@IdProveedor", idProveedor);
-                }
+                datos.setParametro("@Id", idCompra);
 
                 datos.ejecutarLectura();
 
-                while (datos.Lector.Read())
+                if (datos.Lector.Read())
                 {
-                    Compra compra = new Compra();
+                    compra = new Compra();
 
-                    compra.Id = (int)datos.Lector["IdCompra"];
+                    compra.Id =
+                        (int)datos.Lector["IdCompra"];
 
-                    compra.Fecha = (DateTime)datos.Lector["FechaCompra"];
+                    compra.Fecha =
+                        (DateTime)datos.Lector["FechaCompra"];
 
-                    compra.Total = (decimal)datos.Lector["Total"];
+                    compra.TipoComprobante =
+                        datos.Lector["TipoComprobante"].ToString();
 
-                    compra.Usuario = new Usuario();
+                    compra.NumeroComprobante =
+                        datos.Lector["NumeroComprobante"].ToString();
 
-                    compra.Usuario.Id = (int)datos.Lector["IdUsuario"];
+                    compra.Total =
+                        (decimal)datos.Lector["Total"];
+
+                    compra.Usuario =
+                        new Usuario();
+
+                    compra.Usuario.Id =
+                        (int)datos.Lector["IdUsuario"];
 
                     compra.Usuario.Nombre =
                         datos.Lector["Nombre"].ToString();
@@ -71,15 +201,77 @@ namespace Negocio {
                     compra.Usuario.Apellido =
                         datos.Lector["Apellido"].ToString();
 
-                    compra.Proveedor = new Proveedor();
+                    compra.Proveedor =
+                        new Proveedor();
 
                     compra.Proveedor.Id =
                         (int)datos.Lector["IdProveedor"];
 
                     compra.Proveedor.RazonSocial =
                         datos.Lector["RazonSocial"].ToString();
+                }
 
-                    lista.Add(compra);
+                return compra;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public List<DetalleCompra> obtenerDetalle(int idCompra)
+        {
+            List<DetalleCompra> lista =
+                new List<DetalleCompra>();
+
+            AccesoDatos datos =
+                new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(@"
+                    SELECT
+                        DC.Cantidad,
+                        DC.PrecioCompra,
+                        DC.Subtotal,
+
+                        P.IdProducto,
+                        P.Nombre
+
+                    FROM DetalleCompras DC
+
+                    INNER JOIN Productos P
+                        ON DC.IdProducto = P.IdProducto
+
+                    WHERE DC.IdCompra = @IdCompra");
+
+                datos.setParametro(
+                    "@IdCompra",
+                    idCompra);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    DetalleCompra detalle =
+                        new DetalleCompra();
+
+                    detalle.Producto =
+                        new Producto();
+
+                    detalle.Producto.Id =
+                        (int)datos.Lector["IdProducto"];
+
+                    detalle.Producto.Nombre =
+                        datos.Lector["Nombre"].ToString();
+
+                    detalle.Cantidad =
+                        (int)datos.Lector["Cantidad"];
+
+                    detalle.PrecioCompra =
+                        (decimal)datos.Lector["PrecioCompra"];
+
+                    lista.Add(detalle);
                 }
 
                 return lista;
@@ -90,20 +282,22 @@ namespace Negocio {
             }
         }
 
-
-        public void guardar(
-            Compra compra) {
+        public void guardar(Compra compra)
+        {
             int idCompra = 0;
 
             AccesoDatos datos =
                 new AccesoDatos();
 
-            try {
+            try
+            {
                 datos.setConsulta(@"
                     INSERT INTO Compras
                     (
                         IdUsuario,
                         IdProveedor,
+                        TipoComprobante,
+                        NumeroComprobante,
                         Total
                     )
                     OUTPUT INSERTED.IdCompra
@@ -111,6 +305,8 @@ namespace Negocio {
                     (
                         @Usuario,
                         @Proveedor,
+                        @TipoComprobante,
+                        @NumeroComprobante,
                         @Total
                     )");
 
@@ -123,23 +319,30 @@ namespace Negocio {
                     compra.Proveedor.Id);
 
                 datos.setParametro(
+                    "@TipoComprobante",
+                    compra.TipoComprobante);
+
+                datos.setParametro(
+                    "@NumeroComprobante",
+                    compra.NumeroComprobante);
+
+                datos.setParametro(
                     "@Total",
                     compra.Total);
 
                 datos.ejecutarLectura();
 
-                if (datos.Lector.Read()) {
-                    idCompra =
-                        (int)datos.Lector[0];
-                }
+                if (datos.Lector.Read())
+                    idCompra = (int)datos.Lector[0];
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
 
-            foreach (
-                DetalleCompra detalle
-                in compra.Detalles) {
+            foreach (DetalleCompra detalle
+                in compra.Detalles)
+            {
                 guardarDetalle(
                     idCompra,
                     detalle);
@@ -154,11 +357,13 @@ namespace Negocio {
 
         private void guardarDetalle(
             int idCompra,
-            DetalleCompra detalle) {
+            DetalleCompra detalle)
+        {
             AccesoDatos datos =
                 new AccesoDatos();
 
-            try {
+            try
+            {
                 datos.setConsulta(@"
                     INSERT INTO DetalleCompras
                     (
@@ -199,17 +404,20 @@ namespace Negocio {
 
                 datos.ejecutarAccion();
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }
 
         private void registrarIngresoStock(
-            DetalleCompra detalle) {
+            DetalleCompra detalle)
+        {
             AccesoDatos datos =
                 new AccesoDatos();
 
-            try {
+            try
+            {
                 datos.setConsulta(@"
                     INSERT INTO IngresosStock
                     (
@@ -238,17 +446,20 @@ namespace Negocio {
 
                 datos.ejecutarAccion();
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }
 
         private void actualizarStock(
-            DetalleCompra detalle) {
+            DetalleCompra detalle)
+        {
             AccesoDatos datos =
                 new AccesoDatos();
 
-            try {
+            try
+            {
                 datos.setConsulta(@"
                     UPDATE Productos
                     SET StockActual =
@@ -265,7 +476,8 @@ namespace Negocio {
 
                 datos.ejecutarAccion();
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }

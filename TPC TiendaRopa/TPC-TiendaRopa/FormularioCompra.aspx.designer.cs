@@ -51,6 +51,24 @@ namespace TPC_TiendaRopa
         protected global::System.Web.UI.WebControls.DropDownList ddlProveedor;
 
         /// <summary>
+        /// Control ddlTipoComprobante.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTipoComprobante;
+
+        /// <summary>
+        /// Control txtNumeroComprobante.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNumeroComprobante;
+
+        /// <summary>
         /// Control ddlProducto.
         /// </summary>
         /// <remarks>

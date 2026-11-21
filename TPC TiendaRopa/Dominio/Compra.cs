@@ -12,6 +12,10 @@ namespace Dominio {
 
         public Proveedor Proveedor { get; set; }
 
+        public string TipoComprobante { get; set; }
+
+        public string NumeroComprobante { get; set; }
+
         public decimal Total { get; set; }
 
         public List<DetalleCompra> Detalles { get; set; }

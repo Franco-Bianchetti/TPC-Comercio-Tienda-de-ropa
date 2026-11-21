@@ -16,8 +16,15 @@ namespace TPC_TiendaRopa
         {
             if (!IsPostBack)
             {
+                btnCancelarEdicion.Enabled = false;
+
                 cargarProveedores();
-                
+
+                ddlProducto.Items.Clear();
+
+                ddlProducto.Items.Insert(
+                    0,
+                    new ListItem("Seleccione producto","0"));
 
                 Session["DetalleCompra"] =
                     new List<DetalleCompra>();
@@ -27,6 +34,8 @@ namespace TPC_TiendaRopa
 
                 actualizarGrilla();
             }
+
+
         }
 
         private void cargarProveedores()
@@ -93,6 +102,24 @@ namespace TPC_TiendaRopa
             {
                 mostrarError(
                     "Debe seleccionar un producto.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(
+                    ddlTipoComprobante.SelectedValue))
+            {
+                mostrarError(
+                    "Debe seleccionar el tipo de comprobante.");
+
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(
+                    txtNumeroComprobante.Text))
+            {
+                mostrarError(
+                    "Debe ingresar el número de comprobante.");
+
                 return;
             }
 
@@ -196,8 +223,11 @@ namespace TPC_TiendaRopa
                 Session["IndiceEdicion"] =
                     null;
 
-                btnCancelarEdicion.Visible =
-                    false;
+                btnCancelarEdicion.Enabled =
+                     false;
+
+                btnAgregar.Text =
+                    "Agregar";
             }
             else
             {
@@ -208,6 +238,11 @@ namespace TPC_TiendaRopa
                 lista;
 
             ddlProveedor.Enabled =
+                false;
+            ddlTipoComprobante.Enabled =
+                false;
+
+            txtNumeroComprobante.Enabled =
                 false;
 
             limpiarFormulario();
@@ -242,6 +277,20 @@ namespace TPC_TiendaRopa
                 {
                     ddlProveedor.Enabled =
                         true;
+
+                    ddlTipoComprobante.Enabled =
+                       true;
+
+                    txtNumeroComprobante.Enabled =
+                        true;
+
+                    ddlProveedor.SelectedIndex = 0;
+
+                    ddlTipoComprobante.SelectedIndex = 0;
+
+                    txtNumeroComprobante.Text = "";
+
+                    ddlProducto.Items.Clear();
                 }
 
                 actualizarGrilla();
@@ -264,10 +313,12 @@ namespace TPC_TiendaRopa
                     detalle.PrecioCompra.ToString(
                         CultureInfo.InvariantCulture);
 
+                btnAgregar.Text =    "Guardar cambios";
+
                 Session["IndiceEdicion"] =
                     indice;
 
-                btnCancelarEdicion.Visible =
+                btnCancelarEdicion.Enabled =
                     true;
             }
         }
@@ -279,8 +330,10 @@ namespace TPC_TiendaRopa
             Session["IndiceEdicion"] =
                 null;
 
-            btnCancelarEdicion.Visible =
+            btnCancelarEdicion.Enabled =
                 false;
+
+            btnAgregar.Text = "Agregar";
 
             limpiarFormulario();
         }
@@ -298,8 +351,25 @@ namespace TPC_TiendaRopa
             ddlProveedor.Enabled =
                 true;
 
-            btnCancelarEdicion.Visible =
-                false;
+            ddlTipoComprobante.Enabled =
+                true;
+
+            txtNumeroComprobante.Enabled =
+                true;
+
+            ddlProveedor.SelectedIndex = 0;
+
+            ddlTipoComprobante.SelectedIndex = 0;
+
+            txtNumeroComprobante.Text = "";
+
+            btnCancelarEdicion.Enabled = false;
+
+            btnAgregar.Text = "Agregar";
+
+            ddlProducto.Items.Clear();
+
+            ddlProducto.Items.Insert(  0,  new ListItem ("Seleccione producto","0"));
 
             limpiarFormulario();
 
@@ -318,6 +388,15 @@ namespace TPC_TiendaRopa
             {
                 mostrarError(
                     "Debe agregar al menos un producto.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(
+                    txtNumeroComprobante.Text))
+            {
+                mostrarError(
+                    "Debe ingresar el número de comprobante.");
+
                 return;
             }
 
@@ -345,6 +424,13 @@ namespace TPC_TiendaRopa
                     detalle);
             }
 
+            compra.TipoComprobante =
+               ddlTipoComprobante.SelectedValue;
+
+            compra.NumeroComprobante =
+                txtNumeroComprobante.Text.Trim();
+
+
             compra.Total =
                 compra.CalcularTotal();
 
@@ -360,10 +446,19 @@ namespace TPC_TiendaRopa
             Session["IndiceEdicion"] =
                 null;
 
-            btnCancelarEdicion.Visible =
-                false;
+            btnCancelarEdicion.Enabled =
+                 false;
+
+            btnAgregar.Text =
+                "Agregar";
 
             ddlProveedor.Enabled =
+                true;
+
+            ddlTipoComprobante.Enabled =
+                true;
+
+            txtNumeroComprobante.Enabled =
                 true;
 
             ddlProveedor.SelectedIndex =
@@ -396,6 +491,7 @@ namespace TPC_TiendaRopa
             txtCantidad.Text = "";
 
             txtPrecioCompra.Text = "";
+
         }
 
         private void actualizarGrilla()

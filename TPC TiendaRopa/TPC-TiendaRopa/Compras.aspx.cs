@@ -40,17 +40,46 @@ namespace TPC_TiendaRopa {
 
         private void cargarGrilla()
         {
-            CompraNegocio negocio = new CompraNegocio();
+            CompraNegocio negocio =
+                new CompraNegocio();
 
             int idProveedor = 0;
 
             int.TryParse(
                 ddlProveedor.SelectedValue,
-                out idProveedor
-            );
+                out idProveedor);
+
+            string comprobante =
+                txtComprobante.Text.Trim();
+
+            DateTime fechaDesde;
+
+            DateTime? desde = null;
+
+            if (DateTime.TryParse(
+                    txtFechaDesde.Text,
+                    out fechaDesde))
+            {
+                desde = fechaDesde;
+            }
+
+            DateTime fechaHasta;
+
+            DateTime? hasta = null;
+
+            if (DateTime.TryParse(
+                    txtFechaHasta.Text,
+                    out fechaHasta))
+            {
+                hasta = fechaHasta;
+            }
 
             gvCompras.DataSource =
-                negocio.listar(idProveedor);
+                negocio.listar(
+                    idProveedor,
+                    comprobante,
+                    desde,
+                    hasta);
 
             gvCompras.DataBind();
         }
@@ -69,6 +98,12 @@ namespace TPC_TiendaRopa {
         {
             ddlProveedor.SelectedIndex = 0;
 
+            txtComprobante.Text = "";
+
+            txtFechaDesde.Text = "";
+
+            txtFechaHasta.Text = "";
+
             cargarGrilla();
         }
 
@@ -80,5 +115,23 @@ namespace TPC_TiendaRopa {
                 "FormularioCompra.aspx",
                 false);
         }
+
+        protected void gvCompras_RowCommand(
+            object sender,
+            System.Web.UI.WebControls.GridViewCommandEventArgs e)
+                {
+                    if (e.CommandName == "VerDetalle")
+                    {
+                        int idCompra =
+                            int.Parse(
+                                e.CommandArgument.ToString());
+
+                        Response.Redirect(
+                            "CompraDetalle.aspx?id=" +
+                            idCompra,
+                            false);
+                    }
+                }
+
     }
 }

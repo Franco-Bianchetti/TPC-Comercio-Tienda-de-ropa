@@ -11,48 +11,112 @@
 
     <h2>Compras</h2>
 
-    
-<div class="row mb-3">
+<asp:Panel
+    ID="pnlFiltros"
+    runat="server"
+    DefaultButton="btnBuscar">
 
-    <div class="col-md-4">
+<div class="card shadow-sm mb-3">
 
-        <asp:DropDownList
-            ID="ddlProveedor"
-            runat="server"
-            CssClass="form-select">
-        </asp:DropDownList>
-
+    <div class="card-header">
+        Filtros
     </div>
 
-    <div class="col-md-2">
+    <div class="card-body">
 
-        <asp:Button
-            ID="btnBuscar"
-            runat="server"
-            Text="Buscar"
-            CssClass="btn btn-secondary"
-            OnClick="btnBuscar_Click" />
+        <div class="row">
 
-    </div>
+            <div class="col-md-3">
 
-    <div class="col-md-2">
+                <label>Proveedor</label>
 
-        <asp:Button
-            ID="btnLimpiar"
-            runat="server"
-            Text="Limpiar"
-            CssClass="btn btn-outline-secondary"
-            OnClick="btnLimpiar_Click" />
+                <asp:DropDownList
+                    ID="ddlProveedor"
+                    runat="server"
+                    CssClass="form-select">
+                </asp:DropDownList>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <label>Comprobante</label>
+
+                <asp:TextBox
+                    ID="txtComprobante"
+                    runat="server"
+                    CssClass="form-control"
+                    placeholder="0001-00001234">
+                </asp:TextBox>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <label>Fecha Desde</label>
+
+                <asp:TextBox
+                    ID="txtFechaDesde"
+                    runat="server"
+                    CssClass="form-control"
+                    TextMode="Date">
+                </asp:TextBox>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <label>Fecha Hasta</label>
+
+                <asp:TextBox
+                    ID="txtFechaHasta"
+                    runat="server"
+                    CssClass="form-control"
+                    TextMode="Date">
+                </asp:TextBox>
+
+            </div>
+
+            <div class="col-md-1">
+
+                <label>&nbsp;</label>
+
+                <asp:Button
+                    ID="btnBuscar"
+                    runat="server"
+                    Text="Buscar"
+                    CssClass="btn btn-secondary w-100"
+                    OnClick="btnBuscar_Click" />
+
+            </div>
+
+            <div class="col-md-1">
+
+                <label>&nbsp;</label>
+
+                <asp:Button
+                    ID="btnLimpiar"
+                    runat="server"
+                    Text="Limpiar"
+                    CssClass="btn btn-outline-secondary w-100"
+                    OnClick="btnLimpiar_Click" />
+
+            </div>
+
+        </div>
 
     </div>
 
 </div>
 
+</asp:Panel>
+
     <asp:GridView
         ID="gvCompras"
         runat="server"
         CssClass="table table-striped table-bordered"
-        AutoGenerateColumns="false">
+        AutoGenerateColumns="false"
+        OnRowCommand="gvCompras_RowCommand">
 
         <Columns>
 
@@ -90,6 +154,30 @@
                 HeaderText="Total"
                 DataFormatString="{0:C}" />
 
+            <asp:BoundField
+                DataField="TipoComprobante"
+                HeaderText="Tipo" />
+
+            <asp:BoundField
+                DataField="NumeroComprobante"
+                HeaderText="Comprobante" />
+
+            <asp:TemplateField HeaderText="Acciones">
+
+                <ItemTemplate>
+
+                    <asp:Button
+                        ID="btnVerDetalle"
+                        runat="server"
+                        Text="Ver detalle"
+                        CssClass="btn btn-info btn-sm"
+                        CommandName="VerDetalle"
+                        CommandArgument='<%# Eval("Id") %>' />
+
+                </ItemTemplate>
+
+            </asp:TemplateField>
+
         </Columns>
 
     </asp:GridView>
@@ -99,7 +187,7 @@
     <asp:Button
         ID="btnNuevaCompra"
         runat="server"
-        Text="Nueva Compra"
+        Text="Registrar Compra"
         CssClass="btn btn-primary"
         OnClick="btnNuevaCompra_Click" />
 

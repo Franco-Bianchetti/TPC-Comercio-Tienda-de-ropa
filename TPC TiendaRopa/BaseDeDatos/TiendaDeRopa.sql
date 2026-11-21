@@ -217,12 +217,17 @@ GO
 CREATE TABLE Compras
 (
     IdCompra INT IDENTITY(1,1) PRIMARY KEY,
-
     FechaCompra DATETIME NOT NULL DEFAULT GETDATE(),
-
     IdUsuario INT NOT NULL,
-
     IdProveedor INT NOT NULL,
+
+    TipoComprobante VARCHAR(20)
+        NOT NULL
+        DEFAULT 'FACTURA C',
+
+    NumeroComprobante VARCHAR(30)
+        NOT NULL
+        DEFAULT '',
 
     Total DECIMAL(18,2) NOT NULL DEFAULT 0,
 
@@ -508,6 +513,75 @@ VALUES
 (3,10,22000),
 (4,7,35000);
 GO
+
+
+INSERT INTO Compras
+(
+    IdUsuario,
+    IdProveedor,
+    TipoComprobante,
+    NumeroComprobante,
+    Total
+)
+VALUES
+(
+    1,
+    1,
+    'FACTURA C',
+    '0001-00001234',
+    100000
+);
+
+INSERT INTO Compras
+(
+    IdUsuario,
+    IdProveedor,
+    TipoComprobante,
+    NumeroComprobante,
+    Total
+)
+VALUES
+(
+    1,
+    1,
+    'FACTURA C',
+    '0001-00001235',
+    80000
+);
+
+INSERT INTO DetalleCompras
+(
+    IdCompra,
+    IdProducto,
+    Cantidad,
+    PrecioCompra,
+    Subtotal
+)
+VALUES
+(
+    1,
+    1,
+    10,
+    5000,
+    50000
+);
+
+INSERT INTO DetalleCompras
+(
+    IdCompra,
+    IdProducto,
+    Cantidad,
+    PrecioCompra,
+    Subtotal
+)
+VALUES
+(
+    1,
+    2,
+    1,
+    50000,
+    50000
+);
 
 SELECT 'TIENDA_ROPA_DB creada correctamente'
 AS Resultado;
