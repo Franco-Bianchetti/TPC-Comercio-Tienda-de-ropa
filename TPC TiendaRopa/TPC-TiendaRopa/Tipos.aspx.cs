@@ -25,37 +25,15 @@ namespace TPC_TiendaRopa
 
             string texto = txtBuscar.Text.Trim();
 
-            lblResultado.Visible = false;
-
             if (texto != "")
             {
-                lista = lista.FindAll(x => contiene(x.Nombre, texto));
-
-                lblResultado.Visible = true;
-
-                if (lista.Count == 0)
-                {
-                    lblResultado.CssClass = "d-block mb-3 text-danger";
-                    lblResultado.Text = "No se encontraron resultados para \"" +
-                        Server.HtmlEncode(texto) + "\".";
-                }
-                else
-                {
-                    lblResultado.CssClass = "d-block mb-3 text-success";
-                    lblResultado.Text = (lista.Count == 1)
-                        ? "Se encontró 1 resultado."
-                        : "Se encontraron " + lista.Count + " resultados.";
-                }
+                lista = lista.FindAll(x => Filtros.Contiene(x.Nombre, texto));
             }
 
             gvTipos.DataSource = lista;
             gvTipos.DataBind();
-        }
 
-        private bool contiene(string campo, string texto)
-        {
-            return campo != null &&
-                   campo.IndexOf(texto, StringComparison.OrdinalIgnoreCase) >= 0;
+            Filtros.MostrarResultado(lblResultado, lista.Count, texto != "", texto);
         }
 
         protected void btnBuscar_Click(object sender, EventArgs e)

@@ -1,5 +1,7 @@
 ﻿using System;
 using Negocio;
+using System.Collections.Generic;
+using Dominio;
 
 namespace TPC_TiendaRopa {
     public partial class Compras : System.Web.UI.Page {
@@ -74,14 +76,23 @@ namespace TPC_TiendaRopa {
                 hasta = fechaHasta;
             }
 
-            gvCompras.DataSource =
-                negocio.listar(
+            List<Compra> lista =
+                 negocio.listar(
                     idProveedor,
                     comprobante,
                     desde,
                     hasta);
 
+            gvCompras.DataSource = lista;
             gvCompras.DataBind();
+
+            bool hayFiltro =
+                idProveedor > 0 ||
+                comprobante != "" ||
+                desde.HasValue ||
+                hasta.HasValue;
+
+            Filtros.MostrarResultado(lblResultado, lista.Count, hayFiltro);
         }
 
 

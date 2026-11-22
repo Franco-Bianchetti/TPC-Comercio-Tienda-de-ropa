@@ -18,8 +18,6 @@ namespace TPC_TiendaRopa
             }
         }
 
-
-
         private void cargarGrilla()
         {
             ProductoNegocio negocio = new ProductoNegocio();
@@ -43,23 +41,16 @@ namespace TPC_TiendaRopa
             gvProductos.DataSource = lista;
             gvProductos.DataBind();
 
-            lblResultado.Visible = true;
+            bool hayFiltro =
+                txtBuscar.Text.Trim() != "" ||
+                idMarca > 0 ||
+                idTipo > 0 ||
+                txtTalle.Text.Trim() != "" ||
+                txtColor.Text.Trim() != "" ||
+                chkStockBajo.Checked;
 
-            if (lista.Count == 0)
-            {
-                lblResultado.CssClass = "d-block mb-3 text-danger";
-                lblResultado.Text = "No se encontraron productos.";
-            }
-            else
-            {
-                lblResultado.CssClass = "d-block mb-3 text-success";
-
-                lblResultado.Text = "Se encontraron " +
-                    lista.Count + " productos.";
-            }
+            Filtros.MostrarResultado(lblResultado, lista.Count, hayFiltro);
         }
-
-
 
         private void cargarFiltros()
         {
@@ -89,24 +80,12 @@ namespace TPC_TiendaRopa
             );
         }
 
-
-        private bool contiene(
-            string campo,
-            string texto)
-        {
-            return campo != null &&
-                campo.IndexOf(
-                    texto,
-                    StringComparison.OrdinalIgnoreCase) >= 0;
-        }
-
         protected void btnBuscar_Click(
             object sender,
             EventArgs e)
         {
             cargarGrilla();
         }
-
 
         protected void btnLimpiar_Click(object sender, EventArgs e)
         {
@@ -119,7 +98,6 @@ namespace TPC_TiendaRopa
 
             cargarGrilla();
         }
-
 
         protected void btnNuevo_Click(
             object sender,

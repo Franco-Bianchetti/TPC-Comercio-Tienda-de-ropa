@@ -12,76 +12,118 @@
     <h2>Productos</h2>
 
     
-<asp:Panel runat="server" DefaultButton="btnBuscar">
+    <asp:Panel runat="server" DefaultButton="btnBuscar">
 
-    <div class="row g-2 mb-3">
+        <div class="card shadow-sm mb-3">
 
-        <div class="col-md-4">
-            <asp:TextBox
-                ID="txtBuscar"
-                runat="server"
-                CssClass="form-control"
-                placeholder="Código o nombre..." />
+            <div class="card-header">
+                Filtros
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-3">
+
+                        <label>Código o nombre</label>
+
+                        <asp:TextBox
+                            ID="txtBuscar"
+                            runat="server"
+                            CssClass="form-control"
+                            placeholder="REM001, remera..." />
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <label>Marca</label>
+
+                        <asp:DropDownList
+                            ID="ddlMarca"
+                            runat="server"
+                            CssClass="form-select">
+                        </asp:DropDownList>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <label>Tipo</label>
+
+                        <asp:DropDownList
+                            ID="ddlTipo"
+                            runat="server"
+                            CssClass="form-select">
+                        </asp:DropDownList>
+
+                    </div>
+
+                    <div class="col-md-1">
+
+                        <label>Talle</label>
+
+                        <asp:TextBox
+                            ID="txtTalle"
+                            runat="server"
+                            CssClass="form-control" />
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <label>Color</label>
+
+                        <asp:TextBox
+                            ID="txtColor"
+                            runat="server"
+                            CssClass="form-control" />
+
+                    </div>
+
+                    <div class="col-md-1">
+
+                        <label>&nbsp;</label>
+
+                        <asp:Button
+                            ID="btnBuscar"
+                            runat="server"
+                            Text="Buscar"
+                            CssClass="btn btn-secondary w-100"
+                            OnClick="btnBuscar_Click" />
+
+                    </div>
+
+                    <div class="col-md-1">
+
+                        <label>&nbsp;</label>
+
+                        <asp:Button
+                            ID="btnLimpiar"
+                            runat="server"
+                            Text="Limpiar"
+                            CssClass="btn btn-outline-secondary w-100"
+                            OnClick="btnLimpiar_Click" />
+
+                    </div>
+
+                </div>
+
+                <div class="mt-3">
+
+                    <asp:CheckBox
+                        ID="chkStockBajo"
+                        runat="server"
+                        Text=" Solo productos con stock bajo" />
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="col-md-2">
-            <asp:DropDownList
-                ID="ddlMarca"
-                runat="server"
-                CssClass="form-select">
-            </asp:DropDownList>
-        </div>
-
-        <div class="col-md-2">
-            <asp:DropDownList
-                ID="ddlTipo"
-                runat="server"
-                CssClass="form-select">
-            </asp:DropDownList>
-        </div>
-
-        <div class="col-md-2">
-            <asp:TextBox
-                ID="txtTalle"
-                runat="server"
-                CssClass="form-control"
-                placeholder="Talle" />
-        </div>
-
-        <div class="col-md-2">
-            <asp:TextBox
-                ID="txtColor"
-                runat="server"
-                CssClass="form-control"
-                placeholder="Color" />
-        </div>
-
-    </div>
-
-    <div class="d-flex gap-3 align-items-center mb-3">
-
-        <asp:CheckBox
-            ID="chkStockBajo"
-            runat="server"
-            Text=" Solo productos con stock bajo" />
-
-        <asp:Button
-            ID="btnBuscar"
-            runat="server"
-            Text="Buscar"
-            CssClass="btn btn-secondary"
-            OnClick="btnBuscar_Click" />
-
-        <asp:Button
-            ID="btnLimpiar"
-            runat="server"
-            Text="Limpiar"
-            CssClass="btn btn-outline-secondary"
-            OnClick="btnLimpiar_Click" />
-
-    </div>
-
-</asp:Panel>
+    </asp:Panel>
 
 
     <asp:GridView

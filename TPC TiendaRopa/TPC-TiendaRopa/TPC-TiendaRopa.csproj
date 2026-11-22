@@ -252,6 +252,7 @@
     <Compile Include="Factura.aspx.designer.cs">
       <DependentUpon>Factura.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Utilidades\Filtros.cs" />
     <Compile Include="FormularioCliente.aspx.cs">
       <DependentUpon>FormularioCliente.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -333,7 +334,7 @@
     <Compile Include="Proveedores.aspx.designer.cs">
       <DependentUpon>Proveedores.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Seguridad.cs" />
+    <Compile Include="Utilidades\Seguridad.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

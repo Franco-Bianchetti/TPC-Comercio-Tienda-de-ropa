@@ -182,6 +182,8 @@
 
     </asp:GridView>
 
+        <asp:Label ID="lblResultado" runat="server" CssClass="d-block mb-3" Visible="false" />
+
     <br />
 
     <asp:Button

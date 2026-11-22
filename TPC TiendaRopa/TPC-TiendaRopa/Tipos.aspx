@@ -9,17 +9,63 @@
 
     <h2>Tipos</h2>
 
-        <asp:Panel runat="server" DefaultButton="btnBuscar">
-    <div class="row g-2 mb-3" style="max-width: 600px;">
-        <div class="col">
-            <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Buscar..." />
+            <asp:Panel runat="server" DefaultButton="btnBuscar">
+
+        <div class="card shadow-sm mb-3">
+
+            <div class="card-header">
+                Filtros
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-8">
+
+                        <label>Buscar</label>
+
+                        <asp:TextBox
+                            ID="txtBuscar"
+                            runat="server"
+                            CssClass="form-control"
+                            placeholder="TEXTO-DE-AYUDA" />
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <label>&nbsp;</label>
+
+                        <asp:Button
+                            ID="btnBuscar"
+                            runat="server"
+                            Text="Buscar"
+                            CssClass="btn btn-secondary w-100"
+                            OnClick="btnBuscar_Click" />
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <label>&nbsp;</label>
+
+                        <asp:Button
+                            ID="btnLimpiar"
+                            runat="server"
+                            Text="Limpiar"
+                            CssClass="btn btn-outline-secondary w-100"
+                            OnClick="btnLimpiar_Click" />
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-        <div class="col-auto">
-            <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-secondary" OnClick="btnBuscar_Click" />
-            <asp:Button ID="btnLimpiar" runat="server" Text="Limpiar" CssClass="btn btn-outline-secondary" OnClick="btnLimpiar_Click" />
-        </div>
-    </div>
-</asp:Panel>
+
+    </asp:Panel>
 
     <asp:GridView ID="gvTipos"
         runat="server"
