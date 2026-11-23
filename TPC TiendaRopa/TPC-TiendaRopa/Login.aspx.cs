@@ -7,8 +7,18 @@ namespace TPC_TiendaRopa {
         protected void Page_Load(
             object sender,
             EventArgs e) {
-            if (!IsPostBack) {
+            if (!IsPostBack){
                 Session.Clear();
+
+                if (Request.QueryString["registro"] == "ok"){
+                    lblExito.Text = "¡Cuenta creada! Ya podés iniciar sesión.";
+                    lblExito.Visible = true;
+                }
+
+                if (Request.QueryString["clave"] == "ok"){
+                    lblExito.Text = "Contraseña actualizada. Ya podés iniciar sesión.";
+                    lblExito.Visible = true;
+                }
             }
         }
 

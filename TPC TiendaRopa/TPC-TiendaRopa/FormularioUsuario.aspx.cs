@@ -44,8 +44,8 @@ namespace TPC_TiendaRopa {
                         txtUsuario.Text =
                             usuario.NombreUsuario;
 
-                        txtClave.Attributes["value"] =
-                            usuario.Clave;
+                        txtClave.Attributes["placeholder"] =
+                            "Dejar vacío para no cambiarla";
 
                         ddlPerfil.SelectedValue =
                             usuario.Perfil.ToString();
@@ -91,6 +91,20 @@ namespace TPC_TiendaRopa {
                 return;
             }
 
+            if (!Validaciones.SoloLetras(nombre))
+            {
+                mostrarError(
+                    "El nombre sólo puede contener letras.");
+                return;
+            }
+
+            if (!Validaciones.SoloLetras(apellido))
+            {
+                mostrarError(
+                    "El apellido sólo puede contener letras.");
+                return;
+            }
+
             if (!long.TryParse(dni, out _)) {
                 mostrarError(
                     "El DNI debe contener sólo números.");
@@ -117,22 +131,28 @@ namespace TPC_TiendaRopa {
                 return;
             }
 
-            if (!usuarioValido(usuario)) {
+            if (!Validaciones.UsuarioValido(usuario))
+            {
                 mostrarError(
-                    "El usuario sólo puede contener letras y números.");
+                    "El usuario sólo puede contener letras y números, y debe incluir al menos una letra.");
                 return;
             }
 
-            if (clave.Length < 8) {
-                mostrarError(
-                    "La contraseña debe tener al menos 8 caracteres.");
-                return;
-            }
+            if (id == 0 || clave != "")
+            {
+                if (clave.Length < 8)
+                {
+                    mostrarError(
+                        "La contraseña debe tener al menos 8 caracteres.");
+                    return;
+                }
 
-            if (!contieneNumero(clave)) {
-                mostrarError(
-                    "La contraseña debe contener al menos un número.");
-                return;
+                if (!contieneNumero(clave))
+                {
+                    mostrarError(
+                        "La contraseña debe contener al menos un número.");
+                    return;
+                }
             }
 
             UsuarioNegocio negocio =

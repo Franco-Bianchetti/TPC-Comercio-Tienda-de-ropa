@@ -273,27 +273,38 @@ namespace Negocio {
         }
 
         public void modificar(
-            Usuario usuario) {
+             Usuario usuario){
             AccesoDatos datos =
                 new AccesoDatos();
 
-            try {
-                datos.setConsulta(@"
+            try
+            {
+                string consulta = @"
                     UPDATE Usuarios
                     SET
                         Nombre = @Nombre,
                         Apellido = @Apellido,
                         Dni = @Dni,
                         Usuario = @Usuario,
-                        PasswordHash = @Password,
-                        IdRol = @IdRol
-                    WHERE IdUsuario = @Id");
+                        IdRol = @IdRol";
+
+                bool cambiaClave =
+                    !string.IsNullOrEmpty(usuario.Clave);
+
+                if (cambiaClave)
+                    consulta += ", PasswordHash = @Password";
+
+                consulta += " WHERE IdUsuario = @Id";
+
+                datos.setConsulta(consulta);
 
                 datos.setParametro("@Nombre", usuario.Nombre);
                 datos.setParametro("@Apellido", usuario.Apellido);
                 datos.setParametro("@Dni", usuario.Dni);
                 datos.setParametro("@Usuario", usuario.NombreUsuario);
-                datos.setParametro("@Password", usuario.Clave);
+
+                if (cambiaClave)
+                    datos.setParametro("@Password", usuario.Clave);
 
                 datos.setParametro(
                     "@IdRol",
@@ -306,7 +317,65 @@ namespace Negocio {
 
                 datos.ejecutarAccion();
             }
-            finally {
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public int buscarIdPorUsuarioYDni(
+            string usuario,
+            string dni)
+        {
+            AccesoDatos datos =
+                new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(@"
+                    SELECT IdUsuario
+                    FROM Usuarios
+                    WHERE Usuario = @Usuario
+                    AND Dni = @Dni
+                    AND Activo = 1");
+
+                datos.setParametro("@Usuario", usuario);
+                datos.setParametro("@Dni", dni);
+
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                    return (int)datos.Lector["IdUsuario"];
+
+                return 0;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void cambiarClave(
+            int id,
+            string nuevaClave)
+        {
+            AccesoDatos datos =
+                new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(@"
+                    UPDATE Usuarios
+                    SET PasswordHash = @Password
+                    WHERE IdUsuario = @Id");
+
+                datos.setParametro("@Password", nuevaClave);
+                datos.setParametro("@Id", id);
+
+                datos.ejecutarAccion();
+            }
+            finally
+            {
                 datos.cerrarConexion();
             }
         }

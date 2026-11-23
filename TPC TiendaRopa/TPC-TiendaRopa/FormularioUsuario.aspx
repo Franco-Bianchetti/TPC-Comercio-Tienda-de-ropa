@@ -63,7 +63,8 @@
                     ID="txtClave"
                     runat="server"
                     TextMode="Password"
-                    CssClass="form-control" />
+                    CssClass="form-control"
+                    autocomplete="new-password" />
             </div>
 
             <div class="mb-3">

@@ -93,6 +93,17 @@ namespace TPC_TiendaRopa {
                 negocio.eliminar(id);
 
                 cargarGrilla();
+
+                if (id == Convert.ToInt32(Session["IdUsuario"]))
+                {
+                    cargarGrilla();
+
+                    lblResultado.Visible = true;
+                    lblResultado.CssClass = "d-block mb-3 text-danger";
+                    lblResultado.Text = "No podés eliminar tu propio usuario.";
+
+                    return;
+                }
             }
             if (e.CommandName == "Reactivar")
             {

@@ -1,16 +1,26 @@
 ﻿using System;
 
-namespace TPC_TiendaRopa {
+namespace TPC_TiendaRopa
+{
     public partial class SiteMaster :
-        System.Web.UI.MasterPage {
-        protected void Page_Init(
-        object sender,
-        EventArgs e)
-            {
-              string paginaActual =
-                 Request.AppRelativeCurrentExecutionFilePath;
+        System.Web.UI.MasterPage
+    {
 
-            if (!paginaActual.Contains("Login") &&
+        private bool esPaginaPublica()
+        {
+            string pagina =
+                Request.AppRelativeCurrentExecutionFilePath;
+
+            return pagina.Contains("Login") ||
+                   pagina.Contains("Registro") ||
+                   pagina.Contains("RecuperarClave");
+        }
+
+        protected void Page_Init(
+            object sender,
+            EventArgs e)
+        {
+            if (!esPaginaPublica() &&
                 Session["Usuario"] == null)
             {
                 Response.Redirect(
@@ -18,13 +28,13 @@ namespace TPC_TiendaRopa {
                     true);
             }
         }
+
         protected void Page_Load(
             object sender,
-            EventArgs e) {
-            string paginaActual =
-                Request.AppRelativeCurrentExecutionFilePath;
-
-            if (paginaActual.Contains("Login")) {
+            EventArgs e)
+        {
+            if (esPaginaPublica())
+            {
                 menuPrincipal.Visible = false;
                 panelUsuario.Visible = false;
                 return;
@@ -32,20 +42,24 @@ namespace TPC_TiendaRopa {
 
             menuPrincipal.Visible = true;
 
-            if (Session["Usuario"] != null) {
+            if (Session["Usuario"] != null)
+            {
                 panelUsuario.Visible = true;
 
                 lblUsuario.Text =
                     "Bienvenido: " +
                     Session["Usuario"].ToString();
-            } else {
+            }
+            else
+            {
                 panelUsuario.Visible = false;
             }
         }
 
         protected void btnCerrarSesion_Click(
             object sender,
-            EventArgs e) {
+            EventArgs e)
+        {
             Session.Clear();
             Session.Abandon();
 

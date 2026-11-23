@@ -19,6 +19,13 @@
             </h4>
 
             <asp:Label
+                ID="lblExito"
+                runat="server"
+                CssClass="text-success d-block mb-3"
+                Text="¡Cuenta creada! Ya podés iniciar sesión."
+                Visible="false" />
+
+            <asp:Label
                 ID="lblError"
                 runat="server"
                 CssClass="text-danger"
@@ -66,6 +73,18 @@
                     Text="Iniciar sesión"
                     CssClass="btn btn-dark"
                     OnClick="btnIngresar_Click" />
+
+            </div>
+
+            <div class="text-center mt-3">
+
+                <a href="Registro.aspx">¿No tenés cuenta? Registrate</a>
+
+            </div>
+
+            <div class="text-center mt-2">
+
+                <a href="RecuperarClave.aspx">¿Olvidaste tu contraseña?</a>
 
             </div>
 

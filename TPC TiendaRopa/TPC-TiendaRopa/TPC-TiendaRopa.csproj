@@ -137,6 +137,8 @@
     <Content Include="Marcas.aspx" />
     <Content Include="Productos.aspx" />
     <Content Include="Proveedores.aspx" />
+    <Content Include="RecuperarClave.aspx" />
+    <Content Include="Registro.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -261,6 +263,20 @@
     <Compile Include="FormularioVenta.aspx.designer.cs">
       <DependentUpon>FormularioVenta.aspx</DependentUpon>
     </Compile>
+    <Compile Include="RecuperarClave.aspx.cs">
+      <DependentUpon>RecuperarClave.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RecuperarClave.aspx.designer.cs">
+      <DependentUpon>RecuperarClave.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Registro.aspx.cs">
+      <DependentUpon>Registro.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Registro.aspx.designer.cs">
+      <DependentUpon>Registro.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Utilidades\Filtros.cs" />
     <Compile Include="FormularioCliente.aspx.cs">
       <DependentUpon>FormularioCliente.aspx</DependentUpon>
@@ -372,6 +388,7 @@
     <Compile Include="Usuarios.aspx.designer.cs">
       <DependentUpon>Usuarios.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Utilidades\Validaciones.cs" />
     <Compile Include="VentaDetalle.aspx.cs">
       <DependentUpon>VentaDetalle.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
