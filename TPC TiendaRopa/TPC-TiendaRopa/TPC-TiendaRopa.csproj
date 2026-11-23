@@ -131,6 +131,7 @@
     <Content Include="FormularioTipo.aspx" />
     <Content Include="FormularioMarca.aspx" />
     <Content Include="FormularioUsuario.aspx" />
+    <Content Include="FormularioVenta.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
     <Content Include="Marcas.aspx" />
@@ -194,6 +195,7 @@
     <Content Include="Site.Master" />
     <Content Include="Tipos.aspx" />
     <Content Include="Usuarios.aspx" />
+    <Content Include="VentaDetalle.aspx" />
     <Content Include="Ventas.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -251,6 +253,13 @@
     </Compile>
     <Compile Include="Factura.aspx.designer.cs">
       <DependentUpon>Factura.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioVenta.aspx.cs">
+      <DependentUpon>FormularioVenta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormularioVenta.aspx.designer.cs">
+      <DependentUpon>FormularioVenta.aspx</DependentUpon>
     </Compile>
     <Compile Include="Utilidades\Filtros.cs" />
     <Compile Include="FormularioCliente.aspx.cs">
@@ -363,6 +372,13 @@
     <Compile Include="Usuarios.aspx.designer.cs">
       <DependentUpon>Usuarios.aspx</DependentUpon>
     </Compile>
+    <Compile Include="VentaDetalle.aspx.cs">
+      <DependentUpon>VentaDetalle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VentaDetalle.aspx.designer.cs">
+      <DependentUpon>VentaDetalle.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Ventas.aspx.cs">
       <DependentUpon>Ventas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -380,6 +396,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Imagenes\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

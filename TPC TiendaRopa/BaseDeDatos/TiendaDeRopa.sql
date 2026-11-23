@@ -273,7 +273,7 @@ CREATE TABLE Ventas
 (
     IdVenta INT IDENTITY(1,1) PRIMARY KEY,
 
-    NumeroFactura VARCHAR(20) NOT NULL UNIQUE,
+    NumeroComprobante VARCHAR(20) NOT NULL UNIQUE,
 
     FechaVenta DATETIME NOT NULL DEFAULT GETDATE(),
 
@@ -282,6 +282,14 @@ CREATE TABLE Ventas
     IdUsuario INT NOT NULL,
 
     Total DECIMAL(18,2) NOT NULL DEFAULT 0,
+
+    TipoFactura VARCHAR(20) NOT NULL DEFAULT 'FACTURA C',
+
+    FormaPago VARCHAR(30) NOT NULL DEFAULT 'EFECTIVO',
+
+    CAE VARCHAR(20) NULL,
+
+    VencimientoCAE DATE NULL,
 
     CONSTRAINT FK_Ventas_Clientes
         FOREIGN KEY(IdCliente)
@@ -292,6 +300,10 @@ CREATE TABLE Ventas
         REFERENCES Usuarios(IdUsuario)
 );
 GO
+
+/*======================================================
+    DetalleVentas
+======================================================*/
 
 CREATE TABLE DetalleVentas
 (
@@ -307,13 +319,39 @@ CREATE TABLE DetalleVentas
 
     Subtotal DECIMAL(18,2) NOT NULL,
 
-    CONSTRAINT FK_DetalleVenta_Venta
+    CONSTRAINT FK_DetalleVentas_Venta
         FOREIGN KEY(IdVenta)
         REFERENCES Ventas(IdVenta),
 
-    CONSTRAINT FK_DetalleVenta_Producto
+    CONSTRAINT FK_DetalleVentas_Producto
         FOREIGN KEY(IdProducto)
         REFERENCES Productos(IdProducto)
+);
+GO
+
+/*======================================================
+    EMPRESA
+======================================================*/
+
+CREATE TABLE Empresa
+(
+    IdEmpresa INT IDENTITY(1,1) PRIMARY KEY,
+
+    RazonSocial VARCHAR(100) NOT NULL,
+
+    CUIT VARCHAR(20) NOT NULL,
+
+    IngresosBrutos VARCHAR(30) NOT NULL,
+
+    Direccion VARCHAR(150) NOT NULL,
+
+    CondicionIVA VARCHAR(50) NOT NULL,
+
+    PuntoVenta VARCHAR(10) NOT NULL,
+
+    FechaInicioActividad DATE NOT NULL,
+
+    Ciudad VARCHAR(100) NOT NULL
 );
 GO
 
@@ -583,6 +621,131 @@ VALUES
     50000
 );
 
+/*======================================================
+    INSERT EMPRESA
+======================================================*/
+
+INSERT INTO Empresa
+(
+    RazonSocial,
+    CUIT,
+    IngresosBrutos,
+    Direccion,
+    CondicionIVA,
+    PuntoVenta,
+    FechaInicioActividad,
+    Ciudad
+)
+VALUES
+(
+    'Tienda de Ropa SRL',
+    '30-71234567-8',
+    '901-123456-7',
+    'Av. Mitre 1234',
+    'IVA RESPONSABLE INSCRIPTO',
+    '0001',
+    '2021-05-01',
+    '(C1425ABC) CABA'
+);
+
+
+/*======================================================
+    INSERT VENTAS
+======================================================*/
+
+INSERT INTO Ventas
+(
+    NumeroComprobante,
+    FechaVenta,
+    IdCliente,
+    IdUsuario,
+    Total,
+    TipoFactura,
+    FormaPago,
+    CAE,
+    VencimientoCAE
+)
+VALUES
+(
+    '0001-00000001',
+    GETDATE(),
+    1,
+    1,
+    14400,
+    'FACTURA B',
+    'EFECTIVO',
+    '202611220001',
+    '2026-12-02'
+);
+
+
+INSERT INTO Ventas
+(
+    NumeroComprobante,
+    FechaVenta,
+    IdCliente,
+    IdUsuario,
+    Total,
+    TipoFactura,
+    FormaPago,
+    CAE,
+    VencimientoCAE
+)
+VALUES
+(
+    'N/A',
+    GETDATE(),
+    2,
+    1,
+    30600,
+    'PRESUPUESTO',
+    'TRANSFERENCIA',
+    'N/A',
+    NULL
+);
+GO
+
+
+/*======================================================
+    INSERT DETALLEVENTAS
+======================================================*/
+
+INSERT INTO DetalleVentas
+(
+    IdVenta,
+    IdProducto,
+    Cantidad,
+    PrecioUnitario,
+    Subtotal
+)
+VALUES
+(
+    1,
+    1,
+    1,
+    18000,
+    18000
+);
+
+INSERT INTO DetalleVentas
+(
+    IdVenta,
+    IdProducto,
+    Cantidad,
+    PrecioUnitario,
+    Subtotal
+)
+VALUES
+(
+    2,
+    2,
+    1,
+    30600,
+    30600
+);
+GO
+
+GO
 SELECT 'TIENDA_ROPA_DB creada correctamente'
 AS Resultado;
 GO

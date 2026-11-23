@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Dominio;
+using System;
 using System.Collections.Generic;
-using Dominio;
+using System.Linq;
 
 namespace Negocio
 {
@@ -481,5 +482,13 @@ namespace Negocio
                 }
             }
         }
+
+        public List<Producto> listarConStock()
+        {
+            return listar()
+                .Where(x => x.StockActual > 0)
+                .ToList();
+        }
+
     }
 }
