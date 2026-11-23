@@ -11,6 +11,111 @@
 
     <h2>Ventas</h2>
 
+    <asp:Panel
+        ID="pnlFiltros"
+        runat="server"
+        DefaultButton="btnBuscar">
+
+        <div class="card shadow-sm mb-3">
+
+            <div class="card-header">
+                Filtros
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-3">
+
+                        <label>Cliente</label>
+
+                        <asp:DropDownList
+                            ID="ddlCliente"
+                            runat="server"
+                            CssClass="form-select">
+                        </asp:DropDownList>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <label>Vendedor</label>
+
+                        <asp:DropDownList
+                            ID="ddlVendedor"
+                            runat="server"
+                            CssClass="form-select">
+                        </asp:DropDownList>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <label>Fecha Desde</label>
+
+                        <asp:TextBox
+                            ID="txtFechaDesde"
+                            runat="server"
+                            CssClass="form-control"
+                            TextMode="Date">
+                        </asp:TextBox>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <label>Fecha Hasta</label>
+
+                        <asp:TextBox
+                            ID="txtFechaHasta"
+                            runat="server"
+                            CssClass="form-control"
+                            TextMode="Date">
+                        </asp:TextBox>
+
+                    </div>
+
+                    <div class="col-md-1">
+
+                        <label>&nbsp;</label>
+
+                        <asp:Button
+                            ID="btnBuscar"
+                            runat="server"
+                            Text="Buscar"
+                            CssClass="btn btn-secondary w-100"
+                            OnClick="btnBuscar_Click" />
+
+                    </div>
+
+                    <div class="col-md-1">
+
+                        <label>&nbsp;</label>
+
+                        <asp:Button
+                            ID="btnLimpiar"
+                            runat="server"
+                            Text="Limpiar"
+                            CssClass="btn btn-outline-secondary w-100"
+                            OnClick="btnLimpiar_Click" />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </asp:Panel>
+
+    <asp:Label
+        ID="lblResultado"
+        runat="server"
+        Visible="false">
+    </asp:Label>
+
     <asp:GridView
         ID="gvVentas"
         runat="server"
