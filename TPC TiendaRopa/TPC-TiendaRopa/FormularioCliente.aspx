@@ -28,6 +28,11 @@
                     runat="server"
                     CssClass="form-control"
                     MaxLength="50" />
+                <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txtNombre"
+                    ErrorMessage="El nombre es obligatorio." CssClass="text-danger small d-block" Display="Dynamic" />
+                <asp:RegularExpressionValidator ID="revNombre" runat="server" ControlToValidate="txtNombre"
+                    ValidationExpression="^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]{2,50}$" ErrorMessage="El nombre solo debe contener letras (mínimo 2)."
+                    CssClass="text-danger small d-block" Display="Dynamic" />
             </div>
 
             <div class="mb-3">
@@ -38,6 +43,11 @@
                     runat="server"
                     CssClass="form-control"
                     MaxLength="50" />
+                <asp:RequiredFieldValidator ID="rfvApellido" runat="server" ControlToValidate="txtApellido"
+                    ErrorMessage="El apellido es obligatorio." CssClass="text-danger small d-block" Display="Dynamic" />
+                <asp:RegularExpressionValidator ID="revApellido" runat="server" ControlToValidate="txtApellido"
+                    ValidationExpression="^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]{2,50}$" ErrorMessage="El apellido solo debe contener letras (mínimo 2)."
+                    CssClass="text-danger small d-block" Display="Dynamic" />
             </div>
 
             <div class="mb-3">
@@ -48,6 +58,11 @@
                     runat="server"
                     CssClass="form-control"
                     MaxLength="10" />
+                <asp:RequiredFieldValidator ID="rfvDni" runat="server" ControlToValidate="txtDni"
+                    ErrorMessage="El DNI es obligatorio." CssClass="text-danger small d-block" Display="Dynamic" />
+                <asp:RegularExpressionValidator ID="revDni" runat="server" ControlToValidate="txtDni"
+                    ValidationExpression="^\d{8,10}$" ErrorMessage="El DNI debe contener entre 8 y 10 dígitos numéricos."
+                    CssClass="text-danger small d-block" Display="Dynamic" />
             </div>
 
             <div class="mb-3">
@@ -68,6 +83,11 @@
                     runat="server"
                     CssClass="form-control"
                     MaxLength="10" />
+                <asp:RequiredFieldValidator ID="rfvTelefono" runat="server" ControlToValidate="txtTelefono"
+                    ErrorMessage="El teléfono es obligatorio." CssClass="text-danger small d-block" Display="Dynamic" />
+                <asp:RegularExpressionValidator ID="revTelefono" runat="server" ControlToValidate="txtTelefono"
+                    ValidationExpression="^\d{8,10}$" ErrorMessage="El teléfono debe tener entre 8 y 10 dígitos numéricos."
+                    CssClass="text-danger small d-block" Display="Dynamic" />
             </div>
 
             <div class="mb-3">
@@ -78,6 +98,11 @@
                     runat="server"
                     CssClass="form-control"
                     MaxLength="100" />
+                <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
+                    ErrorMessage="El email es obligatorio." CssClass="text-danger small d-block" Display="Dynamic" />
+                <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
+                    ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$" ErrorMessage="Ingrese un formato de email válido."
+                    CssClass="text-danger small d-block" Display="Dynamic" />
             </div>
 
             <div class="mb-3">

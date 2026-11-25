@@ -1,8 +1,6 @@
-﻿using Dominio;
-using Negocio;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Web.UI.WebControls;
+using Negocio;
 
 namespace TPC_TiendaRopa
 {
@@ -20,31 +18,13 @@ namespace TPC_TiendaRopa
 
         private void cargarGrilla()
         {
-            TipoNegocio negocio = new TipoNegocio();
-            List<Tipo> lista = negocio.listar(Seguridad.EsAdmin());
+            TipoNegocio negocio =
+                new TipoNegocio();
 
-            string texto = txtBuscar.Text.Trim();
+            gvTipos.DataSource =
+                negocio.listar();
 
-            if (texto != "")
-            {
-                lista = lista.FindAll(x => Filtros.Contiene(x.Nombre, texto));
-            }
-
-            gvTipos.DataSource = lista;
             gvTipos.DataBind();
-
-            Filtros.MostrarResultado(lblResultado, lista.Count, texto != "", texto);
-        }
-
-        protected void btnBuscar_Click(object sender, EventArgs e)
-        {
-            cargarGrilla();
-        }
-
-        protected void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            txtBuscar.Text = "";
-            cargarGrilla();
         }
 
         protected void btnNuevo_Click(
@@ -54,23 +34,6 @@ namespace TPC_TiendaRopa
             Response.Redirect(
                 "FormularioTipo.aspx",
                 false);
-        }
-
-        protected void gvTipos_RowDataBound(
-            object sender,
-            GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType != DataControlRowType.DataRow)
-                return;
-
-            Tipo tipo = (Tipo)e.Row.DataItem;
-
-            if (!tipo.Activo)
-            {
-                e.Row.CssClass = "table-secondary text-muted";
-                e.Row.FindControl("pnlActiva").Visible = false;
-                e.Row.FindControl("pnlInactiva").Visible = true;
-            }
         }
 
         protected void gvTipos_RowCommand(
@@ -83,21 +46,10 @@ namespace TPC_TiendaRopa
                     int.Parse(
                         e.CommandArgument.ToString());
 
-                TipoNegocio negocio = new TipoNegocio();
+                TipoNegocio negocio =
+                    new TipoNegocio();
 
                 negocio.eliminar(id);
-
-                cargarGrilla();
-            }
-            if (e.CommandName == "Reactivar")
-            {
-                if (!Seguridad.EsAdmin())
-                    return;
-
-                int id = int.Parse(e.CommandArgument.ToString());
-
-                TipoNegocio negocio = new TipoNegocio();
-                negocio.reactivar(id);
 
                 cargarGrilla();
             }

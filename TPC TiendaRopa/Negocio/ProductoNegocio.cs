@@ -1,55 +1,28 @@
-﻿using Dominio;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Dominio;
 
 namespace Negocio
 {
     public class ProductoNegocio
     {
         private const string SELECT_PRODUCTO = @"
-           SELECT
-        P.IdProducto,
-        P.Codigo,
-        P.Nombre,
-        P.Talle,
-        P.Color,
-        P.StockActual,
-        P.StockMinimo,
-        P.PorcentajeGanancia,
-        P.Activo,
-
-        M.IdMarca,
-        M.Nombre AS Marca,
-
-        T.IdTipo,
-        T.Nombre AS Tipo,
-
-        PR.IdProveedor,
-        PR.RazonSocial AS Proveedor,
-
-        ISNULL(UI.PrecioCompra, 0) AS PrecioCompra
-
+            SELECT
+                P.IdProducto,
+                P.Codigo,
+                P.Nombre,
+                P.Talle,
+                P.Color,
+                P.StockActual,
+                P.StockMinimo,
+                P.PorcentajeGanancia,
+                M.IdMarca,
+                M.Nombre AS Marca,
+                T.IdTipo,
+                T.Nombre AS Tipo
             FROM Productos P
-
-            INNER JOIN Marcas M
-                ON P.IdMarca = M.IdMarca
-
-            INNER JOIN Tipos T
-                ON P.IdTipo = T.IdTipo
-
-            INNER JOIN Proveedores PR
-                ON P.IdProveedor = PR.IdProveedor
-
-            OUTER APPLY
-            (
-                SELECT TOP 1
-                    PrecioCompra
-                FROM IngresosStock
-                WHERE IdProducto = P.IdProducto
-                ORDER BY Fecha DESC, IdIngreso DESC
-                       ) UI
-                ";
+            INNER JOIN Marcas M ON P.IdMarca = M.IdMarca
+            INNER JOIN Tipos T ON P.IdTipo = T.IdTipo ";
 
         private Producto leerProducto(AccesoDatos datos)
         {
@@ -63,7 +36,6 @@ namespace Negocio
             aux.StockActual = (int)datos.Lector["StockActual"];
             aux.StockMinimo = (int)datos.Lector["StockMinimo"];
             aux.PorcentajeGanancia = (decimal)datos.Lector["PorcentajeGanancia"];
-            aux.Activo = (bool)datos.Lector["Activo"];
 
             aux.Marca = new Marca();
             aux.Marca.Id = (int)datos.Lector["IdMarca"];
@@ -73,52 +45,24 @@ namespace Negocio
             aux.Tipo.Id = (int)datos.Lector["IdTipo"];
             aux.Tipo.Nombre = datos.Lector["Tipo"].ToString();
 
-            aux.Proveedores.Add(   new Proveedor{   
-                Id = (int)datos.Lector["IdProveedor"],
-                RazonSocial = datos.Lector["Proveedor"].ToString()
-                 });
-            decimal precioCompra =   (decimal)datos.Lector["PrecioCompra"];
-
-            if (precioCompra > 0)
-            {
-                aux.IngresosStock.Add(new IngresoStock
-                    {
-                        Fecha = DateTime.Now,
-                        Cantidad = 0,
-                        PrecioCompra = precioCompra
-                    });
-            }
             return aux;
         }
 
-
-      
-
-        public List<Producto> listar(bool incluirInactivos = false)
+        public List<Producto> listar()
         {
             List<Producto> lista = new List<Producto>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                string consulta = SELECT_PRODUCTO;
+                datos.setConsulta(SELECT_PRODUCTO +
+                    "WHERE P.Activo = 1 ORDER BY P.IdProducto");
 
-                if (!incluirInactivos)
-                    consulta += "WHERE P.Activo = 1 ";
-
-                consulta += "ORDER BY P.IdProducto";
-
-                datos.setConsulta(consulta);
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
-                    Producto producto =
-                        leerProducto(datos);
-
-                    
-
-                    lista.Add(producto);
+                    lista.Add(leerProducto(datos));
                 }
 
                 return lista;
@@ -128,85 +72,6 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-
-
-        public List<Producto> listarFiltrado(
-            string texto,
-            int idMarca,
-            int idTipo,
-            string talle,
-            string color,
-            bool stockBajo,
-            bool incluirInactivos = false)
-        {
-            List<Producto> lista = new List<Producto>();
-
-            AccesoDatos datos = new AccesoDatos();
-
-            try
-            {
-                string consulta = SELECT_PRODUCTO + " WHERE 1=1 ";
-
-                if (!incluirInactivos)
-                    consulta += " AND P.Activo = 1 ";
-
-                if (!string.IsNullOrWhiteSpace(texto))
-                    consulta += @" AND (
-                P.Codigo LIKE @Texto
-                OR P.Nombre LIKE @Texto
-            ) ";
-
-                if (idMarca > 0)
-                    consulta += " AND P.IdMarca = @IdMarca ";
-
-                if (idTipo > 0)
-                    consulta += " AND P.IdTipo = @IdTipo ";
-
-                if (!string.IsNullOrWhiteSpace(talle))
-                    consulta += " AND P.Talle LIKE @Talle ";
-
-                if (!string.IsNullOrWhiteSpace(color))
-                    consulta += " AND P.Color LIKE @Color ";
-
-                if (stockBajo)
-                    consulta += @" AND P.StockActual > 0
-                           AND P.StockActual < P.StockMinimo ";
-
-                consulta += " ORDER BY P.Nombre ";
-
-                datos.setConsulta(consulta);
-
-                if (!string.IsNullOrWhiteSpace(texto))
-                    datos.setParametro("@Texto", "%" + texto + "%");
-
-                if (idMarca > 0)
-                    datos.setParametro("@IdMarca", idMarca);
-
-                if (idTipo > 0)
-                    datos.setParametro("@IdTipo", idTipo);
-
-                if (!string.IsNullOrWhiteSpace(talle))
-                    datos.setParametro("@Talle", "%" + talle + "%");
-
-                if (!string.IsNullOrWhiteSpace(color))
-                    datos.setParametro("@Color", "%" + color + "%");
-
-                datos.ejecutarLectura();
-
-                while (datos.Lector.Read())
-                {
-                    Producto producto = leerProducto(datos);
-                    lista.Add(producto);
-                }
-
-                return lista;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
-
 
         public Producto buscar(int id)
         {
@@ -225,7 +90,6 @@ namespace Negocio
                 {
                     aux = leerProducto(datos);
                 }
-
             }
             finally
             {
@@ -271,39 +135,6 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-        public List<Producto> listarPorProveedor( int idProveedor)
-        {
-            List<Producto> lista = new List<Producto>();
-            AccesoDatos datos = new AccesoDatos();
-
-            try
-            {
-                datos.setConsulta(
-                    SELECT_PRODUCTO +
-                    "WHERE P.Activo = 1 " +
-                    "AND P.IdProveedor = @IdProveedor " +
-                    " ORDER BY P.Nombre");
-
-                datos.setParametro(
-                    "@IdProveedor",
-                    idProveedor);
-
-                datos.ejecutarLectura();
-
-                while (datos.Lector.Read())
-                {
-                    Producto producto = leerProducto(datos);
-
-                    lista.Add(producto);
-                }
-
-                return lista;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
 
         public bool existeCodigo(string codigo, int idActual)
         {
@@ -338,10 +169,10 @@ namespace Negocio
             {
                 datos.setConsulta(@"
                     INSERT INTO Productos
-                        (Codigo, Nombre, Talle, Color, IdMarca, IdTipo,IdProveedor, StockMinimo, PorcentajeGanancia)
+                        (Codigo, Nombre, Talle, Color, IdMarca, IdTipo, StockMinimo, PorcentajeGanancia)
                     OUTPUT INSERTED.IdProducto
                     VALUES
-                        (@Codigo, @Nombre, @Talle, @Color, @IdMarca, @IdTipo, @IdProveedor, @StockMinimo, @Porcentaje)");
+                        (@Codigo, @Nombre, @Talle, @Color, @IdMarca, @IdTipo, @StockMinimo, @Porcentaje)");
 
                 datos.setParametro("@Codigo", nuevo.Codigo);
                 datos.setParametro("@Nombre", nuevo.Nombre);
@@ -349,8 +180,7 @@ namespace Negocio
                 datos.setParametro("@Color", nuevo.Color);
                 datos.setParametro("@IdMarca", nuevo.Marca.Id);
                 datos.setParametro("@IdTipo", nuevo.Tipo.Id);
-                datos.setParametro("@IdProveedor",nuevo.Proveedores[0].Id);
-                 datos.setParametro("@StockMinimo", nuevo.StockMinimo);
+                datos.setParametro("@StockMinimo", nuevo.StockMinimo);
                 datos.setParametro("@Porcentaje", nuevo.PorcentajeGanancia);
 
                 datos.ejecutarLectura();
@@ -382,7 +212,6 @@ namespace Negocio
                         Color = @Color,
                         IdMarca = @IdMarca,
                         IdTipo = @IdTipo,
-                        IdProveedor = @IdProveedor,
                         StockMinimo = @StockMinimo,
                         PorcentajeGanancia = @Porcentaje
                     WHERE IdProducto = @Id");
@@ -393,7 +222,6 @@ namespace Negocio
                 datos.setParametro("@Color", producto.Color);
                 datos.setParametro("@IdMarca", producto.Marca.Id);
                 datos.setParametro("@IdTipo", producto.Tipo.Id);
-                datos.setParametro("@IdProveedor",producto.Proveedores[0].Id);
                 datos.setParametro("@StockMinimo", producto.StockMinimo);
                 datos.setParametro("@Porcentaje", producto.PorcentajeGanancia);
                 datos.setParametro("@Id", producto.Id);
@@ -416,23 +244,6 @@ namespace Negocio
             try
             {
                 datos.setConsulta("UPDATE Productos SET Activo = 0 WHERE IdProducto = @Id");
-                datos.setParametro("@Id", id);
-
-                datos.ejecutarAccion();
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
-
-        public void reactivar(int id)
-        {
-            AccesoDatos datos = new AccesoDatos();
-
-            try
-            {
-                datos.setConsulta("UPDATE Productos SET Activo = 1 WHERE IdProducto = @Id");
                 datos.setParametro("@Id", id);
 
                 datos.ejecutarAccion();
@@ -482,13 +293,5 @@ namespace Negocio
                 }
             }
         }
-
-        public List<Producto> listarConStock()
-        {
-            return listar()
-                .Where(x => x.StockActual > 0)
-                .ToList();
-        }
-
     }
 }
