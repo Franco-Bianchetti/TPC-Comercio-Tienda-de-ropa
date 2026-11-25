@@ -18,7 +18,7 @@
                                 Talle: <%#Eval("Talle")%> | Color: <%#Eval("Color")%><br />
                                 Stock: <%#Eval("StockActual")%>
                             </p>
-                            <a href="Ventas.aspx?id=<%#Eval("Id")%>" class="btn btn-primary">Vender</a>
+                            <a href="FormularioVenta.aspx" class="btn btn-primary">Vender</a>
                         </div>
                     </div>
                 </div>

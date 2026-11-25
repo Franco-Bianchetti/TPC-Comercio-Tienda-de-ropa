@@ -11,215 +11,185 @@
 
     <div class="card shadow">
 
-        <div class="card-body">
+        <div class="card-body p-3">
 
             <!-- ORIGINAL -->
-
-            <div class="text-center border border-bottom-0 p-2">
-
-                <strong style="font-size:28px;">
+            <div class="text-center border border-bottom-0 py-1">
+                <strong style="font-size:20px; letter-spacing:1px;">
                     ORIGINAL
                 </strong>
-
             </div>
 
             <!-- CABECERA -->
-
             <div class="row border m-0">
 
                 <!-- EMPRESA -->
+                <div class="col-md-5 p-3 border-end">
 
-                <div class="col-md-5 p-4 border-end">
-
-                    <h1 class="fw-bold mb-3">
-
+                    <h2 class="fw-bold mb-2" style="font-size:26px;">
                         <asp:Label
                             ID="lblRazonSocial"
-                            runat="server">
-                        </asp:Label>
+                            runat="server" />
+                    </h2>
 
-                    </h1>
-
-                    <div class="mb-3">
-
+                    <div class="mb-2 small">
                         <asp:Label
                             ID="lblDireccion"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                         <br />
-
                         <asp:Label
                             ID="lblCiudad"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                     </div>
 
-                    <div class="mb-2">
-
+                    <div class="mb-1 small">
                         <strong>CUIT:</strong>
-
                         <asp:Label
                             ID="lblCUIT"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                     </div>
 
-                    <div class="mb-2">
-
+                    <div class="mb-1 small">
                         <strong>Ingresos Brutos:</strong>
-
                         <asp:Label
                             ID="lblIngresosBrutos"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                     </div>
 
-                    <div class="mb-3">
-
+                    <div class="mb-2 small">
                         <strong>Fecha Inicio Actividad:</strong>
-
                         <asp:Label
                             ID="lblFechaInicioActividad"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                     </div>
 
-                    <div style="
-                        font-weight:bold;
-                        font-size:18px;
-                        text-transform:uppercase;">
-
+                    <div class="fw-bold small text-uppercase">
                         <asp:Label
                             ID="lblCondicionIVA"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                     </div>
 
                 </div>
 
                 <!-- LETRA -->
+                <div class="col-md-2 p-2 text-center border-end d-flex flex-column align-items-center justify-content-start pt-3">
 
-                <div class="col-md-2 p-3 text-center border-end">
-
-                    <div style="
-                        border:4px solid black;
-                        font-size:60px;
-                        font-weight:bold;
-                        height:120px;
-                        line-height:100px;">
-
-                        B
-
+                    <div style="border:3px solid black; font-size:38px; font-weight:bold; width:72px; height:72px; line-height:64px;">
+                        <asp:Label
+                            ID="lblLetra"
+                            runat="server"
+                            Text="B" />
                     </div>
 
-                    <strong>
-                        CÓD. 06
+                    <strong class="small mt-1">
+                        <asp:Label
+                            ID="lblCodigoComprobante"
+                            runat="server"
+                            Text="CÓD. 06" />
                     </strong>
 
                 </div>
 
                 <!-- FACTURA -->
+                <div class="col-md-5 p-3">
 
-                <div class="col-md-5 p-4">
+                    <h4 class="fw-bold mb-3" style="font-size:19px;">
+                        <asp:Label
+                            ID="lblTituloComprobante"
+                            runat="server"
+                            Text="FACTURA" />
+                    </h4>
 
-                    <h1 class="fw-bold mb-4">
-                        FACTURA
-                    </h1>
-
-                    <p>
-
+                    <p class="mb-1 small">
                         <strong>Punto de Venta:</strong>
-
                         <asp:Label
                             ID="lblPuntoVenta"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                     </p>
 
-                    <p>
-
+                    <p class="mb-1 small">
                         <strong>Comp. Nro:</strong>
-
                         <asp:Label
                             ID="lblComprobante"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                     </p>
 
-                    <p>
-
+                    <p class="mb-0 small">
                         <strong>Fecha de Emisión:</strong>
-
                         <asp:Label
                             ID="lblFecha"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                     </p>
 
                 </div>
 
             </div>
 
-            <!-- CLIENTE -->
+            <!-- DATOS DEL CLIENTE -->
+            <div class="border-start border-end border-bottom m-0 p-3 small">
 
-            <div class="row border-start border-end border-bottom p-3">
-
-                <div class="col-md-9 text-end d-flex flex-column justify-content-center">
-
-                    <strong>Apellido y Nombre:</strong>
-
-                    <asp:Label
-                        ID="lblCliente"
-                        runat="server">
-                    </asp:Label>
-
+                <div class="text-uppercase text-muted fw-bold mb-2" style="font-size:11px;">
+                    Datos del Cliente
                 </div>
 
-                <div class="col-md-5">
-
-                    <strong>Forma de Pago:</strong>
-
+                <div class="mb-1">
+                    <strong>Apellido y Nombre:</strong>
                     <asp:Label
-                        ID="lblFormaPago"
-                        runat="server">
-                    </asp:Label>
+                        ID="lblCliente"
+                        runat="server" />
+                </div>
 
+                <div class="mb-1">
+                    <strong>DNI:</strong>
+                    <asp:Label
+                        ID="lblDniCliente"
+                        runat="server" />
+                </div>
+
+                <div class="mb-1">
+                    <strong>Dirección:</strong>
+                    <asp:Label
+                        ID="lblDireccionCliente"
+                        runat="server" />
+                </div>
+
+                <div class="mb-1">
+                    <strong>Teléfono:</strong>
+                    <asp:Label
+                        ID="lblTelefonoCliente"
+                        runat="server" />
+                </div>
+
+                <div>
+                    <strong>Email:</strong>
+                    <asp:Label
+                        ID="lblEmailCliente"
+                        runat="server" />
                 </div>
 
             </div>
 
-            <!-- VENDEDOR -->
+            <!-- DATOS DE LA OPERACIÓN -->
+            <div class="border-start border-end border-bottom m-0 p-3 bg-light small">
 
-            <div class="row border-start border-end border-bottom p-3">
+                <div class="text-uppercase text-muted fw-bold mb-1" style="font-size:11px;">
+                    Datos de la Operación
+                </div>
 
-                <div class="col-md-12">
-
+                <div>
                     <strong>Vendedor:</strong>
-
                     <asp:Label
                         ID="lblVendedor"
-                        runat="server">
-                    </asp:Label>
-
+                        runat="server" />
                 </div>
 
             </div>
 
             <!-- DETALLE -->
-
             <asp:GridView
                 ID="gvDetalle"
                 runat="server"
-                CssClass="table table-bordered mt-3"
+                CssClass="table table-bordered table-sm mt-3 small"
                 AutoGenerateColumns="false">
 
                 <Columns>
@@ -246,67 +216,49 @@
 
             </asp:GridView>
 
-            <!-- TOTALES -->
+            <!-- FORMA DE PAGO Y TOTALES -->
+            <div class="row mt-3 align-items-start small">
 
-            <div class="row">
+                <div class="col-md-6">
+                    <div class="border rounded p-2 px-3 bg-light">
+                        <strong>Forma de Pago:</strong>
+                        <asp:Label
+                            ID="lblFormaPago"
+                            runat="server" />
+                    </div>
+                </div>
 
-                <div class="col-md-5 offset-md-7">
+                <div class="col-md-5 offset-md-1">
 
-                    <table class="table">
+                    <table class="table table-sm mb-0">
 
                         <tr>
-
-                            <th>
-                                Subtotal
-                            </th>
-
+                            <th>Subtotal</th>
                             <td class="text-end">
-
                                 <asp:Label
                                     ID="lblSubtotal"
-                                    runat="server">
-                                </asp:Label>
-
+                                    runat="server" />
                             </td>
-
                         </tr>
 
                         <tr>
-
-                            <th>
-                                Descuento
-                            </th>
-
+                            <th>Descuento</th>
                             <td class="text-end">
-
                                 <asp:Label
                                     ID="lblDescuento"
-                                    runat="server">
-                                </asp:Label>
-
+                                    runat="server" />
                             </td>
-
                         </tr>
 
                         <tr class="table-primary">
-
-                            <th>
-                                TOTAL
-                            </th>
-
+                            <th>TOTAL</th>
                             <td class="text-end">
-
                                 <strong>
-
                                     <asp:Label
                                         ID="lblTotal"
-                                        runat="server">
-                                    </asp:Label>
-
+                                        runat="server" />
                                 </strong>
-
                             </td>
-
                         </tr>
 
                     </table>
@@ -315,62 +267,58 @@
 
             </div>
 
-            <hr />
+            <hr class="my-3" />
 
             <!-- PIE FACTURA -->
-
-            <div class="row mt-4">
+            <div class="row mt-2 small">
 
                 <div class="col-md-3">
-
                     <asp:Image
-                    ID="imgQR"
-                    runat="server"
-                    Width="280px"
-                    Height="120px"
-                    ImageUrl="~/Imagenes/qr-demo.png" />
-
+                        ID="imgQR"
+                        runat="server"
+                        Width="220px"
+                        Height="95px"
+                        ImageUrl="~/Imagenes/qr-demo.png" />
                 </div>
 
                 <div class="col-md-9 text-end d-flex flex-column justify-content-center">
 
-                    <p>
-
+                    <p class="mb-1">
                         <strong>CAE:</strong>
-
                         <asp:Label
                             ID="lblCAE"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                     </p>
 
-                    <p>
-
+                    <p class="mb-0">
                         <strong>Fecha de Vto. de CAE:</strong>
-
                         <asp:Label
                             ID="lblVencimientoCAE"
-                            runat="server">
-                        </asp:Label>
-
+                            runat="server" />
                     </p>
 
                 </div>
 
             </div>
 
-            <br />
+            <div class="mt-3">
 
-            <asp:HyperLink
-                ID="hlVolver"
-                runat="server"
-                NavigateUrl="~/Ventas.aspx"
-                CssClass="btn btn-secondary">
+                <asp:HyperLink
+                    ID="hlPdf"
+                    runat="server"
+                    CssClass="btn btn-success btn-sm">
+                    Descargar PDF
+                </asp:HyperLink>
 
-                Volver
+                <asp:HyperLink
+                    ID="hlVolver"
+                    runat="server"
+                    NavigateUrl="~/Ventas.aspx"
+                    CssClass="btn btn-secondary btn-sm ms-2">
+                    Volver
+                </asp:HyperLink>
 
-            </asp:HyperLink>
+            </div>
 
         </div>
 

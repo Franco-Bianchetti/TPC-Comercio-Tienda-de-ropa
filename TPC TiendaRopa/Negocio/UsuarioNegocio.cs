@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using Dominio;
 
-namespace Negocio {
-    public class UsuarioNegocio {
-        public Usuario login(string usuario, string clave) {
+namespace Negocio
+{
+    public class UsuarioNegocio
+    {
+        public Usuario login(string usuario, string clave)
+        {
             AccesoDatos datos = new AccesoDatos();
 
-            try {
+            try
+            {
                 datos.setConsulta(@"
                     SELECT
                         IdUsuario,
+                        Codigo,
                         Nombre,
                         Apellido,
                         Dni,
@@ -27,28 +32,18 @@ namespace Negocio {
 
                 datos.ejecutarLectura();
 
-                if (datos.Lector.Read()) {
+                if (datos.Lector.Read())
+                {
                     Usuario aux = new Usuario();
 
                     aux.Id = (int)datos.Lector["IdUsuario"];
-
-                    aux.Nombre =
-                        datos.Lector["Nombre"].ToString();
-
-                    aux.Apellido =
-                        datos.Lector["Apellido"].ToString();
-
-                    aux.Dni =
-                        datos.Lector["Dni"].ToString();
-
-                    aux.NombreUsuario =
-                        datos.Lector["Usuario"].ToString();
-
-                    aux.Clave =
-                        datos.Lector["PasswordHash"].ToString();
-
-                    aux.Perfil =
-                        ((int)datos.Lector["IdRol"] == 1)
+                    aux.Codigo = datos.Lector["Codigo"].ToString();
+                    aux.Nombre = datos.Lector["Nombre"].ToString();
+                    aux.Apellido = datos.Lector["Apellido"].ToString();
+                    aux.Dni = datos.Lector["Dni"].ToString();
+                    aux.NombreUsuario = datos.Lector["Usuario"].ToString();
+                    aux.Clave = datos.Lector["PasswordHash"].ToString();
+                    aux.Perfil = ((int)datos.Lector["IdRol"] == 1)
                         ? TipoPerfil.Administrador
                         : TipoPerfil.Vendedor;
 
@@ -57,20 +52,23 @@ namespace Negocio {
 
                 return null;
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }
 
-        public List<Usuario> listar(bool incluirInactivas = false) 
+        public List<Usuario> listar(bool incluirInactivas = false)
         {
             List<Usuario> lista = new List<Usuario>();
             AccesoDatos datos = new AccesoDatos();
 
-            try {
-                 string consulta = @"
+            try
+            {
+                string consulta = @"
                     SELECT
                         IdUsuario,
+                        Codigo,
                         Nombre,
                         Apellido,
                         Dni,
@@ -86,13 +84,14 @@ namespace Negocio {
                 consulta += "ORDER BY IdUsuario";
 
                 datos.setConsulta(consulta);
-
                 datos.ejecutarLectura();
 
-                while (datos.Lector.Read()) {
+                while (datos.Lector.Read())
+                {
                     Usuario aux = new Usuario();
 
                     aux.Id = (int)datos.Lector["IdUsuario"];
+                    aux.Codigo = datos.Lector["Codigo"].ToString();
                     aux.Nombre = datos.Lector["Nombre"].ToString();
                     aux.Apellido = datos.Lector["Apellido"].ToString();
                     aux.Dni = datos.Lector["Dni"].ToString();
@@ -108,19 +107,22 @@ namespace Negocio {
 
                 return lista;
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }
 
-        public Usuario buscar(int id) {
-            AccesoDatos datos =
-                new AccesoDatos();
+        public Usuario buscar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
 
-            try {
+            try
+            {
                 datos.setConsulta(@"
                     SELECT
                         IdUsuario,
+                        Codigo,
                         Nombre,
                         Apellido,
                         Dni,
@@ -132,33 +134,20 @@ namespace Negocio {
                     AND Activo = 1");
 
                 datos.setParametro("@Id", id);
-
                 datos.ejecutarLectura();
 
-                if (datos.Lector.Read()) {
-                    Usuario aux =
-                        new Usuario();
+                if (datos.Lector.Read())
+                {
+                    Usuario aux = new Usuario();
 
-                    aux.Id =
-                        (int)datos.Lector["IdUsuario"];
-
-                    aux.Nombre =
-                        datos.Lector["Nombre"].ToString();
-
-                    aux.Apellido =
-                        datos.Lector["Apellido"].ToString();
-
-                    aux.Dni =
-                        datos.Lector["Dni"].ToString();
-
-                    aux.NombreUsuario =
-                        datos.Lector["Usuario"].ToString();
-
-                    aux.Clave =
-                        datos.Lector["PasswordHash"].ToString();
-
-                    aux.Perfil =
-                        ((int)datos.Lector["IdRol"] == 1)
+                    aux.Id = (int)datos.Lector["IdUsuario"];
+                    aux.Codigo = datos.Lector["Codigo"].ToString();
+                    aux.Nombre = datos.Lector["Nombre"].ToString();
+                    aux.Apellido = datos.Lector["Apellido"].ToString();
+                    aux.Dni = datos.Lector["Dni"].ToString();
+                    aux.NombreUsuario = datos.Lector["Usuario"].ToString();
+                    aux.Clave = datos.Lector["PasswordHash"].ToString();
+                    aux.Perfil = ((int)datos.Lector["IdRol"] == 1)
                         ? TipoPerfil.Administrador
                         : TipoPerfil.Vendedor;
 
@@ -167,18 +156,18 @@ namespace Negocio {
 
                 return null;
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }
 
-        public bool existeUsuario(
-            string usuario,
-            int idActual) {
-            AccesoDatos datos =
-                new AccesoDatos();
+        public bool existeUsuario(string usuario, int idActual)
+        {
+            AccesoDatos datos = new AccesoDatos();
 
-            try {
+            try
+            {
                 datos.setConsulta(@"
                     SELECT IdUsuario
                     FROM Usuarios
@@ -193,18 +182,18 @@ namespace Negocio {
 
                 return datos.Lector.Read();
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }
 
-        public bool existeDni(
-            string dni,
-            int idActual) {
-            AccesoDatos datos =
-                new AccesoDatos();
+        public bool existeDni(string dni, int idActual)
+        {
+            AccesoDatos datos = new AccesoDatos();
 
-            try {
+            try
+            {
                 datos.setConsulta(@"
                     SELECT IdUsuario
                     FROM Usuarios
@@ -219,17 +208,18 @@ namespace Negocio {
 
                 return datos.Lector.Read();
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }
 
-        public void agregar(
-            Usuario nuevo) {
-            AccesoDatos datos =
-                new AccesoDatos();
+        public void agregar(Usuario nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
 
-            try {
+            try
+            {
                 datos.setConsulta(@"
                     INSERT INTO Usuarios
                     (
@@ -257,25 +247,21 @@ namespace Negocio {
                 datos.setParametro("@Dni", nuevo.Dni);
                 datos.setParametro("@Usuario", nuevo.NombreUsuario);
                 datos.setParametro("@Password", nuevo.Clave);
-
                 datos.setParametro(
                     "@IdRol",
-                    nuevo.Perfil ==
-                    TipoPerfil.Administrador
-                    ? 1
-                    : 2);
+                    nuevo.Perfil == TipoPerfil.Administrador ? 1 : 2);
 
                 datos.ejecutarAccion();
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }
 
-        public void modificar(
-             Usuario usuario){
-            AccesoDatos datos =
-                new AccesoDatos();
+        public void modificar(Usuario usuario)
+        {
+            AccesoDatos datos = new AccesoDatos();
 
             try
             {
@@ -288,8 +274,7 @@ namespace Negocio {
                         Usuario = @Usuario,
                         IdRol = @IdRol";
 
-                bool cambiaClave =
-                    !string.IsNullOrEmpty(usuario.Clave);
+                bool cambiaClave = !string.IsNullOrEmpty(usuario.Clave);
 
                 if (cambiaClave)
                     consulta += ", PasswordHash = @Password";
@@ -308,10 +293,7 @@ namespace Negocio {
 
                 datos.setParametro(
                     "@IdRol",
-                    usuario.Perfil ==
-                    TipoPerfil.Administrador
-                    ? 1
-                    : 2);
+                    usuario.Perfil == TipoPerfil.Administrador ? 1 : 2);
 
                 datos.setParametro("@Id", usuario.Id);
 
@@ -323,12 +305,9 @@ namespace Negocio {
             }
         }
 
-        public int buscarIdPorUsuarioYDni(
-            string usuario,
-            string dni)
+        public int buscarIdPorUsuarioYDni(string usuario, string dni)
         {
-            AccesoDatos datos =
-                new AccesoDatos();
+            AccesoDatos datos = new AccesoDatos();
 
             try
             {
@@ -355,12 +334,9 @@ namespace Negocio {
             }
         }
 
-        public void cambiarClave(
-            int id,
-            string nuevaClave)
+        public void cambiarClave(int id, string nuevaClave)
         {
-            AccesoDatos datos =
-                new AccesoDatos();
+            AccesoDatos datos = new AccesoDatos();
 
             try
             {
@@ -380,11 +356,12 @@ namespace Negocio {
             }
         }
 
-        public void eliminar(int id) {
-            AccesoDatos datos =
-                new AccesoDatos();
+        public void eliminar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
 
-            try {
+            try
+            {
                 datos.setConsulta(@"
                     UPDATE Usuarios
                     SET Activo = 0
@@ -394,7 +371,8 @@ namespace Negocio {
 
                 datos.ejecutarAccion();
             }
-            finally {
+            finally
+            {
                 datos.cerrarConexion();
             }
         }
@@ -408,7 +386,7 @@ namespace Negocio {
                 datos.setConsulta(@"
                     UPDATE Usuarios
                     SET Activo = 1
-                    WHERE IdUsuario= @Id");
+                    WHERE IdUsuario = @Id");
 
                 datos.setParametro("@Id", id);
 

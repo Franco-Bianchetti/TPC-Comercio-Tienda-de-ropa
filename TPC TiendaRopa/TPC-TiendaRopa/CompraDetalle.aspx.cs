@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dominio;
 using Negocio;
 
@@ -6,75 +7,54 @@ namespace TPC_TiendaRopa
 {
     public partial class CompraDetalle : System.Web.UI.Page
     {
-        protected void Page_Load(
-            object sender,
-            EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                cargarDetalleCompra();
+                int idCompra;
+                if (!int.TryParse(Request.QueryString["id"], out idCompra))
+                {
+                    Response.Redirect("Compras.aspx", false);
+                    return;
+                }
+
+                cargarCompra(idCompra);
+                cargarDetalle(idCompra);
             }
         }
 
-        private void cargarDetalleCompra()
+        private void cargarCompra(int idCompra)
         {
-            string valorId =
-                Request.QueryString["id"];
-
-            int idCompra;
-
-            if (!int.TryParse(
-                    valorId,
-                    out idCompra))
-            {
-                Response.Redirect(
-                    "Compras.aspx",
-                    false);
-
-                return;
-            }
-
-            CompraNegocio negocio =
-                new CompraNegocio();
-
-            Compra compra =
-                negocio.obtenerCompra(
-                    idCompra);
+            CompraNegocio negocio = new CompraNegocio();
+            Compra compra = negocio.obtenerCompra(idCompra);
 
             if (compra == null)
             {
-                Response.Redirect(
-                    "Compras.aspx",
-                    false);
-
+                Response.Redirect("Compras.aspx", false);
                 return;
             }
 
-            lblFecha.Text =
-                compra.Fecha.ToString(
-                    "dd/MM/yyyy HH:mm");
+            lblTipoComprobante.Text = compra.TipoComprobante;
+            lblNumeroComprobante.Text = compra.NumeroComprobante;
+            lblFecha.Text = compra.Fecha.ToString("dd/MM/yyyy HH:mm");
 
-            lblUsuario.Text =
-                compra.Usuario.Nombre +
-                " " +
-                compra.Usuario.Apellido;
+            lblProveedor.Text = compra.Proveedor != null
+                ? compra.Proveedor.RazonSocial
+                : "-";
 
-            lblProveedor.Text =
-                compra.Proveedor.RazonSocial;
+            lblUsuario.Text = compra.Usuario != null
+                ? compra.Usuario.Codigo + " - " + compra.Usuario.Nombre + " " + compra.Usuario.Apellido
+                : "-";
 
-            lblTipoComprobante.Text =
-                compra.TipoComprobante;
+            lblTotal.Text = "$ " + compra.Total.ToString("N2");
+        }
 
-            lblNumeroComprobante.Text =
-                compra.NumeroComprobante;
+        private void cargarDetalle(int idCompra)
+        {
+            CompraNegocio negocio = new CompraNegocio();
+            List<DetalleCompra> lista = negocio.obtenerDetalle(idCompra);
 
-            lblImporteTotal.Text =
-                compra.Total.ToString("C");
-
-            gvDetalle.DataSource =
-                negocio.obtenerDetalle(
-                    idCompra);
-
+            gvDetalle.DataSource = lista;
             gvDetalle.DataBind();
         }
     }

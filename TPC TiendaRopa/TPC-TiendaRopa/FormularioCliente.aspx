@@ -26,7 +26,8 @@
                 <asp:TextBox
                     ID="txtNombre"
                     runat="server"
-                    CssClass="form-control" />
+                    CssClass="form-control"
+                    MaxLength="50" />
             </div>
 
             <div class="mb-3">
@@ -35,7 +36,8 @@
                 <asp:TextBox
                     ID="txtApellido"
                     runat="server"
-                    CssClass="form-control" />
+                    CssClass="form-control"
+                    MaxLength="50" />
             </div>
 
             <div class="mb-3">
@@ -44,7 +46,18 @@
                 <asp:TextBox
                     ID="txtDni"
                     runat="server"
-                    CssClass="form-control" />
+                    CssClass="form-control"
+                    MaxLength="10" />
+            </div>
+
+            <div class="mb-3">
+                <label>Dirección</label>
+
+                <asp:TextBox
+                    ID="txtDireccion"
+                    runat="server"
+                    CssClass="form-control"
+                    MaxLength="150" />
             </div>
 
             <div class="mb-3">
@@ -53,7 +66,8 @@
                 <asp:TextBox
                     ID="txtTelefono"
                     runat="server"
-                    CssClass="form-control" />
+                    CssClass="form-control"
+                    MaxLength="10" />
             </div>
 
             <div class="mb-3">
@@ -62,7 +76,8 @@
                 <asp:TextBox
                     ID="txtEmail"
                     runat="server"
-                    CssClass="form-control" />
+                    CssClass="form-control"
+                    MaxLength="100" />
             </div>
 
             <div class="mb-3">

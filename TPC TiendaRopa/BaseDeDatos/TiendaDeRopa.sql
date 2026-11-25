@@ -66,6 +66,11 @@ CREATE TABLE Usuarios
 
     Activo BIT NOT NULL DEFAULT 1,
 
+    Codigo AS (
+        CASE WHEN IdRol = 1 THEN 'A-' ELSE 'V-' END
+        + RIGHT('000' + CAST(IdUsuario AS VARCHAR(10)), 3)
+    ) PERSISTED,
+
     CONSTRAINT FK_Usuarios_Roles
         FOREIGN KEY(IdRol)
         REFERENCES Roles(IdRol)
@@ -86,9 +91,11 @@ CREATE TABLE Clientes
 
     Dni VARCHAR(20) NOT NULL UNIQUE,
 
-    Telefono VARCHAR(30),
+    Telefono VARCHAR(30) NULL,
 
     Email VARCHAR(100) UNIQUE,
+
+    Direccion VARCHAR(150) NULL,
 
     Activo BIT NOT NULL DEFAULT 1
 );
@@ -106,7 +113,7 @@ CREATE TABLE Proveedores
 
     Cuit VARCHAR(20) UNIQUE,
 
-    Telefono VARCHAR(30),
+    Telefono VARCHAR(30) NULL,
 
     Email VARCHAR(100) UNIQUE,
 
@@ -217,17 +224,16 @@ GO
 CREATE TABLE Compras
 (
     IdCompra INT IDENTITY(1,1) PRIMARY KEY,
+
     FechaCompra DATETIME NOT NULL DEFAULT GETDATE(),
+
     IdUsuario INT NOT NULL,
+
     IdProveedor INT NOT NULL,
 
-    TipoComprobante VARCHAR(20)
-        NOT NULL
-        DEFAULT 'FACTURA C',
+    TipoComprobante VARCHAR(20) NOT NULL DEFAULT 'FACTURA C',
 
-    NumeroComprobante VARCHAR(30)
-        NOT NULL
-        DEFAULT '',
+    NumeroComprobante VARCHAR(30) NOT NULL DEFAULT '',
 
     Total DECIMAL(18,2) NOT NULL DEFAULT 0,
 
@@ -273,7 +279,7 @@ CREATE TABLE Ventas
 (
     IdVenta INT IDENTITY(1,1) PRIMARY KEY,
 
-    NumeroComprobante VARCHAR(20) NOT NULL UNIQUE,
+    NumeroComprobante VARCHAR(20) NOT NULL,
 
     FechaVenta DATETIME NOT NULL DEFAULT GETDATE(),
 
@@ -301,8 +307,13 @@ CREATE TABLE Ventas
 );
 GO
 
+CREATE UNIQUE INDEX UX_Ventas_NumeroComprobante
+    ON Ventas(NumeroComprobante)
+    WHERE NumeroComprobante <> 'N/A';
+GO
+
 /*======================================================
-    DetalleVentas
+    DETALLE VENTAS
 ======================================================*/
 
 CREATE TABLE DetalleVentas
@@ -323,7 +334,7 @@ CREATE TABLE DetalleVentas
         FOREIGN KEY(IdVenta)
         REFERENCES Ventas(IdVenta),
 
-    CONSTRAINT FK_DetalleVentas_Producto
+    CONSTRAINT FK_DetalleVenta_Producto
         FOREIGN KEY(IdProducto)
         REFERENCES Productos(IdProducto)
 );
@@ -425,7 +436,8 @@ INSERT INTO Clientes
     Apellido,
     Dni,
     Telefono,
-    Email
+    Email,
+    Direccion
 )
 VALUES
 (
@@ -433,14 +445,16 @@ VALUES
     'PEREZ',
     '30111222',
     '1144441111',
-    'juan@gmail.com'
+    'juan@gmail.com',
+    'AV. SIEMPREVIVA 742, SAN ISIDRO'
 ),
 (
     'MARIA',
     'GONZALEZ',
     '32999888',
     '1144442222',
-    'maria@gmail.com'
+    'maria@gmail.com',
+    'AV. LIBERTADOR 1520, VICENTE LOPEZ'
 );
 GO
 
@@ -527,16 +541,28 @@ VALUES
     7,
     2,
     85
+),
+(
+    'REM002',
+    'REMERA DEPORTIVA NIKE',
+    'L',
+    'BLANCA',
+    1,
+    1,
+    1,
+    10,
+    5,
+    15
 );
 GO
-
 
 INSERT INTO ProductoProveedor
 VALUES
 (1,1),
 (2,1),
 (3,2),
-(4,2);
+(4,2),
+(5,1);
 GO
 
 INSERT INTO IngresosStock
@@ -549,9 +575,9 @@ VALUES
 (1,20,10000),
 (2,15,18000),
 (3,10,22000),
-(4,7,35000);
+(4,7,35000),
+(5,10,5000);
 GO
-
 
 INSERT INTO Compras
 (
@@ -568,17 +594,7 @@ VALUES
     'FACTURA C',
     '0001-00001234',
     100000
-);
-
-INSERT INTO Compras
-(
-    IdUsuario,
-    IdProveedor,
-    TipoComprobante,
-    NumeroComprobante,
-    Total
-)
-VALUES
+),
 (
     1,
     1,
@@ -586,6 +602,7 @@ VALUES
     '0001-00001235',
     80000
 );
+GO
 
 INSERT INTO DetalleCompras
 (
@@ -602,17 +619,7 @@ VALUES
     10,
     5000,
     50000
-);
-
-INSERT INTO DetalleCompras
-(
-    IdCompra,
-    IdProducto,
-    Cantidad,
-    PrecioCompra,
-    Subtotal
-)
-VALUES
+),
 (
     1,
     2,
@@ -620,6 +627,7 @@ VALUES
     50000,
     50000
 );
+GO
 
 /*======================================================
     INSERT EMPRESA
@@ -647,7 +655,7 @@ VALUES
     '2021-05-01',
     '(C1425ABC) CABA'
 );
-
+GO
 
 /*======================================================
     INSERT VENTAS
@@ -676,22 +684,7 @@ VALUES
     'EFECTIVO',
     '202611220001',
     '2026-12-02'
-);
-
-
-INSERT INTO Ventas
-(
-    NumeroComprobante,
-    FechaVenta,
-    IdCliente,
-    IdUsuario,
-    Total,
-    TipoFactura,
-    FormaPago,
-    CAE,
-    VencimientoCAE
-)
-VALUES
+),
 (
     'N/A',
     GETDATE(),
@@ -704,7 +697,6 @@ VALUES
     NULL
 );
 GO
-
 
 /*======================================================
     INSERT DETALLEVENTAS
@@ -725,17 +717,7 @@ VALUES
     1,
     18000,
     18000
-);
-
-INSERT INTO DetalleVentas
-(
-    IdVenta,
-    IdProducto,
-    Cantidad,
-    PrecioUnitario,
-    Subtotal
-)
-VALUES
+),
 (
     2,
     2,
@@ -745,7 +727,5 @@ VALUES
 );
 GO
 
-GO
-SELECT 'TIENDA_ROPA_DB creada correctamente'
-AS Resultado;
+SELECT 'TIENDA_ROPA_DB creada correctamente' AS Resultado;
 GO

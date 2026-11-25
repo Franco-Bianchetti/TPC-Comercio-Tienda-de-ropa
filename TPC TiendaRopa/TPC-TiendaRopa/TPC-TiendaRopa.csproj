@@ -44,7 +44,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.7.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.7, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.7\lib\net461\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.13.7, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.13.7\lib\net461\itextsharp.xmlworker.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Select.Pdf, Version=26.6.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\Select.Pdf.26.6.0\lib\net40\Select.Pdf.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -122,7 +134,6 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
-    <Content Include="Factura.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="FormularioCliente.aspx" />
     <Content Include="FormularioCompra.aspx" />
@@ -198,6 +209,7 @@
     <Content Include="Tipos.aspx" />
     <Content Include="Usuarios.aspx" />
     <Content Include="VentaDetalle.aspx" />
+    <Content Include="VentaDetalleImpresion.aspx" />
     <Content Include="Ventas.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -248,13 +260,6 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Factura.aspx.cs">
-      <DependentUpon>Factura.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Factura.aspx.designer.cs">
-      <DependentUpon>Factura.aspx</DependentUpon>
     </Compile>
     <Compile Include="FormularioVenta.aspx.cs">
       <DependentUpon>FormularioVenta.aspx</DependentUpon>
@@ -395,6 +400,13 @@
     </Compile>
     <Compile Include="VentaDetalle.aspx.designer.cs">
       <DependentUpon>VentaDetalle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VentaDetalleImpresion.aspx.cs">
+      <DependentUpon>VentaDetalleImpresion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VentaDetalleImpresion.aspx.designer.cs">
+      <DependentUpon>VentaDetalleImpresion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Ventas.aspx.cs">
       <DependentUpon>Ventas.aspx</DependentUpon>

@@ -1,6 +1,10 @@
-﻿namespace Dominio {
-    public class Usuario {
+﻿namespace Dominio
+{
+    public class Usuario
+    {
         public int Id { get; set; }
+
+        public string Codigo { get; set; }
 
         public string Nombre { get; set; }
 
@@ -21,6 +25,14 @@
             get
             {
                 return Nombre + " " + Apellido;
+            }
+        }
+
+        public string CodigoNombre
+        {
+            get
+            {
+                return Codigo + " - " + Nombre + " " + Apellido;
             }
         }
     }

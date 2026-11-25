@@ -78,6 +78,33 @@ namespace TPC_TiendaRopa
         protected global::System.Web.UI.WebControls.Label lblCondicionIVA;
 
         /// <summary>
+        /// Control lblLetra.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLetra;
+
+        /// <summary>
+        /// Control lblCodigoComprobante.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCodigoComprobante;
+
+        /// <summary>
+        /// Control lblTituloComprobante.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTituloComprobante;
+
+        /// <summary>
         /// Control lblPuntoVenta.
         /// </summary>
         /// <remarks>
@@ -114,13 +141,40 @@ namespace TPC_TiendaRopa
         protected global::System.Web.UI.WebControls.Label lblCliente;
 
         /// <summary>
-        /// Control lblFormaPago.
+        /// Control lblDniCliente.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblFormaPago;
+        protected global::System.Web.UI.WebControls.Label lblDniCliente;
+
+        /// <summary>
+        /// Control lblDireccionCliente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDireccionCliente;
+
+        /// <summary>
+        /// Control lblTelefonoCliente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTelefonoCliente;
+
+        /// <summary>
+        /// Control lblEmailCliente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEmailCliente;
 
         /// <summary>
         /// Control lblVendedor.
@@ -139,6 +193,15 @@ namespace TPC_TiendaRopa
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvDetalle;
+
+        /// <summary>
+        /// Control lblFormaPago.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFormaPago;
 
         /// <summary>
         /// Control lblSubtotal.
@@ -193,6 +256,15 @@ namespace TPC_TiendaRopa
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblVencimientoCAE;
+
+        /// <summary>
+        /// Control hlPdf.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlPdf;
 
         /// <summary>
         /// Control hlVolver.

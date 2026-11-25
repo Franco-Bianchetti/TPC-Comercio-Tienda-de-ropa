@@ -11,106 +11,105 @@
 
     <h2>Compras</h2>
 
-<asp:Panel
-    ID="pnlFiltros"
-    runat="server"
-    DefaultButton="btnBuscar">
+    <asp:Panel
+        ID="pnlFiltros"
+        runat="server"
+        DefaultButton="btnBuscar">
 
+        <div class="card shadow-sm mb-3">
 
-<div class="card shadow-sm mb-3">
-
-    <div class="card-header">
-        Filtros
-    </div>
-
-    <div class="card-body">
-
-        <div class="row">
-
-            <div class="col-md-3">
-
-                <label>Proveedor</label>
-
-                <asp:DropDownList
-                    ID="ddlProveedor"
-                    runat="server"
-                    CssClass="form-select">
-                </asp:DropDownList>
-
+            <div class="card-header">
+                Filtros
             </div>
 
-            <div class="col-md-3">
+            <div class="card-body">
 
-                <label>Comprobante</label>
+                <div class="row">
 
-                <asp:TextBox
-                    ID="txtComprobante"
-                    runat="server"
-                    CssClass="form-control"
-                    placeholder="0001-00001234">
-                </asp:TextBox>
+                    <div class="col-md-3">
 
-            </div>
+                        <label>Proveedor</label>
 
-            <div class="col-md-2">
+                        <asp:DropDownList
+                            ID="ddlProveedor"
+                            runat="server"
+                            CssClass="form-select">
+                        </asp:DropDownList>
 
-                <label>Fecha Desde</label>
+                    </div>
 
-                <asp:TextBox
-                    ID="txtFechaDesde"
-                    runat="server"
-                    CssClass="form-control"
-                    TextMode="Date">
-                </asp:TextBox>
+                    <div class="col-md-3">
 
-            </div>
+                        <label>Comprobante</label>
 
-            <div class="col-md-2">
+                        <asp:TextBox
+                            ID="txtComprobante"
+                            runat="server"
+                            CssClass="form-control"
+                            placeholder="0001-00001234">
+                        </asp:TextBox>
 
-                <label>Fecha Hasta</label>
+                    </div>
 
-                <asp:TextBox
-                    ID="txtFechaHasta"
-                    runat="server"
-                    CssClass="form-control"
-                    TextMode="Date">
-                </asp:TextBox>
+                    <div class="col-md-2">
 
-            </div>
+                        <label>Fecha Desde</label>
 
-            <div class="col-md-1">
+                        <asp:TextBox
+                            ID="txtFechaDesde"
+                            runat="server"
+                            CssClass="form-control"
+                            TextMode="Date">
+                        </asp:TextBox>
 
-                <label>&nbsp;</label>
+                    </div>
 
-                <asp:Button
-                    ID="btnBuscar"
-                    runat="server"
-                    Text="Buscar"
-                    CssClass="btn btn-secondary w-100"
-                    OnClick="btnBuscar_Click" />
+                    <div class="col-md-2">
 
-            </div>
+                        <label>Fecha Hasta</label>
 
-            <div class="col-md-1">
+                        <asp:TextBox
+                            ID="txtFechaHasta"
+                            runat="server"
+                            CssClass="form-control"
+                            TextMode="Date">
+                        </asp:TextBox>
 
-                <label>&nbsp;</label>
+                    </div>
 
-                <asp:Button
-                    ID="btnLimpiar"
-                    runat="server"
-                    Text="Limpiar"
-                    CssClass="btn btn-outline-secondary w-100"
-                    OnClick="btnLimpiar_Click" />
+                    <div class="col-md-1">
+
+                        <label>&nbsp;</label>
+
+                        <asp:Button
+                            ID="btnBuscar"
+                            runat="server"
+                            Text="Buscar"
+                            CssClass="btn btn-secondary w-100"
+                            OnClick="btnBuscar_Click" />
+
+                    </div>
+
+                    <div class="col-md-1">
+
+                        <label>&nbsp;</label>
+
+                        <asp:Button
+                            ID="btnLimpiar"
+                            runat="server"
+                            Text="Limpiar"
+                            CssClass="btn btn-outline-secondary w-100"
+                            OnClick="btnLimpiar_Click" />
+
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
-
-</div>
-
-</asp:Panel>
+    </asp:Panel>
 
     <asp:GridView
         ID="gvCompras"
@@ -135,8 +134,7 @@
                 HeaderText="Usuario">
 
                 <ItemTemplate>
-                    <%# Eval("Usuario.Nombre") %>
-                    <%# Eval("Usuario.Apellido") %>
+                    <%# Eval("Usuario.Codigo") %> - <%# Eval("Usuario.Nombre") %> <%# Eval("Usuario.Apellido") %>
                 </ItemTemplate>
 
             </asp:TemplateField>
@@ -183,7 +181,7 @@
 
     </asp:GridView>
 
-        <asp:Label ID="lblResultado" runat="server" CssClass="d-block mb-3" Visible="false" />
+    <asp:Label ID="lblResultado" runat="server" CssClass="d-block mb-3" Visible="false" />
 
     <br />
 
