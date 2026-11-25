@@ -1,38 +1,29 @@
 ﻿using System;
+using Dominio;
+using Negocio;
 
 namespace TPC_TiendaRopa
 {
-    public partial class SiteMaster :
-        System.Web.UI.MasterPage
+    public partial class SiteMaster : System.Web.UI.MasterPage
     {
-
         private bool esPaginaPublica()
         {
-            string pagina =
-                Request.AppRelativeCurrentExecutionFilePath;
+            string pagina = Request.AppRelativeCurrentExecutionFilePath ?? string.Empty;
 
             return pagina.Contains("Login") ||
                    pagina.Contains("Registro") ||
                    pagina.Contains("RecuperarClave");
         }
 
-        protected void Page_Init(
-            object sender,
-            EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
-            if (!esPaginaPublica() &&
-                Session["Usuario"] == null)
+            if (!esPaginaPublica() && Session["Usuario"] == null)
             {
-                Response.Redirect(
-                    "~/Login.aspx",
-                    true);
+                Response.Redirect("~/Login.aspx", true);
             }
         }
 
-
-        protected void Page_Load(
-            object sender,
-            EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             if (esPaginaPublica())
             {
@@ -55,10 +46,7 @@ namespace TPC_TiendaRopa
             if (Session["Usuario"] != null)
             {
                 panelUsuario.Visible = true;
-
-                lblUsuario.Text =
-                    "Bienvenido: " +
-                    Session["Usuario"].ToString();
+                lblUsuario.Text = "Bienvenido: " + Session["Usuario"].ToString();
             }
             else
             {
@@ -66,18 +54,12 @@ namespace TPC_TiendaRopa
             }
         }
 
-
-
-        protected void btnCerrarSesion_Click(
-            object sender,
-            EventArgs e)
+        protected void btnCerrarSesion_Click(object sender, EventArgs e)
         {
             Session.Clear();
             Session.Abandon();
 
-            Response.Redirect(
-                "Login.aspx",
-                false);
+            Response.Redirect("Login.aspx", false);
         }
     }
 }

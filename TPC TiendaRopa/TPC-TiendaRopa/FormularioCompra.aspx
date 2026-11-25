@@ -114,8 +114,18 @@
                         <asp:DropDownList
                             ID="ddlProducto"
                             runat="server"
-                            CssClass="form-select">
+                            CssClass="form-select"
+                            AutoPostBack="true"
+                            OnSelectedIndexChanged="ddlProducto_SelectedIndexChanged">
                         </asp:DropDownList>
+
+                        <small class="text-muted d-block mt-1">
+                            <asp:Label
+                                ID="lblStockActual"
+                                runat="server"
+                                Text="Stock actual: -">
+                            </asp:Label>
+                        </small>
 
                     </div>
 

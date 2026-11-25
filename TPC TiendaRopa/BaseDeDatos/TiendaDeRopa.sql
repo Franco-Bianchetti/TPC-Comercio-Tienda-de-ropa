@@ -66,6 +66,8 @@ CREATE TABLE Usuarios
 
     Activo BIT NOT NULL DEFAULT 1,
 
+    Aprobado BIT NOT NULL DEFAULT 1,
+
     Codigo AS (
         CASE WHEN IdRol = 1 THEN 'A-' ELSE 'V-' END
         + RIGHT('000' + CAST(IdUsuario AS VARCHAR(10)), 3)
@@ -383,7 +385,8 @@ INSERT INTO Usuarios
     Dni,
     Usuario,
     PasswordHash,
-    IdRol
+    IdRol,
+    Aprobado
 )
 VALUES
 (
@@ -392,6 +395,7 @@ VALUES
     '30000001',
     'jperez',
     'jperez123',
+    1,
     1
 ),
 (
@@ -400,7 +404,8 @@ VALUES
     '30000002',
     'agomez',
     'agomez123',
-    2
+    2,
+    1
 ),
 (
     'LUCAS',
@@ -408,7 +413,8 @@ VALUES
     '30000003',
     'lruiz',
     'lruiz123',
-    2
+    2,
+    1
 );
 GO
 
@@ -526,7 +532,7 @@ VALUES
     3,
     3,
     2,
-    10,
+    11,
     3,
     75
 ),
@@ -538,7 +544,7 @@ VALUES
     4,
     4,
     2,
-    7,
+    9,
     2,
     85
 ),
@@ -576,11 +582,18 @@ VALUES
 (2,15,18000),
 (3,10,22000),
 (4,7,35000),
-(5,10,5000);
+(5,10,5000),
+(3,1,40000),
+(4,2,50000);
+GO
+
+SET IDENTITY_INSERT Compras ON;
 GO
 
 INSERT INTO Compras
 (
+    IdCompra,
+    FechaCompra,
     IdUsuario,
     IdProveedor,
     TipoComprobante,
@@ -590,18 +603,25 @@ INSERT INTO Compras
 VALUES
 (
     1,
+    '2026-11-25 13:57:45.307',
+    1,
     1,
     'FACTURA C',
     '0001-00001234',
     100000
 ),
 (
+    3,
+    '2026-11-25 14:33:21.710',
     1,
-    1,
-    'FACTURA C',
+    2,
+    'FACTURA A',
     '0001-00001235',
-    80000
+    140000
 );
+GO
+
+SET IDENTITY_INSERT Compras OFF;
 GO
 
 INSERT INTO DetalleCompras
@@ -626,6 +646,20 @@ VALUES
     1,
     50000,
     50000
+),
+(
+    3,
+    3,
+    1,
+    40000,
+    40000
+),
+(
+    3,
+    4,
+    2,
+    50000,
+    100000
 );
 GO
 
@@ -729,6 +763,3 @@ GO
 
 SELECT 'TIENDA_ROPA_DB creada correctamente' AS Resultado;
 GO
-
-ALTER TABLE Usuarios
-ADD Aprobado BIT NOT NULL DEFAULT 1;
