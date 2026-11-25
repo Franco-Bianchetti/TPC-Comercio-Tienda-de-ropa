@@ -1,5 +1,4 @@
-﻿
-<%@ Page Title="Reportes" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Reportes.aspx.cs" Inherits="TPC_TiendaRopa.Reportes" %>
+﻿<%@ Page Title="Reportes" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Reportes.aspx.cs" Inherits="TPC_TiendaRopa.Reportes" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -51,6 +50,10 @@
             margin-top: 15px;
             font-size: 14px;
         }
+
+        .oculto-visual {
+            visibility: hidden;
+        }
     </style>
 
     <div class="titulo-reportes">
@@ -63,37 +66,52 @@
     <div class="tarjeta-reporte">
 
         <div class="titulo-seccion">
-            Ranking de vendedores
+            <asp:Label ID="lblTituloReporte" runat="server" Text="Seleccione reporte" />
         </div>
 
         <p class="text-muted">
-            Consultá el rendimiento de cada vendedor según las ventas realizadas
-            durante un período determinado.
+            <asp:Label ID="lblDescripcionReporte" runat="server" Text="Elegí un tipo de reporte para consultar información y exportar a CSV." />
         </p>
 
         <div class="row align-items-end">
 
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-3">
+                <label>Tipo de reporte</label>
+                <asp:DropDownList
+                    ID="ddlReporte"
+                    runat="server"
+                    CssClass="form-select"
+                    AutoPostBack="true"
+                    OnSelectedIndexChanged="ddlReporte_SelectedIndexChanged">
+                    <asp:ListItem Value="" Text="Seleccione reporte" Selected="True" />
+                    <asp:ListItem Value="CLIENTES" Text="Ranking de clientes frecuentes" />
+                    <asp:ListItem Value="VENDEDORES" Text="Ranking de vendedores" />
+                    <asp:ListItem Value="PRODUCTOS" Text="Productos más vendidos" />
+                    <asp:ListItem Value="STOCK_BAJO" Text="Productos con bajo stock" />
+                    <asp:ListItem Value="MEDIO_PAGO" Text="Ventas por Medio de Pago" />
+                    <asp:ListItem Value="BALANCE" Text="Balance de Ventas vs. Compras" />
+                </asp:DropDownList>
+            </div>
+
+            <div class="col-md-2 mb-3" id="divDesde" runat="server">
                 <label>Desde</label>
                 <asp:TextBox
                     ID="txtDesde"
                     runat="server"
                     TextMode="Date"
-                    CssClass="form-control">
-                </asp:TextBox>
+                    CssClass="form-control" />
             </div>
 
-            <div class="col-md-3 mb-3">
+            <div class="col-md-2 mb-3" id="divHasta" runat="server">
                 <label>Hasta</label>
                 <asp:TextBox
                     ID="txtHasta"
                     runat="server"
                     TextMode="Date"
-                    CssClass="form-control">
-                </asp:TextBox>
+                    CssClass="form-control" />
             </div>
 
-            <div class="col-md-3 mb-3">
+            <div class="col-md-2 mb-3">
                 <asp:Button
                     ID="btnBuscar"
                     runat="server"
@@ -102,7 +120,7 @@
                     OnClick="btnBuscar_Click" />
             </div>
 
-            <div class="col-md-3 mb-3">
+            <div class="col-md-2 mb-3">
                 <asp:Button
                     ID="btnExportar"
                     runat="server"
@@ -117,8 +135,7 @@
             ID="lblMensaje"
             runat="server"
             CssClass="mensaje-reporte"
-            Visible="false">
-        </asp:Label>
+            Visible="false" />
 
     </div>
 
@@ -130,54 +147,23 @@
             </div>
 
             <asp:Label
-                ID="lblCantidadVendedores"
+                ID="lblCantidadRegistros"
                 runat="server"
-                CssClass="text-muted">
-            </asp:Label>
+                CssClass="text-muted" />
         </div>
 
         <div class="table-responsive">
 
             <asp:GridView
-                ID="gvRanking"
+                ID="gvResultados"
                 runat="server"
-                AutoGenerateColumns="false"
+                AutoGenerateColumns="true"
+                ShowFooter="true"
+                FooterStyle-Font-Bold="true"
                 CssClass="table table-hover"
                 GridLines="None"
-                EmptyDataText="No se encontraron ventas para el período seleccionado.">
-
-                <Columns>
-
-                    <asp:BoundField
-                        DataField="Codigo"
-                        HeaderText="Código" />
-
-                    <asp:BoundField
-                        DataField="Nombre"
-                        HeaderText="Nombre" />
-
-                    <asp:BoundField
-                        DataField="Apellido"
-                        HeaderText="Apellido" />
-
-                    <asp:BoundField
-                        DataField="CantidadVentas"
-                        HeaderText="Ventas"
-                        DataFormatString="{0:N0}" />
-
-                    <asp:BoundField
-                        DataField="UnidadesVendidas"
-                        HeaderText="Unidades"
-                        DataFormatString="{0:N0}" />
-
-                    <asp:BoundField
-                        DataField="TotalVendido"
-                        HeaderText="Total vendido"
-                        DataFormatString="{0:C2}" />
-
-                </Columns>
-
-            </asp:GridView>
+                OnRowDataBound="gvResultados_RowDataBound"
+                EmptyDataText="Seleccione un reporte y presione Consultar para ver resultados." />
 
         </div>
 
