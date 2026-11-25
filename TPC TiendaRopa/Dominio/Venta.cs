@@ -8,7 +8,9 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        public string NumeroFactura { get; set; }
+        public string TipoFactura { get; set; }
+
+        public string NumeroComprobante { get; set; }
 
         public DateTime Fecha { get; set; }
 
@@ -16,13 +18,21 @@ namespace Dominio
 
         public Usuario Vendedor { get; set; }
 
+        public decimal Total { get; set; }
+
+        public string FormaPago { get; set; }
+
+        public string CAE { get; set; }
+
+        public DateTime? VencimientoCAE { get; set; }
+
         public List<DetalleVenta> Detalles { get; set; }
             = new List<DetalleVenta>();
 
         public decimal CalcularTotal()
         {
-            return Detalles.Sum(d =>
-                d.CalcularSubtotal());
+            return Detalles.Sum(
+                d => d.Subtotal);
         }
     }
 }

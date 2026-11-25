@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Dominio;
 
@@ -6,20 +7,26 @@ namespace Negocio
 {
     public class TipoNegocio
     {
-        public List<Tipo> listar()
+        public List<Tipo> listar(bool incluirInactivas = false)
         {
             List<Tipo> lista = new List<Tipo>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                datos.setConsulta(
-                    @"SELECT
+                string consulta = @"
+                        SELECT
                         IdTipo,
-                        Nombre
-                      FROM Tipos
-                      WHERE Activo = 1
-                      ORDER BY IdTipo");
+                        Nombre,
+                        Activo
+                      FROM Tipos ";
+
+                if (!incluirInactivas)
+                    consulta += " WHERE Activo = 1 ";
+
+                consulta += "ORDER BY idTipo";
+
+                datos.setConsulta(consulta);
 
                 datos.ejecutarLectura();
 
@@ -29,6 +36,7 @@ namespace Negocio
 
                     aux.Id = (int)datos.Lector["IdTipo"];
                     aux.Nombre = datos.Lector["Nombre"].ToString();
+                    aux.Activo = (bool)datos.Lector["Activo"];
 
                     lista.Add(aux);
                 }
@@ -200,6 +208,27 @@ namespace Negocio
                 datos.setParametro(
                     "@Id",
                     id);
+
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void reactivar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(@"
+                    UPDATE Tipos
+                    SET Activo = 1
+                    WHERE IdTipo = @Id");
+
+                datos.setParametro("@Id", id);
 
                 datos.ejecutarAccion();
             }

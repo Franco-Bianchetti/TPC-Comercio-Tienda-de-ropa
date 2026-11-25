@@ -1,47 +1,194 @@
-﻿<%@ Page Title="Nueva venta" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Ventas.aspx.cs" Inherits="TPC_TiendaRopa.Ventas" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+﻿<%@ Page Title="Ventas"
+    Language="C#"
+    MasterPageFile="~/Site.Master"
+    AutoEventWireup="true"
+    CodeBehind="Ventas.aspx.cs"
+    Inherits="TPC_TiendaRopa.Ventas" %>
 
-    <h2>Nueva venta</h2>
+<asp:Content ID="Content1"
+    ContentPlaceHolderID="MainContent"
+    runat="server">
 
-    <div class="row g-2 mb-3">
+    <h2>Ventas</h2>
 
-        <div class="col-md-4">
-            <asp:DropDownList ID="ddlCliente" runat="server" CssClass="form-select">
-                <asp:ListItem Text="Seleccionar cliente" Value="0" />
-            </asp:DropDownList>
+    <asp:Panel
+        ID="pnlFiltros"
+        runat="server"
+        DefaultButton="btnBuscar">
+
+        <div class="card shadow-sm mb-3">
+
+            <div class="card-header">
+                Filtros
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-3">
+
+                        <label>Cliente</label>
+
+                        <asp:DropDownList
+                            ID="ddlCliente"
+                            runat="server"
+                            CssClass="form-select">
+                        </asp:DropDownList>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <label>Vendedor</label>
+
+                        <asp:DropDownList
+                            ID="ddlVendedor"
+                            runat="server"
+                            CssClass="form-select">
+                        </asp:DropDownList>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <label>Fecha Desde</label>
+
+                        <asp:TextBox
+                            ID="txtFechaDesde"
+                            runat="server"
+                            CssClass="form-control"
+                            TextMode="Date">
+                        </asp:TextBox>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <label>Fecha Hasta</label>
+
+                        <asp:TextBox
+                            ID="txtFechaHasta"
+                            runat="server"
+                            CssClass="form-control"
+                            TextMode="Date">
+                        </asp:TextBox>
+
+                    </div>
+
+                    <div class="col-md-1">
+
+                        <label>&nbsp;</label>
+
+                        <asp:Button
+                            ID="btnBuscar"
+                            runat="server"
+                            Text="Buscar"
+                            CssClass="btn btn-secondary w-100"
+                            OnClick="btnBuscar_Click" />
+
+                    </div>
+
+                    <div class="col-md-1">
+
+                        <label>&nbsp;</label>
+
+                        <asp:Button
+                            ID="btnLimpiar"
+                            runat="server"
+                            Text="Limpiar"
+                            CssClass="btn btn-outline-secondary w-100"
+                            OnClick="btnLimpiar_Click" />
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="col-md-4">
-            <asp:DropDownList ID="ddlProducto" runat="server" CssClass="form-select">
-                <asp:ListItem Text="Seleccionar producto" Value="0" />
-            </asp:DropDownList>
-        </div>
+    </asp:Panel>
 
-        <div class="col-md-2">
-            <asp:TextBox ID="txtCantidad" runat="server" CssClass="form-control" placeholder="Cantidad" />
-        </div>
+    <asp:Label
+        ID="lblResultado"
+        runat="server"
+        Visible="false">
+    </asp:Label>
 
-        <div class="col-md-2">
-            <asp:Button ID="btnAgregar" runat="server" Text="Agregar" CssClass="btn btn-secondary w-100" />
-        </div>
+    <asp:GridView
+        ID="gvVentas"
+        runat="server"
+        CssClass="table table-striped table-bordered"
+        AutoGenerateColumns="false"
+        OnRowCommand="gvVentas_RowCommand">
 
-    </div>
+        <Columns>
 
-    <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio unitario</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+            <asp:BoundField
+                DataField="Fecha"
+                HeaderText="Fecha"
+                DataFormatString="{0:dd/MM/yyyy}" />
 
-    <h5>Total: $0</h5>
+            <asp:BoundField
+                DataField="Fecha"
+                HeaderText="Hora"
+                DataFormatString="{0:HH:mm}" />
 
-    <asp:Button ID="btnConfirmar" runat="server" Text="Confirmar venta" CssClass="btn btn-primary" />
+            <asp:TemplateField HeaderText="Cliente">
+
+                <ItemTemplate>
+
+                    <%# Eval("Cliente.Nombre") %>
+                    <%# Eval("Cliente.Apellido") %>
+
+                </ItemTemplate>
+
+            </asp:TemplateField>
+
+            <asp:TemplateField HeaderText="Vendedor">
+
+                <ItemTemplate>
+
+                    <%# Eval("Vendedor.Nombre") %>
+                    <%# Eval("Vendedor.Apellido") %>
+
+                </ItemTemplate>
+
+            </asp:TemplateField>
+
+            <asp:BoundField
+                DataField="Total"
+                HeaderText="Total"
+                DataFormatString="{0:C}" />
+
+            <asp:TemplateField HeaderText="Acciones">
+
+                <ItemTemplate>
+
+                    <asp:Button
+                        ID="btnDetalle"
+                        runat="server"
+                        Text="Ver detalle"
+                        CssClass="btn btn-info btn-sm"
+                        CommandName="Detalle"
+                        CommandArgument='<%# Eval("Id") %>' />
+
+                </ItemTemplate>
+
+            </asp:TemplateField>
+
+        </Columns>
+
+    </asp:GridView>
+
+    <br />
+
+    <asp:Button
+        ID="btnNuevaVenta"
+        runat="server"
+        Text="Registrar Venta"
+        CssClass="btn btn-primary"
+        OnClick="btnNuevaVenta_Click" />
 
 </asp:Content>

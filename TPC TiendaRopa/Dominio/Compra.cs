@@ -1,28 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-
-
-namespace Dominio
-{
-    public class Compra
-    {
+namespace Dominio {
+    public class Compra {
         public int Id { get; set; }
 
         public DateTime Fecha { get; set; }
 
+        public Usuario Usuario { get; set; }
+
         public Proveedor Proveedor { get; set; }
+
+        public string TipoComprobante { get; set; }
+
+        public string NumeroComprobante { get; set; }
+
+        public decimal Total { get; set; }
 
         public List<DetalleCompra> Detalles { get; set; }
             = new List<DetalleCompra>();
 
-        public decimal CalcularTotal()
-        {
-            return Detalles.Sum(d =>
-                d.Cantidad * d.PrecioCompra);
+        public decimal CalcularTotal() {
+            return Detalles.Sum(
+                d => d.Subtotal);
         }
     }
 }

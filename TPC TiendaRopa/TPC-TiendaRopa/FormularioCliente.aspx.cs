@@ -19,180 +19,160 @@ namespace TPC_TiendaRopa
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            if (!IsPostBack)
             {
-                if (!IsPostBack)
+                int id = obtenerId();
+
+                if (id != 0)
                 {
-                    int id = obtenerId();
+                    ClienteNegocio negocio = new ClienteNegocio();
+                    Cliente cliente = negocio.buscar(id);
 
-                    if (id != 0)
+                    if (cliente == null)
                     {
-                        ClienteNegocio negocio = new ClienteNegocio();
-                        Cliente cliente = negocio.buscar(id);
-
-                        if (cliente == null)
-                        {
-                            Response.Redirect("Clientes.aspx", false);
-                            return;
-                        }
-
-                        lblTitulo.Text = "Modificar Cliente";
-
-                        txtNombre.Text = cliente.Nombre;
-                        txtApellido.Text = cliente.Apellido;
-                        txtDni.Text = cliente.Dni;
-                        txtDireccion.Text = cliente.Direccion;
-                        txtTelefono.Text = cliente.Telefono;
-                        txtEmail.Text = cliente.Email;
+                        Response.Redirect("Clientes.aspx", false);
+                        return;
                     }
+
+                    lblTitulo.Text = "Modificar Cliente";
+
+                    txtNombre.Text = cliente.Nombre;
+                    txtApellido.Text = cliente.Apellido;
+                    txtDni.Text = cliente.Dni;
+                    txtDireccion.Text = cliente.Direccion;
+                    txtTelefono.Text = cliente.Telefono;
+                    txtEmail.Text = cliente.Email;
                 }
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = ex.Message;
-                Response.Redirect("Error.aspx", false);
             }
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
-            try
+            ClienteNegocio negocio = new ClienteNegocio();
+
+            int id = obtenerId();
+
+            string nombre = txtNombre.Text.Trim().ToUpper();
+            string apellido = txtApellido.Text.Trim().ToUpper();
+            string dni = txtDni.Text.Trim();
+            string direccion = txtDireccion.Text.Trim().ToUpper();
+            string telefono = txtTelefono.Text.Trim();
+            string email = txtEmail.Text.Trim().ToLower();
+
+            lblError.Visible = false;
+
+            if (nombre.Length < 2 || nombre.Length > 50)
             {
-                Page.Validate();
-                if (!Page.IsValid)
-                    return;
-
-                ClienteNegocio negocio = new ClienteNegocio();
-
-                int id = obtenerId();
-
-                string nombre = txtNombre.Text.Trim().ToUpper();
-                string apellido = txtApellido.Text.Trim().ToUpper();
-                string dni = txtDni.Text.Trim();
-                string direccion = txtDireccion.Text.Trim().ToUpper();
-                string telefono = txtTelefono.Text.Trim();
-                string email = txtEmail.Text.Trim().ToLower();
-
-                lblError.Visible = false;
-
-                if (nombre.Length < 2 || nombre.Length > 50)
-                {
-                    mostrarError("El nombre debe tener entre 2 y 50 caracteres.");
-                    return;
-                }
-
-                if (apellido.Length < 2 || apellido.Length > 50)
-                {
-                    mostrarError("El apellido debe tener entre 2 y 50 caracteres.");
-                    return;
-                }
-
-                if (dni == "")
-                {
-                    mostrarError("Debe ingresar el DNI.");
-                    return;
-                }
-
-                if (!long.TryParse(dni, out _))
-                {
-                    mostrarError("El DNI debe contener sólo números.");
-                    return;
-                }
-
-                if (dni.Length < 8 || dni.Length > 10)
-                {
-                    mostrarError("El DNI debe tener entre 8 y 10 dígitos.");
-                    return;
-                }
-
-                if (todosLosDigitosIguales(dni))
-                {
-                    mostrarError("El DNI ingresado no es válido.");
-                    return;
-                }
-
-                if (direccion.Length < 5 || direccion.Length > 150)
-                {
-                    mostrarError("La dirección debe tener entre 5 y 150 caracteres.");
-                    return;
-                }
-
-                if (telefono == "")
-                {
-                    mostrarError("Debe ingresar el teléfono.");
-                    return;
-                }
-
-                if (!long.TryParse(telefono, out _))
-                {
-                    mostrarError("El teléfono debe contener sólo números.");
-                    return;
-                }
-
-                if (telefono.Length < 8 || telefono.Length > 10)
-                {
-                    mostrarError("El teléfono debe tener entre 8 y 10 dígitos.");
-                    return;
-                }
-
-                if (todosLosDigitosIguales(telefono))
-                {
-                    mostrarError("El teléfono ingresado no es válido.");
-                    return;
-                }
-
-                if (email == "")
-                {
-                    mostrarError("Debe ingresar el email.");
-                    return;
-                }
-
-                if (!esEmailValido(email))
-                {
-                    mostrarError("Debe ingresar un email válido.");
-                    return;
-                }
-
-                if (negocio.existeDniActivo(dni, id))
-                {
-                    mostrarError("Ya existe un cliente con ese DNI.");
-                    return;
-                }
-
-                if (negocio.existeDniInactivo(dni))
-                {
-                    mostrarError("El cliente ya existe y se encuentra inactivo.");
-                    return;
-                }
-
-                if (negocio.existeEmail(email, id))
-                {
-                    mostrarError("Ya existe un cliente con ese email.");
-                    return;
-                }
-
-                Cliente cliente = new Cliente();
-
-                cliente.Id = id;
-                cliente.Nombre = nombre;
-                cliente.Apellido = apellido;
-                cliente.Dni = dni;
-                cliente.Direccion = direccion;
-                cliente.Telefono = telefono;
-                cliente.Email = email;
-
-                if (id == 0)
-                    negocio.agregar(cliente);
-                else
-                    negocio.modificar(cliente);
-
-                Response.Redirect("Clientes.aspx", false);
+                mostrarError("El nombre debe tener entre 2 y 50 caracteres.");
+                return;
             }
-            catch (Exception ex)
+
+            if (apellido.Length < 2 || apellido.Length > 50)
             {
-                Session["error"] = ex.Message;
-                Response.Redirect("Error.aspx", false);
+                mostrarError("El apellido debe tener entre 2 y 50 caracteres.");
+                return;
             }
+
+            if (dni == "")
+            {
+                mostrarError("Debe ingresar el DNI.");
+                return;
+            }
+
+            if (!long.TryParse(dni, out _))
+            {
+                mostrarError("El DNI debe contener sólo números.");
+                return;
+            }
+
+            if (dni.Length < 8 || dni.Length > 10)
+            {
+                mostrarError("El DNI debe tener entre 8 y 10 dígitos.");
+                return;
+            }
+
+            if (todosLosDigitosIguales(dni))
+            {
+                mostrarError("El DNI ingresado no es válido.");
+                return;
+            }
+
+            if (direccion.Length < 5 || direccion.Length > 150)
+            {
+                mostrarError("La dirección debe tener entre 5 y 150 caracteres.");
+                return;
+            }
+
+            if (telefono == "")
+            {
+                mostrarError("Debe ingresar el teléfono.");
+                return;
+            }
+
+            if (!long.TryParse(telefono, out _))
+            {
+                mostrarError("El teléfono debe contener sólo números.");
+                return;
+            }
+
+            if (telefono.Length < 8 || telefono.Length > 10)
+            {
+                mostrarError("El teléfono debe tener entre 8 y 10 dígitos.");
+                return;
+            }
+
+            if (todosLosDigitosIguales(telefono))
+            {
+                mostrarError("El teléfono ingresado no es válido.");
+                return;
+            }
+
+            if (email == "")
+            {
+                mostrarError("Debe ingresar el email.");
+                return;
+            }
+
+            if (!esEmailValido(email))
+            {
+                mostrarError("Debe ingresar un email válido.");
+                return;
+            }
+
+            if (negocio.existeDniActivo(dni, id))
+            {
+                mostrarError("Ya existe un cliente con ese DNI.");
+                return;
+            }
+
+            if (negocio.existeDniInactivo(dni))
+            {
+                mostrarError("El cliente ya existe y se encuentra inactivo.");
+                return;
+            }
+
+            if (negocio.existeEmail(email, id))
+            {
+                mostrarError("Ya existe un cliente con ese email.");
+                return;
+            }
+
+            Cliente cliente = new Cliente();
+
+            cliente.Id = id;
+            cliente.Nombre = nombre;
+            cliente.Apellido = apellido;
+            cliente.Dni = dni;
+            cliente.Direccion = direccion;
+            cliente.Telefono = telefono;
+            cliente.Email = email;
+
+            if (id == 0)
+                negocio.agregar(cliente);
+            else
+                negocio.modificar(cliente);
+
+            Response.Redirect("Clientes.aspx", false);
         }
 
         private bool esEmailValido(string email)

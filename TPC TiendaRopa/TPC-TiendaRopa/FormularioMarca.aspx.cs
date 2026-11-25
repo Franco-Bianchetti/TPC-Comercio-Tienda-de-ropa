@@ -1,8 +1,7 @@
-﻿using Dominio;
-using Negocio;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
-using System.Web.UI;
+using Dominio;
+using Negocio;
 
 namespace TPC_TiendaRopa {
     public partial class FormularioMarca : System.Web.UI.Page {
@@ -19,17 +18,8 @@ namespace TPC_TiendaRopa {
 
         protected void Page_Load(
             object sender,
-<<<<<<< HEAD
-            EventArgs e)
-        {
-            try
-        {           
-            if (!IsPostBack)
-            {
-=======
             EventArgs e) {
             if (!IsPostBack) {
->>>>>>> 8b69b01acc2d31bf39ae11abe1d0913ee9b52fae
                 int id = obtenerId();
 
                 if (id != 0) {
@@ -46,37 +36,17 @@ namespace TPC_TiendaRopa {
                         txtNombre.Text =
                             marca.Nombre;
                     }
-                    else
-                    {
-                        Response.Redirect("Marcas.aspx");
-                    }
                 }
             }
         }
-        catch (Exception ex)
-        {
-            Session["error"] = ex.Message;
-            Response.Redirect("Error.aspx", false);
-        }
-        }
+
         protected void btnGuardar_Click(
             object sender,
-<<<<<<< HEAD
-            EventArgs e)
-        {
-        Page.Validate();
-        if (!Page.IsValid)
-         return;
-
-        string nombre =
-                txtNombre.Text.Trim().ToUpper();
-=======
             EventArgs e) {
             string nombre =
                 txtNombre.Text
                 .Trim()
                 .ToUpper();
->>>>>>> 8b69b01acc2d31bf39ae11abe1d0913ee9b52fae
 
             int id =
                 obtenerId();
@@ -106,9 +76,8 @@ namespace TPC_TiendaRopa {
                     "El nombre contiene caracteres no permitidos.");
                 return;
             }
-            try
-            {
-                MarcaNegocio negocio =
+
+            MarcaNegocio negocio =
                 new MarcaNegocio();
 
             if (negocio.existeActiva(nombre, id)) {
@@ -138,12 +107,7 @@ namespace TPC_TiendaRopa {
                 "Marcas.aspx",
                 false);
         }
-            catch (Exception ex)
-            {
-                Session["error"] = ex.Message;
-                Response.Redirect("Error.aspx", false);
-            }
-        }
+
         private bool esMarcaValida(
             string nombre) {
             return Regex.IsMatch(

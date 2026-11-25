@@ -33,24 +33,4 @@
     <asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />
     <a href="Proveedores.aspx" class="btn btn-secondary">Cancelar</a>
 
-    <asp:RequiredFieldValidator ID="rfvRazonSocial" runat="server" ControlToValidate="txtRazonSocial"
-    ErrorMessage="La razón social es obligatoria." CssClass="text-danger small d-block" Display="Dynamic" />
-<asp:RegularExpressionValidator ID="revRazonSocial" runat="server" ControlToValidate="txtRazonSocial"
-    ValidationExpression=".*\S.*" ErrorMessage="La razón social no puede contener solo espacios."
-    CssClass="text-danger small d-block" Display="Dynamic" />
-
-    <asp:RequiredFieldValidator ID="rfvCuit" runat="server" ControlToValidate="txtCuit"
-    ErrorMessage="El CUIT es obligatorio." CssClass="text-danger small d-block" Display="Dynamic" />
-<asp:RegularExpressionValidator ID="revCuit" runat="server" ControlToValidate="txtCuit"
-    ValidationExpression="^\d{2}-?\d{8}-?\d{1}$" ErrorMessage="Formato inválido (Ej: 30-11223344-5 o 11 números)."
-    CssClass="text-danger small d-block" Display="Dynamic" />
-
-<asp:RegularExpressionValidator ID="revTelefono" runat="server" ControlToValidate="txtTelefono"
-    ValidationExpression="^[0-9\s\-\+\(\)]{6,30}$" ErrorMessage="Ingrese un teléfono válido (solo números y guiones)."
-    CssClass="text-danger small d-block" Display="Dynamic" />
-
-    <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
-    ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$" ErrorMessage="Ingrese un formato de email válido."
-    CssClass="text-danger small d-block" Display="Dynamic" />
-
 </asp:Content>

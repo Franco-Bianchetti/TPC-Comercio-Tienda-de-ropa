@@ -5,24 +5,21 @@ using System.Web.UI.WebControls;
 using Dominio;
 using Negocio;
 
-namespace TPC_TiendaRopa
-{
-    public partial class FormularioProducto : System.Web.UI.Page
-    {
-        private int obtenerId()
-        {
+namespace TPC_TiendaRopa {
+    public partial class FormularioProducto : System.Web.UI.Page {
+        private int obtenerId() {
             int id = 0;
 
             if (Request.QueryString["id"] != null)
-                int.TryParse(Request.QueryString["id"], out id);
+                int.TryParse(
+                    Request.QueryString["id"],
+                    out id);
 
             return id;
         }
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (!IsPostBack)
-            {
+        protected void Page_Load(object sender, EventArgs e) {
+            if (!IsPostBack) {
                 cargarCombos();
 
                 int id = obtenerId();
@@ -32,8 +29,7 @@ namespace TPC_TiendaRopa
             }
         }
 
-        private void cargarCombos()
-        {
+        private void cargarCombos() {
             ddlMarca.DataSource = new MarcaNegocio().listar();
             ddlMarca.DataTextField = "Nombre";
             ddlMarca.DataValueField = "Id";
@@ -44,14 +40,13 @@ namespace TPC_TiendaRopa
             ddlTipo.DataValueField = "Id";
             ddlTipo.DataBind();
 
-            cblProveedores.DataSource = new ProveedorNegocio().listar();
-            cblProveedores.DataTextField = "RazonSocial";
-            cblProveedores.DataValueField = "Id";
-            cblProveedores.DataBind();
+            ddlProveedor.DataSource = new ProveedorNegocio().listar();
+            ddlProveedor.DataTextField = "RazonSocial";
+            ddlProveedor.DataValueField = "Id";
+            ddlProveedor.DataBind();
         }
 
-        private void cargarProducto(int id)
-        {
+        private void cargarProducto(int id) {
             ProductoNegocio negocio = new ProductoNegocio();
             Producto producto = negocio.buscar(id);
 
@@ -64,96 +59,136 @@ namespace TPC_TiendaRopa
             txtNombre.Text = producto.Nombre;
             txtTalle.Text = producto.Talle;
             txtColor.Text = producto.Color;
-            txtStockMinimo.Text = producto.StockMinimo.ToString();
-            txtPorcentaje.Text = producto.PorcentajeGanancia.ToString("0.##", CultureInfo.InvariantCulture);
 
-            seleccionar(ddlMarca, producto.Marca.Id);
-            seleccionar(ddlTipo, producto.Tipo.Id);
+            txtStockMinimo.Text =
+                producto.StockMinimo.ToString();
 
-            foreach (ListItem item in cblProveedores.Items)
+            txtPorcentaje.Text =
+                producto.PorcentajeGanancia.ToString(
+                    "0.##",
+                    CultureInfo.InvariantCulture);
+
+            seleccionar(
+                ddlMarca,
+                producto.Marca.Id);
+
+            seleccionar(
+                ddlTipo,
+                producto.Tipo.Id);
+
+            if (producto.Proveedores.Count > 0)
             {
-                foreach (Proveedor proveedor in producto.Proveedores)
-                {
-                    if (proveedor.Id.ToString() == item.Value)
-                        item.Selected = true;
-                }
+                seleccionar(
+                    ddlProveedor,
+                    producto.Proveedores[0].Id);
             }
         }
 
-        private void seleccionar(DropDownList combo, int valor)
-        {
-            ListItem item = combo.Items.FindByValue(valor.ToString());
+        private void seleccionar(
+            DropDownList combo,
+            int valor) {
+            ListItem item =
+                combo.Items.FindByValue(
+                    valor.ToString());
 
             if (item != null)
-                combo.SelectedValue = item.Value;
+                combo.SelectedValue =
+                    item.Value;
         }
 
-        protected void btnGuardar_Click(object sender, EventArgs e)
-        {
+        protected void btnGuardar_Click(
+            object sender,
+            EventArgs e) {
             lblError.Visible = false;
 
             int id = obtenerId();
 
-            string codigo = txtCodigo.Text.Trim().ToUpper();
-            string nombre = txtNombre.Text.Trim();
-            string talle = txtTalle.Text.Trim().ToUpper();
-            string color = txtColor.Text.Trim();
+            string codigo =
+                txtCodigo.Text.Trim().ToUpper();
 
-            if (!Regex.IsMatch(codigo, @"^[A-Z0-9\-]{2,30}$"))
-            {
-                mostrarError("El código debe tener entre 2 y 30 caracteres: letras, números o guiones.");
+            string nombre =
+                txtNombre.Text.Trim().ToUpper();
+
+            string talle =
+                txtTalle.Text.Trim().ToUpper();
+
+            string color =
+                txtColor.Text.Trim().ToUpper();
+
+            if (!Regex.IsMatch(
+                codigo,
+                @"^[A-Z0-9\-]{2,30}$")) {
+                mostrarError(
+                    "El código debe tener entre 2 y 30 caracteres, utilizando letras, números o guiones.");
                 return;
             }
 
-            if (nombre.Length < 2 || nombre.Length > 150)
-            {
-                mostrarError("El nombre debe tener entre 2 y 150 caracteres.");
+            if (nombre.Length < 2 ||
+                nombre.Length > 150) {
+                mostrarError(
+                    "El nombre debe tener entre 2 y 150 caracteres.");
                 return;
             }
 
-            if (ddlMarca.SelectedValue == "0")
-            {
-                mostrarError("Seleccioná una marca.");
+            if (ddlMarca.SelectedValue == "0") {
+                mostrarError(
+                    "Debe seleccionar una marca.");
                 return;
             }
 
-            if (ddlTipo.SelectedValue == "0")
-            {
-                mostrarError("Seleccioná un tipo.");
+            if (ddlTipo.SelectedValue == "0") {
+                mostrarError(
+                    "Debe seleccionar un tipo.");
                 return;
             }
 
-            if (talle.Length < 1 || talle.Length > 20)
-            {
-                mostrarError("El talle debe tener entre 1 y 20 caracteres.");
+            if (talle.Length < 1 ||
+                talle.Length > 20) {
+                mostrarError(
+                    "El talle debe tener entre 1 y 20 caracteres.");
                 return;
             }
 
-            if (!Regex.IsMatch(color, @"^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,50}$"))
-            {
-                mostrarError("El color debe tener entre 2 y 50 letras.");
+            if (!Regex.IsMatch(
+                color,
+                @"^[A-ZÁÉÍÓÚÑ\s]{2,50}$")) {
+                mostrarError(
+                    "El color debe contener únicamente letras y tener entre 2 y 50 caracteres.");
                 return;
             }
 
             int stockMinimo;
 
-            if (!int.TryParse(txtStockMinimo.Text.Trim(), out stockMinimo) || stockMinimo < 0)
-            {
-                mostrarError("El stock mínimo debe ser un número entero de 0 o más.");
+            if (!int.TryParse(
+                    txtStockMinimo.Text.Trim(),
+                    out stockMinimo)
+                || stockMinimo < 0) {
+                mostrarError(
+                    "El stock mínimo debe ser un número mayor o igual a cero.");
                 return;
             }
 
             decimal porcentaje;
-            string textoPorcentaje = txtPorcentaje.Text.Trim().Replace(',', '.');
 
-            if (!decimal.TryParse(textoPorcentaje, NumberStyles.Number, CultureInfo.InvariantCulture, out porcentaje)
-                || porcentaje <= 0 || porcentaje > 999.99m)
-            {
-                mostrarError("El porcentaje de ganancia debe ser un número mayor a 0 y hasta 999,99.");
+            string textoPorcentaje =
+                txtPorcentaje.Text
+                    .Trim()
+                    .Replace(',', '.');
+
+            if (!decimal.TryParse(
+                    textoPorcentaje,
+                    NumberStyles.Number,
+                    CultureInfo.InvariantCulture,
+                    out porcentaje)
+                || porcentaje <= 0
+                || porcentaje > 999.99m) {
+                mostrarError(
+                    "El porcentaje de ganancia debe ser mayor a 0 y menor a 1000.");
                 return;
             }
 
-            Producto producto = new Producto();
+            Producto producto =
+                new Producto();
 
             producto.Id = id;
             producto.Codigo = codigo;
@@ -161,35 +196,46 @@ namespace TPC_TiendaRopa
             producto.Talle = talle;
             producto.Color = color;
             producto.StockMinimo = stockMinimo;
-            producto.PorcentajeGanancia = Math.Round(porcentaje, 2);
+            producto.PorcentajeGanancia =
+                Math.Round(
+                    porcentaje,
+                    2);
 
             producto.Marca = new Marca();
-            producto.Marca.Id = int.Parse(ddlMarca.SelectedValue);
+            producto.Marca.Id =
+                int.Parse(
+                    ddlMarca.SelectedValue);
 
             producto.Tipo = new Tipo();
-            producto.Tipo.Id = int.Parse(ddlTipo.SelectedValue);
+            producto.Tipo.Id =
+                int.Parse(
+                    ddlTipo.SelectedValue);
 
-            foreach (ListItem item in cblProveedores.Items)
+            if (ddlProveedor.SelectedValue == "0")
             {
-                if (item.Selected)
-                {
-                    Proveedor proveedor = new Proveedor();
-                    proveedor.Id = int.Parse(item.Value);
-                    producto.Proveedores.Add(proveedor);
-                }
-            }
+                mostrarError(
+                    "Debe seleccionar un proveedor.");
 
-            if (producto.Proveedores.Count == 0)
-            {
-                mostrarError("Seleccioná al menos un proveedor.");
                 return;
             }
 
-            ProductoNegocio negocio = new ProductoNegocio();
+            Proveedor proveedor =
+                new Proveedor();
 
-            if (negocio.existeCodigo(codigo, id))
-            {
-                mostrarError("Ya existe un producto con ese código (puede estar dado de baja).");
+            proveedor.Id =
+                int.Parse(
+                    ddlProveedor.SelectedValue);
+
+            producto.Proveedores.Add(
+                proveedor);
+
+
+            ProductoNegocio negocio =
+                new ProductoNegocio();
+
+            if (negocio.existeCodigo(codigo, id)) {
+                mostrarError(
+                    "Ya existe un producto con ese código.");
                 return;
             }
 
@@ -198,11 +244,13 @@ namespace TPC_TiendaRopa
             else
                 negocio.modificar(producto);
 
-            Response.Redirect("Productos.aspx", false);
+            Response.Redirect(
+                "Productos.aspx",
+                false);
         }
 
-        private void mostrarError(string mensaje)
-        {
+        private void mostrarError(
+            string mensaje) {
             lblError.Text = mensaje;
             lblError.Visible = true;
         }
