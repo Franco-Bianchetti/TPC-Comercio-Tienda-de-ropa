@@ -202,10 +202,15 @@ namespace TPC_TiendaRopa
                     "Debe ingresar un email válido.");
                 return;
             }
+<<<<<<< HEAD
             try
             {
                 if (negocio.existeDni(dni, id))
             {
+=======
+
+            if (negocio.existeDniActivo(dni, id)) {
+>>>>>>> 8b69b01acc2d31bf39ae11abe1d0913ee9b52fae
                 mostrarError(
                     "Ya existe un cliente con ese DNI.");
                 return;
@@ -213,6 +218,12 @@ namespace TPC_TiendaRopa
             }
             
                       
+
+            if (negocio.existeDniInactivo(dni)) {
+                mostrarError(
+                    "El cliente ya existe y se encuentra inactivo.");
+                return;
+            }
 
             if (negocio.existeEmail(email, id))
             {

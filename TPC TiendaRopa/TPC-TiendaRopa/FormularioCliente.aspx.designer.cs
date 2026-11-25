@@ -7,12 +7,10 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace TPC_TiendaRopa
-{
+namespace TPC_TiendaRopa {
 
 
-    public partial class FormularioCliente
-    {
+    public partial class FormularioCliente {
 
         /// <summary>
         /// Control lblTitulo.
@@ -22,15 +20,6 @@ namespace TPC_TiendaRopa
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTitulo;
-
-        /// <summary>
-        /// Control lblError.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblError;
 
         /// <summary>
         /// Control txtNombre.
@@ -150,12 +139,17 @@ namespace TPC_TiendaRopa
         protected global::System.Web.UI.WebControls.TextBox txtEmail;
 
         /// <summary>
+<<<<<<< HEAD
         /// Control rfvEmail.
+=======
+        /// Control lblError.
+>>>>>>> 8b69b01acc2d31bf39ae11abe1d0913ee9b52fae
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
+<<<<<<< HEAD
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmail;
 
         /// <summary>
@@ -166,6 +160,9 @@ namespace TPC_TiendaRopa
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator revEmail;
+=======
+        protected global::System.Web.UI.WebControls.Label lblError;
+>>>>>>> 8b69b01acc2d31bf39ae11abe1d0913ee9b52fae
 
         /// <summary>
         /// Control btnGuardar.

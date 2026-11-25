@@ -4,12 +4,9 @@ using System;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 
-namespace TPC_TiendaRopa
-{
-    public partial class FormularioMarca : System.Web.UI.Page
-    {
-        private int obtenerId()
-        {
+namespace TPC_TiendaRopa {
+    public partial class FormularioMarca : System.Web.UI.Page {
+        private int obtenerId() {
             int id = 0;
 
             if (Request.QueryString["id"] != null)
@@ -22,24 +19,27 @@ namespace TPC_TiendaRopa
 
         protected void Page_Load(
             object sender,
+<<<<<<< HEAD
             EventArgs e)
         {
             try
         {           
             if (!IsPostBack)
             {
+=======
+            EventArgs e) {
+            if (!IsPostBack) {
+>>>>>>> 8b69b01acc2d31bf39ae11abe1d0913ee9b52fae
                 int id = obtenerId();
 
-                if (id != 0)
-                {
+                if (id != 0) {
                     MarcaNegocio negocio =
                         new MarcaNegocio();
 
                     Marca marca =
                         negocio.buscar(id);
 
-                    if (marca != null)
-                    {
+                    if (marca != null) {
                         lblTitulo.Text =
                             "Modificar marca";
 
@@ -61,6 +61,7 @@ namespace TPC_TiendaRopa
         }
         protected void btnGuardar_Click(
             object sender,
+<<<<<<< HEAD
             EventArgs e)
         {
         Page.Validate();
@@ -69,35 +70,38 @@ namespace TPC_TiendaRopa
 
         string nombre =
                 txtNombre.Text.Trim().ToUpper();
+=======
+            EventArgs e) {
+            string nombre =
+                txtNombre.Text
+                .Trim()
+                .ToUpper();
+>>>>>>> 8b69b01acc2d31bf39ae11abe1d0913ee9b52fae
 
             int id =
                 obtenerId();
 
             lblError.Visible = false;
 
-            if (nombre == "")
-            {
+            if (nombre == "") {
                 mostrarError(
                     "Debe ingresar un nombre para la marca.");
                 return;
             }
 
-            if (nombre.Length < 2)
-            {
+            if (nombre.Length < 2) {
                 mostrarError(
                     "El nombre debe tener al menos 2 caracteres.");
                 return;
             }
 
-            if (nombre.Length > 50)
-            {
+            if (nombre.Length > 50) {
                 mostrarError(
                     "El nombre no puede superar los 50 caracteres.");
                 return;
             }
 
-            if (!esMarcaValida(nombre))
-            {
+            if (!esMarcaValida(nombre)) {
                 mostrarError(
                     "El nombre contiene caracteres no permitidos.");
                 return;
@@ -107,15 +111,13 @@ namespace TPC_TiendaRopa
                 MarcaNegocio negocio =
                 new MarcaNegocio();
 
-            if (negocio.existeActiva(nombre, id))
-            {
+            if (negocio.existeActiva(nombre, id)) {
                 mostrarError(
                     "Ya existe una marca con ese nombre.");
                 return;
             }
 
-            if (negocio.existeInactiva(nombre))
-            {
+            if (negocio.existeInactiva(nombre)) {
                 mostrarError(
                     "La marca ya existe y se encuentra inactiva.");
                 return;
@@ -143,16 +145,14 @@ namespace TPC_TiendaRopa
             }
         }
         private bool esMarcaValida(
-            string nombre)
-        {
+            string nombre) {
             return Regex.IsMatch(
                 nombre,
                 @"^[A-ZÁÉÍÓÚÑ'&\-\.\s]{2,50}$");
         }
 
         private void mostrarError(
-            string mensaje)
-        {
+            string mensaje) {
             lblError.Text = mensaje;
             lblError.Visible = true;
         }
