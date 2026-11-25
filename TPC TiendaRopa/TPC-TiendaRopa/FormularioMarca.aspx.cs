@@ -1,7 +1,8 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using Dominio;
+﻿using Dominio;
 using Negocio;
+using System;
+using System.Text.RegularExpressions;
+using System.Web.UI;
 
 namespace TPC_TiendaRopa
 {
@@ -23,6 +24,8 @@ namespace TPC_TiendaRopa
             object sender,
             EventArgs e)
         {
+            try
+        {           
             if (!IsPostBack)
             {
                 int id = obtenerId();
@@ -43,15 +46,28 @@ namespace TPC_TiendaRopa
                         txtNombre.Text =
                             marca.Nombre;
                     }
+                    else
+                    {
+                        Response.Redirect("Marcas.aspx");
+                    }
                 }
             }
         }
-
+        catch (Exception ex)
+        {
+            Session["error"] = ex.Message;
+            Response.Redirect("Error.aspx", false);
+        }
+        }
         protected void btnGuardar_Click(
             object sender,
             EventArgs e)
         {
-            string nombre =
+        Page.Validate();
+        if (!Page.IsValid)
+         return;
+
+        string nombre =
                 txtNombre.Text.Trim().ToUpper();
 
             int id =
@@ -86,8 +102,9 @@ namespace TPC_TiendaRopa
                     "El nombre contiene caracteres no permitidos.");
                 return;
             }
-
-            MarcaNegocio negocio =
+            try
+            {
+                MarcaNegocio negocio =
                 new MarcaNegocio();
 
             if (negocio.existeActiva(nombre, id))
@@ -119,7 +136,12 @@ namespace TPC_TiendaRopa
                 "Marcas.aspx",
                 false);
         }
-
+            catch (Exception ex)
+            {
+                Session["error"] = ex.Message;
+                Response.Redirect("Error.aspx", false);
+            }
+        }
         private bool esMarcaValida(
             string nombre)
         {

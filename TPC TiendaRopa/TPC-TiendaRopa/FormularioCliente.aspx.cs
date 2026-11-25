@@ -23,7 +23,9 @@ namespace TPC_TiendaRopa
             object sender,
             EventArgs e)
         {
-            if (!IsPostBack)
+            try
+            {
+                if (!IsPostBack)
             {
                 int id = obtenerId();
 
@@ -55,14 +57,31 @@ namespace TPC_TiendaRopa
                         txtEmail.Text =
                             cliente.Email;
                     }
+                        else
+                        {
+                            Response.Redirect(
+                                "Clientes.aspx",
+                                false);
+                        }
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Session["error"] = ex.Message;
+                Response.Redirect("Error.aspx", false);
+            }
         }
+
+
 
         protected void btnGuardar_Click(
             object sender,
             EventArgs e)
         {
+            Page.Validate();
+            if (!Page.IsValid)
+                return;
             ClienteNegocio negocio =
                 new ClienteNegocio();
 
@@ -183,13 +202,17 @@ namespace TPC_TiendaRopa
                     "Debe ingresar un email válido.");
                 return;
             }
-
-            if (negocio.existeDni(dni, id))
+            try
+            {
+                if (negocio.existeDni(dni, id))
             {
                 mostrarError(
                     "Ya existe un cliente con ese DNI.");
                 return;
+                  
             }
+            
+                      
 
             if (negocio.existeEmail(email, id))
             {
@@ -216,6 +239,12 @@ namespace TPC_TiendaRopa
             Response.Redirect(
                 "Clientes.aspx",
                 false);
+        }
+            catch (Exception ex)
+            {
+                Session["error"] = ex.Message;
+                Response.Redirect("Error.aspx", false);
+            }
         }
 
         private bool esEmailValido(

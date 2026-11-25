@@ -17,5 +17,20 @@ namespace TPC_TiendaRopa
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+        void Application_Error(object sender, EventArgs e)
+        {
+            Exception exc = Server.GetLastError();
+
+            if (exc != null)
+            {
+               
+                Exception realEx = exc.InnerException ?? exc;
+                Session["error"] = realEx.Message;
+
+                Server.ClearError();
+                Response.Redirect("~/Error.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+        }
     }
 }
