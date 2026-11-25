@@ -134,7 +134,8 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
-    <Content Include="favicon.ico" />
+    <Content Include="Utilidades\favicon.ico" />
+    <Content Include="Utilidades\favicon.svg" />
     <Content Include="FormularioCliente.aspx" />
     <Content Include="FormularioCompra.aspx" />
     <Content Include="FormularioProducto.aspx" />

@@ -1,0 +1,38 @@
+﻿
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 478 347"
+     width="120"
+     height="87">
+
+    <!-- Gancho -->
+    <path
+        d="M243 138 L243 108
+           C243 100 258 92 266 80
+           C275 66 265 38 243 38
+           C225 38 212 52 212 70"
+        fill="none"
+        stroke="#BFB08A"
+        stroke-width="22"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+    <!-- Cuerpo de la percha -->
+    <path
+        d="M45 270
+           C60 200 130 165 190 155
+           C205 152 212 145 225 141
+           C235 138 250 138 260 141
+           C275 146 280 152 295 157
+           C360 170 425 215 440 272
+           L408 291 L396 268
+           C370 215 310 192 243 192
+           C175 192 115 215 90 268
+           L75 291 Z"
+        fill="#BFB08A"/>
+
+    <!-- Barra inferior -->
+    <path
+        d="M90 266 H396 V274 H90 Z"
+        fill="#BFB08A"/>
+
+</svg>

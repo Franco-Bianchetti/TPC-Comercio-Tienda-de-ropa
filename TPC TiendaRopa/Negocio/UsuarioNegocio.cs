@@ -412,9 +412,11 @@ namespace Negocio {
             try
             {
                 datos.setConsulta(@"
-                    UPDATE Usuarios
-                    SET Activo = 1
-                    WHERE IdUsuario= @Id");
+            UPDATE Usuarios
+            SET
+                Activo = 1,
+                Aprobado = 1
+            WHERE IdUsuario = @Id");
 
                 datos.setParametro("@Id", id);
 
