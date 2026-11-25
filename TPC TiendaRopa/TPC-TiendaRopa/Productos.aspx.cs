@@ -8,7 +8,6 @@ namespace TPC_TiendaRopa
 {
     public partial class Productos : System.Web.UI.Page
     {
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -23,15 +22,16 @@ namespace TPC_TiendaRopa
             ProductoNegocio negocio = new ProductoNegocio();
 
             int idMarca = 0;
-            int idTipo = 0;
+            int idProveedor = 0;
 
             int.TryParse(ddlMarca.SelectedValue, out idMarca);
-            int.TryParse(ddlTipo.SelectedValue, out idTipo);
+            int.TryParse(ddlProveedor.SelectedValue, out idProveedor);
 
             List<Producto> lista = negocio.listarFiltrado(
                 txtBuscar.Text.Trim(),
                 idMarca,
-                idTipo,
+                0,
+                idProveedor,
                 txtTalle.Text.Trim(),
                 txtColor.Text.Trim(),
                 chkStockBajo.Checked,
@@ -44,7 +44,7 @@ namespace TPC_TiendaRopa
             bool hayFiltro =
                 txtBuscar.Text.Trim() != "" ||
                 idMarca > 0 ||
-                idTipo > 0 ||
+                idProveedor > 0 ||
                 txtTalle.Text.Trim() != "" ||
                 txtColor.Text.Trim() != "" ||
                 chkStockBajo.Checked;
@@ -66,17 +66,16 @@ namespace TPC_TiendaRopa
                 new ListItem("Todas las marcas", "0")
             );
 
+            ProveedorNegocio proveedorNegocio = new ProveedorNegocio();
 
-            TipoNegocio tipoNegocio = new TipoNegocio();
+            ddlProveedor.DataSource = proveedorNegocio.listar();
+            ddlProveedor.DataTextField = "RazonSocial";
+            ddlProveedor.DataValueField = "Id";
+            ddlProveedor.DataBind();
 
-            ddlTipo.DataSource = tipoNegocio.listar();
-            ddlTipo.DataTextField = "Nombre";
-            ddlTipo.DataValueField = "Id";
-            ddlTipo.DataBind();
-
-            ddlTipo.Items.Insert(
+            ddlProveedor.Items.Insert(
                 0,
-                new ListItem("Todos los tipos", "0")
+                new ListItem("Todos los proveedores", "0")
             );
         }
 
@@ -87,11 +86,13 @@ namespace TPC_TiendaRopa
             cargarGrilla();
         }
 
-        protected void btnLimpiar_Click(object sender, EventArgs e)
+        protected void btnLimpiar_Click(
+            object sender,
+            EventArgs e)
         {
             txtBuscar.Text = "";
             ddlMarca.SelectedIndex = 0;
-            ddlTipo.SelectedIndex = 0;
+            ddlProveedor.SelectedIndex = 0;
             txtTalle.Text = "";
             txtColor.Text = "";
             chkStockBajo.Checked = false;
@@ -132,7 +133,6 @@ namespace TPC_TiendaRopa
 
                 return;
             }
-            
         }
 
         protected void gvProductos_RowCommand(

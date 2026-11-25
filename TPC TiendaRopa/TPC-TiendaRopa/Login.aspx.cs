@@ -10,8 +10,11 @@ namespace TPC_TiendaRopa {
             if (!IsPostBack){
                 Session.Clear();
 
-                if (Request.QueryString["registro"] == "ok"){
-                    lblExito.Text = "¡Cuenta creada! Ya podés iniciar sesión.";
+                if (Request.QueryString["registro"] == "pendiente")
+                {
+                    lblExito.Text = "Tu cuenta fue creada correctamente. "
+                        + "Un administrador debe aprobarla antes de que puedas iniciar sesión.";
+
                     lblExito.Visible = true;
                 }
 

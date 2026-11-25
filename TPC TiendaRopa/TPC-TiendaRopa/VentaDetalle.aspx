@@ -13,17 +13,14 @@
 
         <div class="card-body p-3">
 
-            <!-- ORIGINAL -->
             <div class="text-center border border-bottom-0 py-1">
                 <strong style="font-size:20px; letter-spacing:1px;">
                     ORIGINAL
                 </strong>
             </div>
 
-            <!-- CABECERA -->
             <div class="row border m-0">
 
-                <!-- EMPRESA -->
                 <div class="col-md-5 p-3 border-end">
 
                     <h2 class="fw-bold mb-2" style="font-size:26px;">
@@ -71,7 +68,6 @@
 
                 </div>
 
-                <!-- LETRA -->
                 <div class="col-md-2 p-2 text-center border-end d-flex flex-column align-items-center justify-content-start pt-3">
 
                     <div style="border:3px solid black; font-size:38px; font-weight:bold; width:72px; height:72px; line-height:64px;">
@@ -90,7 +86,6 @@
 
                 </div>
 
-                <!-- FACTURA -->
                 <div class="col-md-5 p-3">
 
                     <h4 class="fw-bold mb-3" style="font-size:19px;">
@@ -125,7 +120,6 @@
 
             </div>
 
-            <!-- DATOS DEL CLIENTE -->
             <div class="border-start border-end border-bottom m-0 p-3 small">
 
                 <div class="text-uppercase text-muted fw-bold mb-2" style="font-size:11px;">
@@ -169,7 +163,6 @@
 
             </div>
 
-            <!-- DATOS DE LA OPERACIÓN -->
             <div class="border-start border-end border-bottom m-0 p-3 bg-light small">
 
                 <div class="text-uppercase text-muted fw-bold mb-1" style="font-size:11px;">
@@ -185,7 +178,6 @@
 
             </div>
 
-            <!-- DETALLE -->
             <asp:GridView
                 ID="gvDetalle"
                 runat="server"
@@ -216,7 +208,6 @@
 
             </asp:GridView>
 
-            <!-- FORMA DE PAGO Y TOTALES -->
             <div class="row mt-3 align-items-start small">
 
                 <div class="col-md-6">
@@ -269,7 +260,6 @@
 
             <hr class="my-3" />
 
-            <!-- PIE FACTURA -->
             <div class="row mt-2 small">
 
                 <div class="col-md-3">

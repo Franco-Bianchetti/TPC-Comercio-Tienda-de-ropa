@@ -729,3 +729,6 @@ GO
 
 SELECT 'TIENDA_ROPA_DB creada correctamente' AS Resultado;
 GO
+
+ALTER TABLE Usuarios
+ADD Aprobado BIT NOT NULL DEFAULT 1;

@@ -12,6 +12,7 @@ namespace TPC_TiendaRopa
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
             ProductoNegocio negocio = new ProductoNegocio();
             repProductos.DataSource = negocio.listar();
             repProductos.DataBind();

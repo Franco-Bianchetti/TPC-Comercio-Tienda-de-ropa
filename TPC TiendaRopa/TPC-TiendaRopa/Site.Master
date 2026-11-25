@@ -1,15 +1,14 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true"
+﻿
+<%@ Master Language="C#" AutoEventWireup="true"
     CodeBehind="Site.master.cs"
     Inherits="TPC_TiendaRopa.SiteMaster" %>
 
 <!DOCTYPE html>
-
 <html lang="es">
 <head runat="server">
 
     <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title><%: Page.Title %> - Tienda de Ropa</title>
 
@@ -17,9 +16,215 @@
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
-    <webopt:BundleReference
-        runat="server"
-        Path="~/Content/css" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+
+    <style>
+        :root {
+            --color-fondo: #f5f5f3;
+            --color-principal: #202020;
+            --color-secundario: #b49a78;
+            --color-texto: #333333;
+            --color-borde: #e5e2dc;
+        }
+
+        body {
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* BARRA DE NAVEGACIÓN */
+
+        .barra-principal {
+            background-color: var(--color-principal);
+            padding: 15px 0;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+        }
+
+        .marca-tienda {
+            color: #ffffff !important;
+            font-size: 23px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-decoration: none;
+            margin-right: 30px;
+        }
+
+        .marca-tienda:hover {
+            color: var(--color-secundario) !important;
+        }
+
+        .menu-tienda {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .menu-tienda ul {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 5px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .menu-tienda .nav-item {
+            display: inline-flex;
+            flex-shrink: 0;
+        }
+
+        .menu-tienda .nav-link {
+            color: #e6e6e6 !important;
+            padding: 9px 12px !important;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .menu-tienda .nav-link:hover {
+            color: #ffffff !important;
+            background-color: #393939;
+        }
+
+        .panel-usuario {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .texto-usuario {
+            color: #e8e8e8;
+            font-size: 14px;
+        }
+
+        .boton-sesion {
+            border-color: var(--color-secundario) !important;
+            color: #ffffff !important;
+            border-radius: 7px;
+            padding: 7px 13px;
+        }
+
+        .boton-sesion:hover {
+            background-color: var(--color-secundario) !important;
+            color: #202020 !important;
+        }
+
+        /* CONTENIDO */
+
+        .contenido-principal {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            min-height: 75vh;
+        }
+
+        /* FORMULARIOS Y CAMPOS */
+
+        .form-control,
+        .form-select {
+            border: 1px solid var(--color-borde);
+            border-radius: 7px;
+            padding: 10px 12px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--color-secundario);
+            box-shadow: 0 0 0 0.2rem rgba(180,154,120,0.18);
+        }
+
+        /* BOTONES */
+
+        .btn {
+            border-radius: 7px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-dark {
+            background-color: var(--color-principal);
+            border-color: var(--color-principal);
+        }
+
+        .btn-dark:hover {
+            background-color: #444444;
+            border-color: #444444;
+        }
+
+        /* TARJETAS */
+
+        .card {
+            border: 1px solid var(--color-borde);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+        /* TABLAS */
+
+        .table {
+            background-color: #ffffff;
+            vertical-align: middle;
+        }
+
+        .table thead th {
+            background-color: var(--color-principal);
+            color: #ffffff;
+            font-weight: 600;
+            border: none;
+            padding: 13px;
+        }
+
+        .table tbody td {
+            padding: 12px;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f6f2;
+        }
+
+        /* PIE DE PÁGINA */
+
+        .pie-pagina {
+            border-top: 1px solid var(--color-borde);
+            padding: 20px 0;
+            color: #888888;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .pie-pagina p {
+            margin: 0;
+        }
+
+        /* ADAPTACIÓN A CELULARES */
+
+        @media (max-width: 768px) {
+            .barra-principal .container {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 15px;
+            }
+
+            .menu-tienda ul {
+                gap: 2px;
+            }
+
+            .menu-tienda .nav-link {
+                padding: 7px 9px !important;
+            }
+
+            .panel-usuario {
+                flex-wrap: wrap;
+            }
+
+            .contenido-principal {
+                padding-top: 20px;
+            }
+        }
+    </style>
 
 </head>
 
@@ -35,93 +240,74 @@
         </Scripts>
     </asp:ScriptManager>
 
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <nav class="barra-principal">
 
-        <div class="container">
+        <div class="container d-flex flex-wrap align-items-center">
 
-            <a class="navbar-brand"
+            <a class="marca-tienda"
                runat="server"
                href="~/Default.aspx">
-                Tienda de Ropa
+                TIENDA DE ROPA
             </a>
 
             <asp:Panel
                 ID="menuPrincipal"
-                runat="server">
+                runat="server"
+                CssClass="menu-tienda">
 
                 <ul class="navbar-nav">
 
                     <li class="nav-item">
-                        <a class="nav-link"
-                           runat="server"
-                           href="~/Clientes.aspx">
+                        <a class="nav-link" runat="server" href="~/Clientes.aspx">
                             Clientes
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           runat="server"
-                           href="~/Marcas.aspx">
+                    <li class="nav-item" runat="server" id="liMarcas">
+                        <a class="nav-link" runat="server" href="~/Marcas.aspx">
                             Marcas
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link"
-                           runat="server"
-                           href="~/Productos.aspx">
+                        <a class="nav-link" runat="server" href="~/Productos.aspx">
                             Productos
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           runat="server"
-                           href="~/Proveedores.aspx">
+                    <li class="nav-item" runat="server" id="liProveedores">
+                        <a class="nav-link" runat="server" href="~/Proveedores.aspx">
                             Proveedores
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           runat="server"
-                           href="~/Tipos.aspx">
+                    <li class="nav-item" runat="server" id="liTipos">
+                        <a class="nav-link" runat="server" href="~/Tipos.aspx">
                             Tipos
                         </a>
                     </li>
 
-                    <asp:PlaceHolder ID="phUsuarios" runat="server">
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               runat="server"
-                               href="~/Usuarios.aspx">
-                                Usuarios
-                            </a>
-                        </li>
-                    </asp:PlaceHolder>
+                    <li class="nav-item" runat="server" id="liUsuarios">
+                        <a class="nav-link" runat="server" href="~/Usuarios.aspx">
+                            Usuarios
+                        </a>
+                    </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           runat="server"
-                           href="~/Compras.aspx">
+                    <li class="nav-item" runat="server" id="liCompras">
+                        <a class="nav-link" runat="server" href="~/Compras.aspx">
                             Compras
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           runat="server"
-                           href="~/Ventas.aspx">
-                            Ventas
+                    <li class="nav-item" runat="server" id="liReportes">
+                        <a class="nav-link" runat="server" href="~/Reportes.aspx">
+                            Reportes
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link"
-                           runat="server"
-                           href="~/Factura.aspx">
-                            Factura
+                        <a class="nav-link" runat="server" href="~/Ventas.aspx">
+                            Ventas
                         </a>
                     </li>
 
@@ -131,19 +317,20 @@
 
             <asp:Panel
                 ID="panelUsuario"
-                runat="server">
+                runat="server"
+                CssClass="panel-usuario">
 
                 <asp:Label
                     ID="lblUsuario"
                     runat="server"
-                    CssClass="text-light me-3">
+                    CssClass="texto-usuario">
                 </asp:Label>
 
                 <asp:Button
                     ID="btnCerrarSesion"
                     runat="server"
                     Text="Cerrar sesión"
-                    CssClass="btn btn-outline-light btn-sm"
+                    CssClass="btn btn-outline-light btn-sm boton-sesion"
                     OnClick="btnCerrarSesion_Click" />
 
             </asp:Panel>
@@ -152,23 +339,20 @@
 
     </nav>
 
-    <div class="container mt-4">
+    <main class="container contenido-principal">
 
         <asp:ContentPlaceHolder
             ID="MainContent"
             runat="server">
         </asp:ContentPlaceHolder>
 
-        <hr />
+    </main>
 
-        <footer>
-            <p>
-                &copy; <%: DateTime.Now.Year %>
-                - Tienda de Ropa
-            </p>
-        </footer>
-
-    </div>
+    <footer class="pie-pagina">
+        <div class="container">
+            <p>&copy; <%: DateTime.Now.Year %> - Tienda de Ropa. Derechos reservados.</p>
+        </div>
+    </footer>
 
 </form>
 

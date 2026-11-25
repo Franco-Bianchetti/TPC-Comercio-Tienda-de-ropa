@@ -47,6 +47,20 @@
                 <asp:TextBox ID="txtRepetirClave" runat="server" TextMode="Password" CssClass="form-control" autocomplete="new-password" />
             </div>
 
+            <div class="mb-3">
+                <label>Tipo de cuenta</label>
+
+                <asp:DropDownList
+                    ID="ddlPerfil"
+                    runat="server"
+                    CssClass="form-select">
+
+                    <asp:ListItem Text="Vendedor" Value="Vendedor" />
+                    <asp:ListItem Text="Administrador" Value="Administrador" />
+
+                </asp:DropDownList>
+            </div>
+
             <div class="d-grid mt-3">
                 <asp:Button ID="btnRegistrar" runat="server" Text="Crear cuenta" CssClass="btn btn-dark" OnClick="btnRegistrar_Click" />
             </div>

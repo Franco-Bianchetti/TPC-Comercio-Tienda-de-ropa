@@ -115,11 +115,13 @@ namespace TPC_TiendaRopa
             nuevo.NombreUsuario = usuario;
             nuevo.Clave = clave;
 
-            nuevo.Perfil = TipoPerfil.Vendedor;
+            nuevo.Perfil = ddlPerfil.SelectedValue == "Administrador"
+                ? TipoPerfil.Administrador
+                : TipoPerfil.Vendedor;
 
-            negocio.agregar(nuevo);
+            negocio.agregar(nuevo, false, false);
 
-            Response.Redirect("Login.aspx?registro=ok", false);
+            Response.Redirect("Login.aspx?registro=pendiente", false);
         }
 
         private void mostrarError(string mensaje)

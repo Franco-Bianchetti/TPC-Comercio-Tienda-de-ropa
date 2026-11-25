@@ -29,7 +29,7 @@
                             ID="txtBuscar"
                             runat="server"
                             CssClass="form-control"
-                            placeholder="TEXTO-DE-AYUDA" />
+                            placeholder="Razon social, CUIT o Email" />
 
                     </div>
 

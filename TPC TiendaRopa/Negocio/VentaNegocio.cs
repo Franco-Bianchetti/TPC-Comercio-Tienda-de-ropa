@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dominio;
+using System.Data;
 
 namespace Negocio
 {
@@ -403,5 +404,73 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+
+        public DataTable obtenerRankingVendedores(DateTime desde, DateTime hasta)
+        {
+            DataTable tabla = new DataTable();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setConsulta(@"
+            SELECT
+                U.IdUsuario,
+                U.Codigo,
+                U.Nombre,
+                U.Apellido,
+
+                COUNT(V.IdVenta) AS CantidadVentas,
+
+                ISNULL(SUM(D.CantidadProductos), 0) AS UnidadesVendidas,
+
+                SUM(V.Total) AS TotalVendido
+
+            FROM Ventas V
+
+            INNER JOIN Usuarios U
+                ON V.IdUsuario = U.IdUsuario
+
+            LEFT JOIN
+            (
+                SELECT
+                    IdVenta,
+                    SUM(Cantidad) AS CantidadProductos
+                FROM DetalleVentas
+                GROUP BY IdVenta
+            ) D
+                ON V.IdVenta = D.IdVenta
+
+            WHERE
+                V.FechaVenta >= @Desde
+                AND V.FechaVenta < DATEADD(DAY, 1, @Hasta)
+                AND V.TipoFactura <> 'PRESUPUESTO'
+                AND U.IdRol = 2
+
+            GROUP BY
+                U.IdUsuario,
+                U.Codigo,
+                U.Nombre,
+                U.Apellido
+
+            ORDER BY
+                TotalVendido DESC
+        ");
+
+                datos.setParametro("@Desde", desde.Date);
+                datos.setParametro("@Hasta", hasta.Date);
+
+                datos.ejecutarLectura();
+
+                tabla.Load(datos.Lector);
+
+                return tabla;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
 }

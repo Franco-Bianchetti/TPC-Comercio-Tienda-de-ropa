@@ -82,29 +82,27 @@ namespace TPC_TiendaRopa {
         protected void gvUsuarios_RowCommand(
             object sender,
             GridViewCommandEventArgs e) {
-            if (e.CommandName == "Eliminar") {
-                int id =
-                    int.Parse(
-                        e.CommandArgument.ToString());
 
-                UsuarioNegocio negocio =
-                    new UsuarioNegocio();
-
-                negocio.eliminar(id);
-
-                cargarGrilla();
+            if (e.CommandName == "Eliminar")
+            {
+                int id = int.Parse(e.CommandArgument.ToString());
 
                 if (id == Convert.ToInt32(Session["IdUsuario"]))
                 {
-                    cargarGrilla();
-
                     lblResultado.Visible = true;
                     lblResultado.CssClass = "d-block mb-3 text-danger";
                     lblResultado.Text = "No podés eliminar tu propio usuario.";
 
                     return;
                 }
+
+                UsuarioNegocio negocio = new UsuarioNegocio();
+
+                negocio.eliminar(id);
+
+                cargarGrilla();
             }
+
             if (e.CommandName == "Reactivar")
             {
                 if (!Seguridad.EsAdmin())

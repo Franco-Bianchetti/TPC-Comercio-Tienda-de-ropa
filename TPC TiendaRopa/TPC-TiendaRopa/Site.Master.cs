@@ -29,7 +29,10 @@ namespace TPC_TiendaRopa
             }
         }
 
-        protected void Page_Load(object sender, EventArgs e)
+
+        protected void Page_Load(
+            object sender,
+            EventArgs e)
         {
             if (esPaginaPublica())
             {
@@ -39,12 +42,23 @@ namespace TPC_TiendaRopa
             }
 
             menuPrincipal.Visible = true;
-            phUsuarios.Visible = Seguridad.EsAdmin();
+
+            bool esAdmin = Seguridad.EsAdmin();
+
+            liMarcas.Visible = esAdmin;
+            liProveedores.Visible = esAdmin;
+            liTipos.Visible = esAdmin;
+            liUsuarios.Visible = esAdmin;
+            liCompras.Visible = esAdmin;
+            liReportes.Visible = esAdmin;
 
             if (Session["Usuario"] != null)
             {
                 panelUsuario.Visible = true;
-                lblUsuario.Text = "Bienvenido: " + Session["Usuario"].ToString();
+
+                lblUsuario.Text =
+                    "Bienvenido: " +
+                    Session["Usuario"].ToString();
             }
             else
             {
@@ -52,12 +66,18 @@ namespace TPC_TiendaRopa
             }
         }
 
-        protected void btnCerrarSesion_Click(object sender, EventArgs e)
+
+
+        protected void btnCerrarSesion_Click(
+            object sender,
+            EventArgs e)
         {
             Session.Clear();
             Session.Abandon();
 
-            Response.Redirect("~/Login.aspx", false);
+            Response.Redirect(
+                "Login.aspx",
+                false);
         }
     }
 }

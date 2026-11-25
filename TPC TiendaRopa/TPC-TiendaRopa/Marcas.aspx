@@ -31,7 +31,7 @@
                             ID="txtBuscar"
                             runat="server"
                             CssClass="form-control"
-                            placeholder="TEXTO-DE-AYUDA" />
+                            placeholder="Nombre de la marca" />
 
                     </div>
 

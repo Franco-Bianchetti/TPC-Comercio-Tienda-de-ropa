@@ -31,7 +31,7 @@
                             ID="txtBuscar"
                             runat="server"
                             CssClass="form-control"
-                            placeholder="TEXTO-DE-AYUDA" />
+                            placeholder="Nombre, Apellido, Usuario o DNI" />
 
                     </div>
 
@@ -129,11 +129,11 @@
                         <asp:Button
                             ID="btnReactivarFila"
                             runat="server"
-                            Text="Reactivar"
+                            Text="Aprobar / Reactivar"
                             CssClass="btn btn-success btn-sm"
                             CommandName="Reactivar"
                             CommandArgument='<%# Eval("Id") %>'
-                            OnClientClick="return confirm('¿Reactivar este usuario?');" />
+                            OnClientClick="return confirm('¿Aprobar o reactivar este usuario?');" />
 
                     </asp:Panel>
 

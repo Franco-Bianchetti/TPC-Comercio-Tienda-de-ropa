@@ -11,111 +11,111 @@
 
     <h2>Productos</h2>
 
-    
     <asp:Panel runat="server" DefaultButton="btnBuscar">
 
         <div class="card shadow-sm mb-3">
 
             <div class="card-header">
-                Filtros
+                <strong>Filtros de búsqueda</strong>
             </div>
 
             <div class="card-body">
 
-                <div class="row">
+                <div class="row g-3">
 
-                    <div class="col-md-3">
-
-                        <label>Código o nombre</label>
-
+                    <div class="col-md-4">
+                        <label class="form-label">Código o nombre</label>
                         <asp:TextBox
                             ID="txtBuscar"
                             runat="server"
                             CssClass="form-control"
                             placeholder="REM001, remera..." />
-
                     </div>
 
-                    <div class="col-md-2">
-
-                        <label>Marca</label>
-
+                    <div class="col-md-4">
+                        <label class="form-label">Marca</label>
                         <asp:DropDownList
                             ID="ddlMarca"
                             runat="server"
                             CssClass="form-select">
                         </asp:DropDownList>
-
                     </div>
 
-                    <div class="col-md-2">
-
-                        <label>Tipo</label>
-
+                    <div class="col-md-4">
+                        <label class="form-label">Proveedor</label>
                         <asp:DropDownList
-                            ID="ddlTipo"
+                            ID="ddlProveedor"
                             runat="server"
                             CssClass="form-select">
                         </asp:DropDownList>
-
                     </div>
 
-                    <div class="col-md-1">
+                </div>
 
-                        <label>Talle</label>
+                <style>
+                    .filtro-stock-bajo {
+                        gap: 0.55rem;
+                        padding-top: 0.25rem;
+                    }
+                    .filtro-stock-bajo input[type="checkbox"] {
+                        width: 1.1rem;
+                        height: 1.1rem;
+                        margin: 0;
+                        cursor: pointer;
+                    }
+                    .filtro-stock-bajo label {
+                        margin: 0;
+                        font-size: 1rem;
+                        line-height: 1.5;
+                        cursor: pointer;
+                    }
+                </style>
 
+                <div class="row g-3 mt-1 align-items-end">
+
+                    <div class="col-md-2">
+                        <label class="form-label">Talle</label>
                         <asp:TextBox
                             ID="txtTalle"
                             runat="server"
-                            CssClass="form-control" />
-
+                            CssClass="form-control"
+                            placeholder="Ej. M, XL, 42" />
                     </div>
 
-                    <div class="col-md-2">
-
-                        <label>Color</label>
-
+                    <div class="col-md-3">
+                        <label class="form-label">Color</label>
                         <asp:TextBox
                             ID="txtColor"
                             runat="server"
-                            CssClass="form-control" />
-
+                            CssClass="form-control"
+                            placeholder="Ej. Negro, azul..." />
                     </div>
 
-                    <div class="col-md-1">
+                    <div class="col-md-3 d-flex align-items-center ps-md-3" style="height: 38px;">
+                        <asp:CheckBox
+                            ID="chkStockBajo"
+                            runat="server"
+                            CssClass="d-inline-flex align-items-center filtro-stock-bajo"
+                            Text="Productos con stock bajo" />
+                    </div>
 
-                        <label>&nbsp;</label>
-
+                    <div class="col-md-2">
                         <asp:Button
                             ID="btnBuscar"
                             runat="server"
                             Text="Buscar"
                             CssClass="btn btn-secondary w-100"
                             OnClick="btnBuscar_Click" />
-
                     </div>
 
-                    <div class="col-md-1">
-
-                        <label>&nbsp;</label>
-
+                    <div class="col-md-2">
                         <asp:Button
                             ID="btnLimpiar"
                             runat="server"
                             Text="Limpiar"
                             CssClass="btn btn-outline-secondary w-100"
                             OnClick="btnLimpiar_Click" />
-
                     </div>
-
-                </div>
-
-                <div class="mt-3">
-
-                    <asp:CheckBox
-                        ID="chkStockBajo"
-                        runat="server"
-                        Text=" Solo productos con stock bajo" />
 
                 </div>
 
@@ -125,7 +125,6 @@
 
     </asp:Panel>
 
-
     <asp:GridView
         ID="gvProductos"
         runat="server"
@@ -134,113 +133,101 @@
         OnRowCommand="gvProductos_RowCommand"
         OnRowDataBound="gvProductos_RowDataBound">
 
-<Columns>
+        <Columns>
 
-    <asp:BoundField
-        DataField="Codigo"
-        HeaderText="Código" />
+            <asp:BoundField
+                DataField="Codigo"
+                HeaderText="Código" />
 
-    <asp:BoundField
-        DataField="Nombre"
-        HeaderText="Nombre" />
+            <asp:BoundField
+                DataField="Nombre"
+                HeaderText="Nombre" />
 
-    <asp:TemplateField
-        HeaderText="Marca">
+            <asp:TemplateField HeaderText="Marca">
+                <ItemTemplate>
+                    <%# Eval("Marca.Nombre") %>
+                </ItemTemplate>
+            </asp:TemplateField>
 
-        <ItemTemplate>
-            <%# Eval("Marca.Nombre") %>
-        </ItemTemplate>
+            <asp:TemplateField HeaderText="Proveedor">
+                <ItemTemplate>
+                    <%# Eval("Proveedores[0].RazonSocial") %>
+                </ItemTemplate>
+            </asp:TemplateField>
 
-    </asp:TemplateField>
+            <asp:TemplateField HeaderText="Tipo">
+                <ItemTemplate>
+                    <%# Eval("Tipo.Nombre") %>
+                </ItemTemplate>
+            </asp:TemplateField>
 
-    <asp:TemplateField
-        HeaderText="Proveedor">
+            <asp:BoundField
+                DataField="Talle"
+                HeaderText="Talle" />
 
-        <ItemTemplate>
-            <%# Eval("Proveedores[0].RazonSocial") %>
-        </ItemTemplate>
+            <asp:BoundField
+                DataField="Color"
+                HeaderText="Color" />
 
-    </asp:TemplateField>
+            <asp:BoundField
+                DataField="StockActual"
+                HeaderText="Stock" />
 
-    <asp:TemplateField
-        HeaderText="Tipo">
+            <asp:BoundField
+                DataField="EstadoStock"
+                HeaderText="Estado" />
 
-        <ItemTemplate>
-            <%# Eval("Tipo.Nombre") %>
-        </ItemTemplate>
+            <asp:BoundField
+                DataField="PrecioCompraMostrado"
+                HeaderText="Precio Compra" />
 
-    </asp:TemplateField>
+            <asp:BoundField
+                DataField="PrecioVentaMostrado"
+                HeaderText="Precio Venta" />
 
-    <asp:BoundField
-        DataField="Talle"
-        HeaderText="Talle" />
+            <asp:TemplateField HeaderText="Acciones">
+                <ItemTemplate>
 
-    <asp:BoundField
-        DataField="Color"
-        HeaderText="Color" />
+                    <asp:Panel
+                        ID="pnlActiva"
+                        runat="server">
 
-    <asp:BoundField
-        DataField="StockActual"
-        HeaderText="Stock" />
+                        <a href="FormularioProducto.aspx?id=<%# Eval("Id") %>"
+                           class="btn btn-warning btn-sm">
+                            Editar
+                        </a>
 
-    <asp:BoundField
-        DataField="EstadoStock"
-        HeaderText="Estado" />
+                        <asp:Button
+                            ID="btnEliminarFila"
+                            runat="server"
+                            Text="Eliminar"
+                            CssClass="btn btn-danger btn-sm"
+                            CommandName="Eliminar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            OnClientClick="return confirm('¿Seguro que querés eliminar este producto?');" />
 
-    <asp:BoundField
-        DataField="PrecioCompraMostrado"
-        HeaderText="Precio Compra" />
+                    </asp:Panel>
 
-    <asp:BoundField
-        DataField="PrecioVentaMostrado"
-        HeaderText="Precio Venta" />
+                    <asp:Panel
+                        ID="pnlInactiva"
+                        runat="server"
+                        Visible="false">
 
-    <asp:TemplateField
-        HeaderText="Acciones">
+                        <asp:Button
+                            ID="btnReactivarFila"
+                            runat="server"
+                            Text="Reactivar"
+                            CssClass="btn btn-success btn-sm"
+                            CommandName="Reactivar"
+                            CommandArgument='<%# Eval("Id") %>'
+                            OnClientClick="return confirm('¿Seguro que querés reactivar este producto?');" />
 
-        <ItemTemplate>
+                    </asp:Panel>
 
-            <asp:Panel
-                ID="pnlActiva"
-                runat="server">
+                </ItemTemplate>
+            </asp:TemplateField>
 
-                <a href="FormularioProducto.aspx?id=<%# Eval("Id") %>"
-                   class="btn btn-warning btn-sm">
-                    Editar
-                </a>
-
-                <asp:Button
-                    ID="btnEliminarFila"
-                    runat="server"
-                    Text="Eliminar"
-                    CssClass="btn btn-danger btn-sm"
-                    CommandName="Eliminar"
-                    CommandArgument='<%# Eval("Id") %>'
-                    OnClientClick="return confirm('¿Seguro que querés eliminar este producto?');" />
-
-            </asp:Panel>
-
-            <asp:Panel
-                ID="pnlInactiva"
-                runat="server"
-                Visible="false">
-
-                <asp:Button
-                    ID="btnReactivarFila"
-                    runat="server"
-                    Text="Reactivar"
-                    CssClass="btn btn-success btn-sm"
-                    CommandName="Reactivar"
-                    CommandArgument='<%# Eval("Id") %>'
-                    OnClientClick="return confirm('¿Seguro que querés reactivar este producto?');" />
-
-            </asp:Panel>
-
-        </ItemTemplate>
-
-    </asp:TemplateField>
-
-</Columns>
+        </Columns>
 
     </asp:GridView>
 

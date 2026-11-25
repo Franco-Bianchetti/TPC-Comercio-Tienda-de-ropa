@@ -12,7 +12,7 @@
 
     <h2>Clientes</h2>
 
-    <asp:Panel runat="server" DefaultButton="btnBuscar">
+                <asp:Panel runat="server" DefaultButton="btnBuscar">
 
         <div class="card shadow-sm mb-3">
 
@@ -32,7 +32,7 @@
                             ID="txtBuscar"
                             runat="server"
                             CssClass="form-control"
-                            placeholder="Buscar por nombre, apellido, DNI, dirección o email..." />
+                            placeholder="Nombre, Apellido, DNI o Email" />
 
                     </div>
 
@@ -97,10 +97,6 @@
                 HeaderText="DNI" />
 
             <asp:BoundField
-                DataField="Direccion"
-                HeaderText="Dirección" />
-
-            <asp:BoundField
                 DataField="Telefono"
                 HeaderText="Teléfono" />
 
@@ -113,7 +109,7 @@
 
                 <ItemTemplate>
 
-                    <asp:Panel ID="pnlActiva" runat="server" CssClass="d-inline">
+                      <asp:Panel ID="pnlActiva" runat="server" CssClass="d-inline">
 
                         <a href="FormularioCliente.aspx?id=<%# Eval("Id") %>"
                            class="btn btn-warning btn-sm">

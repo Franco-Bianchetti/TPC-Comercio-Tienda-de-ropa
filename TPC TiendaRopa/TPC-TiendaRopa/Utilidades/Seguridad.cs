@@ -7,6 +7,10 @@ namespace TPC_TiendaRopa
     {
         public static bool EsAdmin()
         {
+            if (HttpContext.Current == null ||
+                HttpContext.Current.Session == null)
+                return false;
+
             object perfil = HttpContext.Current.Session["Perfil"];
 
             return perfil is TipoPerfil &&

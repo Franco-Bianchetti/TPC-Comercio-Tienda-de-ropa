@@ -12,7 +12,7 @@
     <div class="d-flex justify-content-center mt-5">
 
         <div class="card shadow p-4"
-             style="min-width:350px;">
+             style="width: 330px;">
 
             <h4 class="text-center mb-4">
                 Iniciar sesión
@@ -21,14 +21,14 @@
             <asp:Label
                 ID="lblExito"
                 runat="server"
-                CssClass="text-success d-block mb-3"
+                CssClass="text-success text-center d-block mb-3 small"
                 Text="¡Cuenta creada! Ya podés iniciar sesión."
                 Visible="false" />
 
             <asp:Label
                 ID="lblError"
                 runat="server"
-                CssClass="text-danger"
+                CssClass="text-danger text-center d-block mb-3 small"
                 Visible="false">
             </asp:Label>
 

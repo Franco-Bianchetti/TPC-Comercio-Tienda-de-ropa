@@ -33,13 +33,13 @@ namespace TPC_TiendaRopa
         protected global::System.Web.UI.WebControls.DropDownList ddlMarca;
 
         /// <summary>
-        /// Control ddlTipo.
+        /// Control ddlProveedor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTipo;
+        protected global::System.Web.UI.WebControls.DropDownList ddlProveedor;
 
         /// <summary>
         /// Control txtTalle.
@@ -60,6 +60,15 @@ namespace TPC_TiendaRopa
         protected global::System.Web.UI.WebControls.TextBox txtColor;
 
         /// <summary>
+        /// Control chkStockBajo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkStockBajo;
+
+        /// <summary>
         /// Control btnBuscar.
         /// </summary>
         /// <remarks>
@@ -76,15 +85,6 @@ namespace TPC_TiendaRopa
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnLimpiar;
-
-        /// <summary>
-        /// Control chkStockBajo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkStockBajo;
 
         /// <summary>
         /// Control gvProductos.

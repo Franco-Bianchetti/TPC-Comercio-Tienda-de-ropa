@@ -9,9 +9,7 @@ namespace TPC_TiendaRopa
 {
     public partial class FormularioVenta : System.Web.UI.Page
     {
-        protected void Page_Load(
-            object sender,
-            EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
@@ -24,14 +22,30 @@ namespace TPC_TiendaRopa
                 Session["DetalleVenta"] =
                     new List<DetalleVenta>();
 
-                Session["IndiceEdicion"] =
-                    null;
+                Session["IndiceEdicion"] = null;
 
                 actualizarGrilla();
 
                 lblDescuento.Text = "$0,00";
 
                 lblTotal.Text = "$0,00";
+
+                string idProducto = Request.QueryString["idProducto"];
+
+                int id;
+
+                if (int.TryParse(idProducto, out id))
+                {
+                    ListItem productoSeleccionado =
+                        ddlProducto.Items.FindByValue(id.ToString());
+
+                    if (productoSeleccionado != null)
+                    {
+                        ddlProducto.SelectedValue = id.ToString();
+
+                        cargarDatosProducto();
+                    }
+                }
             }
         }
 
@@ -84,30 +98,31 @@ namespace TPC_TiendaRopa
         protected void ddlProducto_SelectedIndexChanged(
             object sender,
             EventArgs e)
-        {
-            txtPrecioUnitario.Text = "";
+                {
+                    cargarDatosProducto();
+                }
 
-            if (ddlProducto.SelectedValue == "0")
-                return;
+                private void cargarDatosProducto()
+                {
+                    txtPrecioUnitario.Text = "";
+                    txtStock.Text = "";
 
-            VentaNegocio negocio =
-                new VentaNegocio();
+                    if (ddlProducto.SelectedValue == "0")
+                        return;
 
-            Producto producto =
-                negocio.obtenerProducto(
-                    int.Parse(
-                        ddlProducto.SelectedValue));
+                    VentaNegocio negocio = new VentaNegocio();
 
-            if (producto == null)
-                return;
+                    Producto producto = negocio.obtenerProducto(
+                        int.Parse(ddlProducto.SelectedValue));
 
-            txtStock.Text =
-                producto.StockActual.ToString();
+                    if (producto == null)
+                        return;
 
-            txtPrecioUnitario.Text =
-                producto.ObtenerPrecioVenta()
-                    .ToString("0.00");
-        }
+                    txtStock.Text = producto.StockActual.ToString();
+
+                    txtPrecioUnitario.Text =
+                        producto.ObtenerPrecioVenta().ToString("0.00");
+                }
         protected void ddlFormaPago_SelectedIndexChanged(
             object sender,
             EventArgs e)

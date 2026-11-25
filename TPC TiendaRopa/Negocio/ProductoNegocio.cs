@@ -73,26 +73,27 @@ namespace Negocio
             aux.Tipo.Id = (int)datos.Lector["IdTipo"];
             aux.Tipo.Nombre = datos.Lector["Tipo"].ToString();
 
-            aux.Proveedores.Add(   new Proveedor{   
+            aux.Proveedores.Add(new Proveedor
+            {
                 Id = (int)datos.Lector["IdProveedor"],
                 RazonSocial = datos.Lector["Proveedor"].ToString()
-                 });
-            decimal precioCompra =   (decimal)datos.Lector["PrecioCompra"];
+            });
+            decimal precioCompra = (decimal)datos.Lector["PrecioCompra"];
 
             if (precioCompra > 0)
             {
                 aux.IngresosStock.Add(new IngresoStock
-                    {
-                        Fecha = DateTime.Now,
-                        Cantidad = 0,
-                        PrecioCompra = precioCompra
-                    });
+                {
+                    Fecha = DateTime.Now,
+                    Cantidad = 0,
+                    PrecioCompra = precioCompra
+                });
             }
             return aux;
         }
 
 
-      
+
 
         public List<Producto> listar(bool incluirInactivos = false)
         {
@@ -116,7 +117,7 @@ namespace Negocio
                     Producto producto =
                         leerProducto(datos);
 
-                    
+
 
                     lista.Add(producto);
                 }
@@ -134,6 +135,7 @@ namespace Negocio
             string texto,
             int idMarca,
             int idTipo,
+            int idProveedor,
             string talle,
             string color,
             bool stockBajo,
@@ -162,6 +164,9 @@ namespace Negocio
                 if (idTipo > 0)
                     consulta += " AND P.IdTipo = @IdTipo ";
 
+                if (idProveedor > 0)
+                    consulta += "AND P.IdProveedor = @IdProveedor";
+
                 if (!string.IsNullOrWhiteSpace(talle))
                     consulta += " AND P.Talle LIKE @Talle ";
 
@@ -184,6 +189,9 @@ namespace Negocio
 
                 if (idTipo > 0)
                     datos.setParametro("@IdTipo", idTipo);
+
+                if (idProveedor > 0)
+                    datos.setParametro("@IdProveedor", idProveedor);
 
                 if (!string.IsNullOrWhiteSpace(talle))
                     datos.setParametro("@Talle", "%" + talle + "%");
@@ -271,7 +279,7 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-        public List<Producto> listarPorProveedor( int idProveedor)
+        public List<Producto> listarPorProveedor(int idProveedor)
         {
             List<Producto> lista = new List<Producto>();
             AccesoDatos datos = new AccesoDatos();
@@ -349,8 +357,8 @@ namespace Negocio
                 datos.setParametro("@Color", nuevo.Color);
                 datos.setParametro("@IdMarca", nuevo.Marca.Id);
                 datos.setParametro("@IdTipo", nuevo.Tipo.Id);
-                datos.setParametro("@IdProveedor",nuevo.Proveedores[0].Id);
-                 datos.setParametro("@StockMinimo", nuevo.StockMinimo);
+                datos.setParametro("@IdProveedor", nuevo.Proveedores[0].Id);
+                datos.setParametro("@StockMinimo", nuevo.StockMinimo);
                 datos.setParametro("@Porcentaje", nuevo.PorcentajeGanancia);
 
                 datos.ejecutarLectura();
@@ -393,7 +401,7 @@ namespace Negocio
                 datos.setParametro("@Color", producto.Color);
                 datos.setParametro("@IdMarca", producto.Marca.Id);
                 datos.setParametro("@IdTipo", producto.Tipo.Id);
-                datos.setParametro("@IdProveedor",producto.Proveedores[0].Id);
+                datos.setParametro("@IdProveedor", producto.Proveedores[0].Id);
                 datos.setParametro("@StockMinimo", producto.StockMinimo);
                 datos.setParametro("@Porcentaje", producto.PorcentajeGanancia);
                 datos.setParametro("@Id", producto.Id);
@@ -489,6 +497,5 @@ namespace Negocio
                 .Where(x => x.StockActual > 0)
                 .ToList();
         }
-
     }
 }

@@ -13,7 +13,7 @@ namespace TPC_TiendaRopa
         {
             lblError.Visible = false;
 
-            string usuario = txtUsuario.Text.Trim().ToLower();
+            string usuario = txtUsuario.Text.Trim();
             string dni = txtDni.Text.Trim();
             string clave = txtClave.Text.Trim();
             string repetir = txtRepetirClave.Text.Trim();
